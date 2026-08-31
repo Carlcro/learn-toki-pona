@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="820" height="200" viewBox="0 0 820 200">
+  <defs>
+    <symbol id="p" viewBox="0 0 60 88">
+      <rect x="26" y="74" width="8" height="14"/>
+      <polygon points="8,74 52,74 30,46"/>
+      <polygon points="14,52 46,52 30,24"/>
+      <polygon points="19,30 41,30 30,2"/>
+    </symbol>
+    <symbol id="s" viewBox="0 0 44 74">
+      <rect x="18" y="60" width="8" height="14"/>
+      <polygon points="4,60 40,60 22,30"/>
+      <polygon points="10,36 34,36 22,6"/>
+    </symbol>
+    <symbol id="b" viewBox="0 0 72 90">
+      <rect x="32" y="74" width="8" height="16"/>
+      <circle cx="36" cy="40" r="24"/>
+      <circle cx="16" cy="50" r="15"/>
+      <circle cx="56" cy="50" r="15"/>
+      <circle cx="36" cy="14" r="13"/>
+    </symbol>
+    <symbol id="h" viewBox="0 0 56 36">
+      <rect x="25" y="28" width="6" height="8"/>
+      <circle cx="28" cy="20" r="14"/>
+      <circle cx="14" cy="26" r="9"/>
+      <circle cx="42" cy="26" r="9"/>
+    </symbol>
+  </defs>
+  <use href="#h" x="10.5" y="168" width="47" height="30" fill="#febcd5"/>
+  <use href="#p" x="71" y="56" width="94" height="138" fill="#d7b0fe"/>
+  <use href="#b" x="183" y="99" width="78" height="98" fill="#febcd5"/>
+  <use href="#s" x="279" y="131" width="38" height="64" fill="#d7b0fe"/>
+  <use href="#b" x="349.5" y="37" width="125" height="156" fill="#febcd5"/>
+  <use href="#p" x="492.5" y="106" width="63" height="92" fill="#d7b0fe"/>
+  <use href="#s" x="585.5" y="140" width="33" height="56" fill="#d7b0fe"/>
+  <use href="#h" x="666" y="173" width="40" height="26" fill="#febcd5"/>
+  <use href="#p" x="736" y="127" width="48" height="70" fill="#d7b0fe"/>
+</svg>
