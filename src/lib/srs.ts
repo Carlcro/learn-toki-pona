@@ -1,7 +1,11 @@
 export type Grade = "again" | "good" | "easy";
 
-/** Words and grammar points are scheduled by the same engine, on separate decks. */
-export type CardKind = "word" | "grammar";
+/**
+ * Words, grammar points, and word senses are scheduled by the same engine, on
+ * separate decks. A sense card asks which meaning a slot forces — the skill
+ * that decays fastest in a language where one word covers a whole field.
+ */
+export type CardKind = "word" | "grammar" | "sense";
 
 export interface SrsCard {
 	id: string;

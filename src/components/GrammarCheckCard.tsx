@@ -2,6 +2,7 @@ import { useMemo, useState } from "react";
 import type { GrammarConcept } from "#/data/types";
 import type { Grade } from "#/lib/srs";
 import { CozyPanel } from "./CozyPanel";
+import { SentenceAnatomy } from "./SentenceAnatomy";
 
 function shuffle<T>(items: T[]): T[] {
 	const copy = [...items];
@@ -80,6 +81,11 @@ export function GrammarCheckCard({
 						<p className="text-center font-sans text-xs text-mist">
 							{concept.explanation}
 						</p>
+						{/* One worked example on the reveal, not the whole set: the
+						    reminder should fit on the card the learner just answered. */}
+						{concept.examples[0] && (
+							<SentenceAnatomy example={concept.examples[0]} />
+						)}
 						<button
 							type="button"
 							onClick={() => onGrade(isCorrect ? "good" : "again")}

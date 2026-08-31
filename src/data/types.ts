@@ -63,10 +63,37 @@ export interface GrammarCheck {
 	answer: string;
 }
 
+/**
+ * One piece of a sentence, with a plain-language name for the job it does.
+ * The label is what a learner without grammar-school vocabulary actually needs
+ * — "what they do" rather than "predicate" — so it is written for them, not
+ * borrowed from linguistics.
+ */
+export interface AnnotatedChunk {
+	/** The toki pona words in this piece. */
+	text: string;
+	/** The job this piece does. Left off for glue words the labels around it already explain. */
+	label?: string;
+	/** Glue words (li, e, pi, o, en) are coloured apart from the pieces they join. */
+	particle?: boolean;
+}
+
+/**
+ * A worked sentence, cut into its pieces. Showing where a sentence splits
+ * teaches the shape faster than any amount of prose about it — so every
+ * grammar point carries at least one.
+ */
+export interface AnnotatedExample {
+	chunks: AnnotatedChunk[];
+	en: string;
+}
+
 export interface GrammarConcept {
 	id: string;
 	name: string;
 	explanation: string;
+	/** Worked sentences shown under the explanation, cut into labelled pieces. */
+	examples: AnnotatedExample[];
 	check: GrammarCheck;
 }
 

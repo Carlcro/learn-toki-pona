@@ -12,6 +12,12 @@ export interface ProgressState {
 	cards: Partial<Record<WordId, SrsCard>>;
 	/** Grammar points are scheduled too, keyed by concept id. */
 	grammarCards: Partial<Record<string, SrsCard>>;
+	/**
+	 * Sense checks, keyed by sense-item id. Their own deck rather than a flag on
+	 * the word card: knowing what `pona` can mean and reading which meaning a
+	 * given slot forces are different skills, and they decay separately.
+	 */
+	senseCards: Partial<Record<string, SrsCard>>;
 	completedLessonIds: string[];
 	lastStudiedAt: string | null;
 	/** ISO date of the most recent lesson finish, for one-new-lesson-a-day pacing. */
@@ -27,6 +33,7 @@ const CHANGE_EVENT = "toki-pona-store-change";
 const emptyState: ProgressState = {
 	cards: {},
 	grammarCards: {},
+	senseCards: {},
 	completedLessonIds: [],
 	lastStudiedAt: null,
 	lastLessonCompletedAt: null,
@@ -112,6 +119,7 @@ function readLegacyState(): ProgressState | null {
 		return {
 			cards,
 			grammarCards: {},
+			senseCards: {},
 			completedLessonIds: parsed.completedLessonIds ?? [],
 			lastStudiedAt: parsed.lastStudiedAt ?? null,
 			lastLessonCompletedAt: null,
@@ -132,6 +140,10 @@ function readState(): ProgressState {
 		return {
 			cards: parsed.cards ?? {},
 			grammarCards: parsed.grammarCards ?? {},
+			// Added after v2 shipped. Defaulting rather than bumping the storage
+			// key keeps existing progress: a returning learner picks the sense
+			// deck up as they revisit lessons, instead of losing their words.
+			senseCards: parsed.senseCards ?? {},
 			completedLessonIds: parsed.completedLessonIds ?? [],
 			lastStudiedAt: parsed.lastStudiedAt ?? null,
 			lastLessonCompletedAt: parsed.lastLessonCompletedAt ?? null,
@@ -195,11 +207,13 @@ export function useProgressState(): ProgressState {
 export function initializeCardsForLesson(
 	wordIds: WordId[],
 	conceptIds: string[],
+	senseItemIds: string[],
 	now: Date,
 ): void {
 	const state = getSnapshot();
 	const cards = { ...state.cards };
 	const grammarCards = { ...state.grammarCards };
+	const senseCards = { ...state.senseCards };
 	let changed = false;
 	for (const wordId of wordIds) {
 		if (!cards[wordId]) {
@@ -213,8 +227,14 @@ export function initializeCardsForLesson(
 			changed = true;
 		}
 	}
+	for (const itemId of senseItemIds) {
+		if (!senseCards[itemId]) {
+			senseCards[itemId] = createCard(itemId, now, "sense");
+			changed = true;
+		}
+	}
 	if (changed) {
-		writeState({ ...state, cards, grammarCards });
+		writeState({ ...state, cards, grammarCards, senseCards });
 	}
 }
 
@@ -242,6 +262,28 @@ export function recordGrammarGrade(
 		grammarCards: {
 			...state.grammarCards,
 			[conceptId]: gradeCard(existing, grade, now),
+		},
+		lastStudiedAt: toIsoDate(now),
+		...nextStreak(state, now),
+	});
+}
+
+/**
+ * A sense check is right or wrong on its face, so it never offers "easy" — the
+ * caller passes the graded answer and the card is scheduled from that.
+ */
+export function recordSenseGrade(
+	itemId: string,
+	grade: Grade,
+	now: Date,
+): void {
+	const state = getSnapshot();
+	const existing = state.senseCards[itemId] ?? createCard(itemId, now, "sense");
+	writeState({
+		...state,
+		senseCards: {
+			...state.senseCards,
+			[itemId]: gradeCard(existing, grade, now),
 		},
 		lastStudiedAt: toIsoDate(now),
 		...nextStreak(state, now),

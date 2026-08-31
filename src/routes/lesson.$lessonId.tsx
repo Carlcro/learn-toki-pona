@@ -7,6 +7,7 @@ import { GrammarCheckCard } from "#/components/GrammarCheckCard";
 import { MultipleChoice } from "#/components/MultipleChoice";
 import { PageHeader } from "#/components/PageHeader";
 import { SenseCheck } from "#/components/SenseCheck";
+import { SentenceAnatomy } from "#/components/SentenceAnatomy";
 import { SentenceBuilder } from "#/components/SentenceBuilder";
 import { SpeakerButton } from "#/components/SpeakerButton";
 import { StepProgress } from "#/components/StepProgress";
@@ -19,7 +20,10 @@ import {
 } from "#/data/lessons";
 import { LIBRARY_ITEMS } from "#/data/library";
 import { SCENES_BY_ID } from "#/data/scenes";
-import { selectSenseItemsForWords } from "#/data/senses";
+import {
+	selectSenseItemIdsForWords,
+	selectSenseItemsForWords,
+} from "#/data/senses";
 import type {
 	Compound,
 	GrammarConcept,
@@ -41,6 +45,7 @@ import {
 	markLessonComplete,
 	recordGrade,
 	recordGrammarGrade,
+	recordSenseGrade,
 	useProgressState,
 } from "#/lib/store";
 
@@ -115,7 +120,8 @@ const OUTLINE_BUTTON =
 
 function LessonPage() {
 	const lesson = Route.useLoaderData();
-	const { cards, grammarCards, completedLessonIds } = useProgressState();
+	const progress = useProgressState();
+	const { cards, completedLessonIds } = progress;
 	const [index, setIndex] = useState(0);
 	const [finished, setFinished] = useState(false);
 
@@ -163,6 +169,7 @@ function LessonPage() {
 		initializeCardsForLesson(
 			lesson.wordIds,
 			lesson.grammarConceptIds,
+			selectSenseItemIdsForWords(lesson.wordIds),
 			new Date(),
 		);
 	}, [lesson]);
@@ -186,10 +193,13 @@ function LessonPage() {
 		advance();
 	}
 
+	function handleSenseGrade(itemId: string, grade: Grade) {
+		recordSenseGrade(itemId, grade, new Date());
+		advance();
+	}
+
 	const step = steps[index];
-	const nextDueAt = finished
-		? selectNextDueAt(cards, grammarCards, new Date())
-		: null;
+	const nextDueAt = finished ? selectNextDueAt(progress, new Date()) : null;
 
 	// A fixed-height shell rather than a growing page: the step content scrolls
 	// inside `main` so the step's primary action stays pinned in view, however
@@ -268,12 +278,17 @@ function LessonPage() {
 										</div>
 
 										{step.concepts.map((concept) => (
-											<p
+											<div
 												key={concept.id}
-												className="rounded-[28px] border-2 border-night-edge bg-night-soft px-4 py-3 font-sans text-sm text-mist"
+												className="flex w-full flex-col gap-4 rounded-[28px] border-2 border-night-edge bg-night-soft px-4 py-4"
 											>
-												{concept.explanation}
-											</p>
+												<p className="font-sans text-sm text-mist">
+													{concept.explanation}
+												</p>
+												{concept.examples.map((example) => (
+													<SentenceAnatomy key={example.en} example={example} />
+												))}
+											</div>
 										))}
 									</>
 								)}
@@ -309,7 +324,7 @@ function LessonPage() {
 									<SenseCheck
 										key={step.item.id}
 										item={step.item}
-										onNext={advance}
+										onGrade={(grade) => handleSenseGrade(step.item.id, grade)}
 									/>
 								)}
 

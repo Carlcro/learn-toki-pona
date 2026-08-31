@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react";
 import type { SenseItem } from "#/data/types";
+import type { Grade } from "#/lib/srs";
 import { CozyPanel } from "./CozyPanel";
 import { SpeakerButton } from "./SpeakerButton";
 
@@ -20,13 +21,17 @@ function stripPunctuation(token: string): string {
  * Asks what one word is doing in one sentence. Toki Pona words cover whole
  * fields of meaning and take their part of speech from position, so reading the
  * slot is the actual skill — a gloss-matching drill trains the opposite habit.
+ *
+ * Like the grammar check, the answer is right or wrong on its face, so the card
+ * grades itself. There is no "easy": a learner cannot meaningfully self-rate
+ * how well they read a slot they have just been shown the answer to.
  */
 export function SenseCheck({
 	item,
-	onNext,
+	onGrade,
 }: {
 	item: SenseItem;
-	onNext: () => void;
+	onGrade: (grade: Grade) => void;
 }) {
 	const [selected, setSelected] = useState<string | null>(null);
 	const options = useMemo(() => shuffle(item.options), [item.options]);
@@ -97,7 +102,7 @@ export function SenseCheck({
 						</p>
 						<button
 							type="button"
-							onClick={onNext}
+							onClick={() => onGrade(isCorrect ? "good" : "again")}
 							className="w-full rounded-full bg-pink px-5 py-3 font-display text-sm font-bold text-night transition-all active:brightness-90"
 						>
 							Continue

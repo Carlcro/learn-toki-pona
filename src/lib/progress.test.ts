@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import type { Lesson, WordId } from "#/data/types";
 import {
+	type Decks,
 	describeTimeUntil,
 	selectDailyPlan,
 	selectLessonProgress,
@@ -29,6 +30,10 @@ function card(overrides: Partial<SrsCard> = {}): SrsCard {
 
 function graded(overrides: Partial<SrsCard> = {}): SrsCard {
 	return card({ lastReviewedAt: "2026-01-09T09:00:00.000Z", ...overrides });
+}
+
+function decks(overrides: Partial<Decks> = {}): Decks {
+	return { cards: {}, grammarCards: {}, senseCards: {}, ...overrides };
 }
 
 const lessons: Lesson[] = [
@@ -74,25 +79,47 @@ describe("selectWordsLearnedCount", () => {
 });
 
 describe("selectReviewQueue", () => {
-	it("merges word and grammar cards, soonest first", () => {
+	it("merges word, grammar, and sense cards, soonest first", () => {
 		const queue = selectReviewQueue(
-			{ mi: graded({ id: "mi", dueAt: "2026-01-10T08:00:00.000Z" }) },
-			{
-				"li-e": graded({
-					id: "li-e",
-					kind: "grammar",
-					dueAt: "2026-01-10T07:00:00.000Z",
-				}),
-			},
+			decks({
+				cards: { mi: graded({ id: "mi", dueAt: "2026-01-10T08:00:00.000Z" }) },
+				grammarCards: {
+					"li-e": graded({
+						id: "li-e",
+						kind: "grammar",
+						dueAt: "2026-01-10T07:00:00.000Z",
+					}),
+				},
+				senseCards: {
+					"moku-noun": graded({
+						id: "moku-noun",
+						kind: "sense",
+						dueAt: "2026-01-10T06:00:00.000Z",
+					}),
+				},
+			}),
 			NOW,
 		);
-		expect(queue.map((entry) => entry.id)).toEqual(["li-e", "mi"]);
+		expect(queue.map((entry) => entry.id)).toEqual(["moku-noun", "li-e", "mi"]);
+	});
+
+	// The whole point of the sense deck: reading which meaning a slot forces is
+	// scheduled like anything else, not credited once at lesson end.
+	it("keeps a card's kind so the reviewer knows how to ask it", () => {
+		const queue = selectReviewQueue(
+			decks({
+				senseCards: {
+					"pona-predicate": graded({ id: "pona-predicate", kind: "sense" }),
+				},
+			}),
+			NOW,
+		);
+		expect(queue.map((entry) => entry.kind)).toEqual(["sense"]);
 	});
 
 	it("leaves out anything not yet due", () => {
 		const queue = selectReviewQueue(
-			{ mi: graded({ dueAt: "2026-01-11T09:00:00.000Z" }) },
-			{},
+			decks({ cards: { mi: graded({ dueAt: "2026-01-11T09:00:00.000Z" }) } }),
 			NOW,
 		);
 		expect(queue).toEqual([]);
@@ -103,18 +130,36 @@ describe("selectNextDueAt", () => {
 	it("returns the soonest future due time", () => {
 		expect(
 			selectNextDueAt(
-				{
-					mi: graded({ dueAt: "2026-01-12T09:00:00.000Z" }),
-					sina: graded({ dueAt: "2026-01-11T09:00:00.000Z" }),
-				},
-				{},
+				decks({
+					cards: {
+						mi: graded({ dueAt: "2026-01-12T09:00:00.000Z" }),
+						sina: graded({ dueAt: "2026-01-11T09:00:00.000Z" }),
+					},
+				}),
+				NOW,
+			),
+		).toBe("2026-01-11T09:00:00.000Z");
+	});
+
+	it("counts a pending sense card as something still to come back", () => {
+		expect(
+			selectNextDueAt(
+				decks({
+					senseCards: {
+						"moku-verb": graded({
+							id: "moku-verb",
+							kind: "sense",
+							dueAt: "2026-01-11T09:00:00.000Z",
+						}),
+					},
+				}),
 				NOW,
 			),
 		).toBe("2026-01-11T09:00:00.000Z");
 	});
 
 	it("is null when everything is already due", () => {
-		expect(selectNextDueAt({ mi: graded() }, {}, NOW)).toBeNull();
+		expect(selectNextDueAt(decks({ cards: { mi: graded() } }), NOW)).toBeNull();
 	});
 });
 
@@ -143,8 +188,7 @@ describe("selectLessonProgress", () => {
 describe("selectDailyPlan", () => {
 	function plan(overrides: Partial<Parameters<typeof selectDailyPlan>[0]>) {
 		return selectDailyPlan({
-			cards: {},
-			grammarCards: {},
+			decks: decks(),
 			completedLessonIds: [],
 			lastLessonCompletedAt: null,
 			lessons,
@@ -160,13 +204,29 @@ describe("selectDailyPlan", () => {
 	// Reviews are the part that decays, so they outrank new material.
 	it("puts due reviews ahead of the next lesson", () => {
 		expect(
-			plan({ cards: { mi: graded() }, completedLessonIds: ["1"] }),
+			plan({
+				decks: decks({ cards: { mi: graded() } }),
+				completedLessonIds: ["1"],
+			}),
 		).toEqual({ kind: "review", dueCount: 1 });
 	});
 
 	it("counts due grammar alongside due words", () => {
 		const result = plan({
-			grammarCards: { "li-e": graded({ id: "li-e", kind: "grammar" }) },
+			decks: decks({
+				grammarCards: { "li-e": graded({ id: "li-e", kind: "grammar" }) },
+			}),
+		});
+		expect(result).toEqual({ kind: "review", dueCount: 1 });
+	});
+
+	it("counts a due sense check as review work in its own right", () => {
+		const result = plan({
+			decks: decks({
+				senseCards: {
+					"suli-modifier": graded({ id: "suli-modifier", kind: "sense" }),
+				},
+			}),
 		});
 		expect(result).toEqual({ kind: "review", dueCount: 1 });
 	});
@@ -176,7 +236,9 @@ describe("selectDailyPlan", () => {
 			plan({
 				completedLessonIds: ["1"],
 				lastLessonCompletedAt: "2026-01-09",
-				cards: { mi: graded({ dueAt: "2026-01-20T09:00:00.000Z" }) },
+				decks: decks({
+					cards: { mi: graded({ dueAt: "2026-01-20T09:00:00.000Z" }) },
+				}),
 			}),
 		).toEqual({ kind: "lesson", lessonId: "2" });
 	});
@@ -188,7 +250,9 @@ describe("selectDailyPlan", () => {
 			plan({
 				completedLessonIds: ["1"],
 				lastLessonCompletedAt: "2026-01-10",
-				cards: { mi: graded({ dueAt: "2026-01-20T09:00:00.000Z" }) },
+				decks: decks({
+					cards: { mi: graded({ dueAt: "2026-01-20T09:00:00.000Z" }) },
+				}),
 			}),
 		).toEqual({
 			kind: "rest",
@@ -202,7 +266,9 @@ describe("selectDailyPlan", () => {
 			plan({
 				completedLessonIds: ["1", "2", "3"],
 				lastLessonCompletedAt: "2026-01-10",
-				cards: { mi: graded({ dueAt: "2026-01-20T09:00:00.000Z" }) },
+				decks: decks({
+					cards: { mi: graded({ dueAt: "2026-01-20T09:00:00.000Z" }) },
+				}),
 			}),
 		).toEqual({
 			kind: "course-complete",

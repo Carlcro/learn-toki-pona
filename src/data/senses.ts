@@ -14,7 +14,7 @@ export const SENSE_ITEMS: SenseItem[] = [
 		sentence: "jan li moku e telo.",
 		options: ["drinks", "the food", "a meal"],
 		answer: "drinks",
-		note: "It follows li and takes an object with e, so it has to be the action.",
+		note: "It comes after li and has e pointing at something, so it has to be the action.",
 	},
 	{
 		id: "moku-noun",
@@ -22,7 +22,7 @@ export const SENSE_ITEMS: SenseItem[] = [
 		sentence: "moku li pona.",
 		options: ["eats", "the food", "eat!"],
 		answer: "the food",
-		note: "It's the subject, sitting before li — the thing, not the action.",
+		note: "It sits before li, so it's what the sentence is about — the thing, not the action.",
 	},
 	{
 		id: "pona-predicate",
@@ -30,7 +30,7 @@ export const SENSE_ITEMS: SenseItem[] = [
 		sentence: "telo li pona.",
 		options: ["good water", "is good", "goodness"],
 		answer: "is good",
-		note: "After li it's the predicate: the claim the sentence is making.",
+		note: "After li it's what's being said about telo, not a word describing it.",
 	},
 	{
 		id: "suli-modifier",
@@ -38,7 +38,7 @@ export const SENSE_ITEMS: SenseItem[] = [
 		sentence: "jan suli li moku.",
 		options: ["is big", "big", "bigness"],
 		answer: "big",
-		note: "It sits inside the subject, right after jan, so it describes jan instead of asserting anything.",
+		note: "It sits right after jan and before li, so it describes jan rather than saying anything about it.",
 	},
 	{
 		id: "suli-predicate",
@@ -46,7 +46,7 @@ export const SENSE_ITEMS: SenseItem[] = [
 		sentence: "jan li suli.",
 		options: ["big person", "is big", "very"],
 		answer: "is big",
-		note: "The same word, one slot later: after li it stops describing and starts asserting.",
+		note: "The same word one place later: after li it stops describing and becomes the point of the sentence.",
 	},
 	{
 		id: "telo-verb",
@@ -54,7 +54,7 @@ export const SENSE_ITEMS: SenseItem[] = [
 		sentence: "mi telo e soweli.",
 		options: ["water", "wash", "wet"],
 		answer: "wash",
-		note: "e hands it an object, so telo is an action here — watering or washing something.",
+		note: "e points at something for it to act on, so telo is an action here — watering or washing.",
 	},
 	{
 		id: "mute-quantity",
@@ -62,7 +62,7 @@ export const SENSE_ITEMS: SenseItem[] = [
 		sentence: "jan mute li pona.",
 		options: ["many", "very", "a crowd"],
 		answer: "many",
-		note: "Modifying a noun, mute counts it. Modifying an adjective it would intensify instead: pona mute is 'very good'.",
+		note: "Describing a thing, mute counts it. Describing a quality it strengthens instead: pona mute is 'very good'.",
 	},
 	{
 		id: "toki-noun",
@@ -70,7 +70,7 @@ export const SENSE_ITEMS: SenseItem[] = [
 		sentence: "toki mi li pona.",
 		options: ["I speak", "language", "talkative"],
 		answer: "language",
-		note: "It heads the subject with mi modifying it, so it's a thing you can own.",
+		note: "It opens the first half with mi describing it, so it's a thing you can own.",
 	},
 	{
 		id: "toki-verb",
@@ -78,7 +78,7 @@ export const SENSE_ITEMS: SenseItem[] = [
 		sentence: "mi toki.",
 		options: ["language", "talk", "a greeting"],
 		answer: "talk",
-		note: "It's the whole predicate after a bare mi, so it's what mi is doing.",
+		note: "It's the whole second half after a bare mi, so it's what mi is doing.",
 	},
 	{
 		id: "sona-preverb",
@@ -86,7 +86,7 @@ export const SENSE_ITEMS: SenseItem[] = [
 		sentence: "jan li sona toki.",
 		options: ["knowledge", "knows how to", "is known"],
 		answer: "knows how to",
-		note: "Another verb follows it directly, which is what makes sona a pre-verb rather than the noun 'knowledge'.",
+		note: "Another action follows it directly, which is what makes sona 'knows how to' rather than 'knowledge'.",
 	},
 	{
 		id: "ala-negation",
@@ -110,7 +110,7 @@ export const SENSE_ITEMS: SenseItem[] = [
 		sentence: "mi pilin pona.",
 		options: ["a feeling", "feel", "am touched"],
 		answer: "feel",
-		note: "Predicate after a bare mi, with pona describing how.",
+		note: "The second half after a bare mi, with pona saying how.",
 	},
 	{
 		id: "lukin-verb",
@@ -118,7 +118,7 @@ export const SENSE_ITEMS: SenseItem[] = [
 		sentence: "mi lukin e soweli.",
 		options: ["appearance", "watch", "visible"],
 		answer: "watch",
-		note: "e gives it an object, so it's the act of looking.",
+		note: "e points at something for it to act on, so it's the act of looking.",
 	},
 	{
 		id: "lukin-noun",
@@ -126,7 +126,7 @@ export const SENSE_ITEMS: SenseItem[] = [
 		sentence: "jan pi pona lukin li toki.",
 		options: ["watches", "appearance", "sees"],
 		answer: "appearance",
-		note: "Inside pi pona lukin it's a noun — literally 'of good appearance'.",
+		note: "Inside the pi bundle it's a thing, not an action — literally 'of good appearance'.",
 	},
 	{
 		id: "kama-preverb",
@@ -134,7 +134,7 @@ export const SENSE_ITEMS: SenseItem[] = [
 		sentence: "mi kama sona e toki pona.",
 		options: ["arrive", "come to (begin to)", "an event"],
 		answer: "come to (begin to)",
-		note: "In front of another verb, kama means becoming or starting to — kama sona is how you say 'learn'.",
+		note: "In front of another action, kama means becoming or starting to — kama sona is how you say 'learn'.",
 	},
 	{
 		id: "pana-verb",
@@ -158,7 +158,7 @@ export const SENSE_ITEMS: SenseItem[] = [
 		sentence: "mi lon.",
 		options: ["at", "am here / am real", "a location"],
 		answer: "am here / am real",
-		note: "With nothing after it, lon can't be a preposition — it's the verb 'to be present'.",
+		note: "With nothing following it, lon can't be joining anything to the sentence — it's the action 'to be present'.",
 	},
 	{
 		id: "nasa-compound",
@@ -170,7 +170,7 @@ export const SENSE_ITEMS: SenseItem[] = [
 			"the water is strange",
 		],
 		answer: "strange liquid, i.e. alcohol",
-		note: "telo nasa is the whole subject of li ike — a built noun, not a sentence about water being odd.",
+		note: "telo nasa is the whole first half before li ike — one built thing, not a sentence about water being odd.",
 	},
 	{
 		id: "ilo-compound",
@@ -185,4 +185,12 @@ export const SENSE_ITEMS: SenseItem[] = [
 export function selectSenseItemsForWords(wordIds: WordId[]): SenseItem[] {
 	const wanted = new Set<string>(wordIds);
 	return SENSE_ITEMS.filter((item) => wanted.has(item.wordId));
+}
+
+export const SENSE_ITEMS_BY_ID: Record<string, SenseItem> = Object.fromEntries(
+	SENSE_ITEMS.map((item) => [item.id, item]),
+);
+
+export function selectSenseItemIdsForWords(wordIds: WordId[]): string[] {
+	return selectSenseItemsForWords(wordIds).map((item) => item.id);
 }

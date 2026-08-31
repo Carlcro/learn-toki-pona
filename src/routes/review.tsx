@@ -5,8 +5,10 @@ import { GrammarCheckCard } from "#/components/GrammarCheckCard";
 import { ListeningFlashcard } from "#/components/ListeningFlashcard";
 import { PageHeader } from "#/components/PageHeader";
 import { ProductionCard } from "#/components/ProductionCard";
+import { SenseCheck } from "#/components/SenseCheck";
 import { StepProgress } from "#/components/StepProgress";
 import { GRAMMAR_CONCEPTS_BY_ID } from "#/data/grammar";
+import { SENSE_ITEMS_BY_ID } from "#/data/senses";
 import type { WordId } from "#/data/types";
 import { WORDS_BY_ID } from "#/data/words";
 import {
@@ -15,7 +17,12 @@ import {
 	selectReviewQueue,
 } from "#/lib/progress";
 import type { CardKind, Grade, SrsCard } from "#/lib/srs";
-import { recordGrade, recordGrammarGrade, useProgressState } from "#/lib/store";
+import {
+	recordGrade,
+	recordGrammarGrade,
+	recordSenseGrade,
+	useProgressState,
+} from "#/lib/store";
 
 export const Route = createFileRoute("/review")({
 	component: ReviewPage,
@@ -53,7 +60,8 @@ interface Session {
 }
 
 function ReviewPage() {
-	const { cards, grammarCards } = useProgressState();
+	const progress = useProgressState();
+	const { cards } = progress;
 
 	// The session is fixed at its opening queue rather than recomputed from the
 	// clock, so a card answered "again" comes back before the learner leaves
@@ -65,11 +73,12 @@ function ReviewPage() {
 	const [session, setSession] = useState<Session | null>(null);
 	useEffect(() => {
 		if (session !== null) return;
-		const queue = selectReviewQueue(cards, grammarCards, new Date()).map(
-			(card) => ({ id: card.id, kind: card.kind }),
-		);
+		const queue = selectReviewQueue(progress, new Date()).map((card) => ({
+			id: card.id,
+			kind: card.kind,
+		}));
 		setSession({ queue, size: queue.length });
-	}, [session, cards, grammarCards]);
+	}, [session, progress]);
 
 	const queue = session?.queue ?? [];
 	const sessionSize = session?.size ?? 0;
@@ -87,6 +96,8 @@ function ReviewPage() {
 		const now = new Date();
 		if (entry.kind === "grammar") {
 			recordGrammarGrade(entry.id, grade, now);
+		} else if (entry.kind === "sense") {
+			recordSenseGrade(entry.id, grade, now);
 		} else {
 			recordGrade(entry.id as WordId, grade, now);
 		}
@@ -109,7 +120,7 @@ function ReviewPage() {
 		setAnswerCount((previous) => previous + 1);
 	}
 
-	const nextDueAt = selectNextDueAt(cards, grammarCards, new Date());
+	const nextDueAt = selectNextDueAt(progress, new Date());
 
 	return (
 		<div className="flex min-h-screen flex-col items-center gap-10 px-6 py-16">
@@ -129,6 +140,12 @@ function ReviewPage() {
 						<GrammarCheckCard
 							key={`grammar-${current.id}-${answerCount}`}
 							concept={GRAMMAR_CONCEPTS_BY_ID[current.id]}
+							onGrade={(grade) => handleGrade(current, grade)}
+						/>
+					) : current.kind === "sense" ? (
+						<SenseCheck
+							key={`sense-${current.id}-${answerCount}`}
+							item={SENSE_ITEMS_BY_ID[current.id]}
 							onGrade={(grade) => handleGrade(current, grade)}
 						/>
 					) : (

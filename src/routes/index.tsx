@@ -109,25 +109,24 @@ function NextAction({ plan, now }: { plan: DailyPlan; now: Date }) {
 }
 
 function Home() {
+	const progress = useProgressState();
 	const {
 		cards,
-		grammarCards,
 		completedLessonIds,
 		lastStudiedAt,
 		lastLessonCompletedAt,
 		currentStreak,
-	} = useProgressState();
+	} = progress;
 	const now = new Date();
 
 	const wordsLearned = selectWordsLearnedCount(cards);
-	const dueCount = selectReviewQueue(cards, grammarCards, now).length;
+	const dueCount = selectReviewQueue(progress, now).length;
 	const mastery = selectMasteryBreakdown(cards);
 	const lessonProgress = selectLessonProgress(completedLessonIds, LESSONS);
 	const learned = useCountUp(wordsLearned);
 
 	const plan = selectDailyPlan({
-		cards,
-		grammarCards,
+		decks: progress,
 		completedLessonIds,
 		lastLessonCompletedAt,
 		lessons: LESSONS,

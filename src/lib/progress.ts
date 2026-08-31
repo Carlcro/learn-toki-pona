@@ -24,27 +24,42 @@ export function selectWordsLearnedCount(
 }
 
 /**
- * Everything due right now, words and grammar together, soonest first. One
- * queue rather than two so grammar is genuinely revisited instead of being
- * credited once at lesson end and never checked again.
+ * The three scheduled decks, passed together. They are all the same shape, so
+ * taking them as one object rather than three positional arguments is what
+ * stops a grammar deck being read as a sense deck without a type error.
+ *
+ * ProgressState satisfies this structurally, so callers pass their state
+ * straight through.
  */
-export function selectReviewQueue(
-	cards: Partial<Record<WordId, SrsCard>>,
-	grammarCards: Partial<Record<string, SrsCard>>,
-	now: Date,
-): SrsCard[] {
-	return [...presentCards(cards), ...presentCards(grammarCards)]
+export interface Decks {
+	cards: Partial<Record<WordId, SrsCard>>;
+	grammarCards: Partial<Record<string, SrsCard>>;
+	senseCards: Partial<Record<string, SrsCard>>;
+}
+
+function allCards(decks: Decks): SrsCard[] {
+	return [
+		...presentCards(decks.cards),
+		...presentCards(decks.grammarCards),
+		...presentCards(decks.senseCards),
+	];
+}
+
+/**
+ * Everything due right now — words, grammar, and senses together, soonest
+ * first. One queue rather than three so the non-vocabulary skills are genuinely
+ * revisited instead of being credited once at lesson end and never checked
+ * again.
+ */
+export function selectReviewQueue(decks: Decks, now: Date): SrsCard[] {
+	return allCards(decks)
 		.filter((card) => isDue(card, now))
 		.sort((a, b) => a.dueAt.localeCompare(b.dueAt));
 }
 
 /** The soonest moment anything comes back, or null if nothing is scheduled. */
-export function selectNextDueAt(
-	cards: Partial<Record<WordId, SrsCard>>,
-	grammarCards: Partial<Record<string, SrsCard>>,
-	now: Date,
-): string | null {
-	const upcoming = [...presentCards(cards), ...presentCards(grammarCards)]
+export function selectNextDueAt(decks: Decks, now: Date): string | null {
+	const upcoming = allCards(decks)
 		.filter((card) => !isDue(card, now))
 		.map((card) => card.dueAt)
 		.sort();
@@ -124,18 +139,17 @@ export type DailyPlan =
 	| { kind: "course-complete"; nextDueAt: string | null };
 
 export function selectDailyPlan(args: {
-	cards: Partial<Record<WordId, SrsCard>>;
-	grammarCards: Partial<Record<string, SrsCard>>;
+	decks: Decks;
 	completedLessonIds: string[];
 	lastLessonCompletedAt: string | null;
 	lessons: Lesson[];
 	now: Date;
 }): DailyPlan {
-	const { cards, grammarCards, completedLessonIds, lessons, now } = args;
-	const dueCount = selectReviewQueue(cards, grammarCards, now).length;
+	const { decks, completedLessonIds, lessons, now } = args;
+	const dueCount = selectReviewQueue(decks, now).length;
 	if (dueCount > 0) return { kind: "review", dueCount };
 
-	const nextDueAt = selectNextDueAt(cards, grammarCards, now);
+	const nextDueAt = selectNextDueAt(decks, now);
 	const nextLessonId = selectNextLessonId(completedLessonIds, lessons);
 	if (nextLessonId === null) return { kind: "course-complete", nextDueAt };
 
