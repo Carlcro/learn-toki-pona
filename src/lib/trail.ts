@@ -260,21 +260,26 @@ function plantTrees(
 				: 18 + random() * (height - 40),
 		};
 		const inPixels = toPixels(candidate);
-		if (spine.some((s) => distance(s, inPixels) < 36)) continue;
-		if (stopsInPixels.some((s) => distance(s, inPixels) < 62)) continue;
-		if (labelsInPixels.some((s) => distance(s, inPixels) < 54)) continue;
-		if (trees.some((t) => distance(toPixels(t), inPixels) < 46)) continue;
-
 		const far = candidate.y < currentY - 24;
 		const kind = TREE_KINDS[trees.length % TREE_KINDS.length];
 		const scale = 0.6 + random() * 0.4;
 		const base = kind === "shrub" ? 34 : kind === "sapling" ? 52 : 70;
-		trees.push({
-			...candidate,
-			kind,
-			height: Math.round(base * scale * (far ? 0.72 : 1)),
-			far,
-		});
+		const treeHeight = Math.round(base * scale * (far ? 0.72 : 1));
+		// A tree is planted by its trunk but read by its canopy, so both ends of
+		// it have to clear the trail's furniture — otherwise a tall pine sited a
+		// comfortable distance below a marker still leans right over it.
+		const canopy = { x: inPixels.x, y: inPixels.y - treeHeight * 0.6 };
+		const clears = (targets: TrailPoint[], trunk: number, crown: number) =>
+			!targets.some(
+				(t) => distance(t, inPixels) < trunk || distance(t, canopy) < crown,
+			);
+
+		if (!clears(spine, 36, 30)) continue;
+		if (!clears(stopsInPixels, 62, 56)) continue;
+		if (!clears(labelsInPixels, 54, 48)) continue;
+		if (trees.some((t) => distance(toPixels(t), inPixels) < 46)) continue;
+
+		trees.push({ ...candidate, kind, height: treeHeight, far });
 	}
 	return trees;
 }
