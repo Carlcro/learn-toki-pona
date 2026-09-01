@@ -90,6 +90,7 @@ Two pastel accents, lavender and pink, carry the whole system against the navy g
 - Zero shadows anywhere in the system: cards, pods, gems, and buttons are all flat color fills bounded by a border, never lifted or glowing.
 - The treeline is monochrome-per-tree: each tree is either solid lavender or solid pink, trunk included — never a naturalistic green/brown palette.
 - Rounded-[32px] cards, rounded-[28px] pill rows, and rounded-full buttons/pods/gems — no sharp or lightly-rounded corners anywhere in the system.
+- Lessons are a trail through a wood, not a list: a scrolling map board where each lesson is a clearing on a winding path, walked ground is a solid lavender ribbon and ground ahead is stepping stones.
 - Baloo 2 for numerals, headings, and buttons; Quicksand for body and tracked labels; Caveat script reserved for the wordmark and celebratory microcopy only.
 - Buttons give feedback on press with a flat brightness dip (`active:brightness-90`) — never a shadow collapse or a translate.
 
@@ -111,7 +112,7 @@ Full palette strategy: the navy ground and two pinned pastel accents (lavender, 
 - **Mist** (#b6acd6): Secondary text — labels, captions, supporting numerals, placeholder text. Tinted from the navy/lavender hue, never a flat gray.
 
 ### Named Rules
-**The Two-Accent Rule.** Only lavender and pink carry saturated color in this system — including the background treeline, whose trees are flat lavender or pink silhouettes, never naturalistic green or brown. A third hue is never introduced for a new state, scenery element, or emphasis; alternate between the two instead.
+**The Two-Accent Rule.** Only lavender and pink carry saturated color in this system — including the background treeline and the lesson map's forest, whose trees are flat lavender or pink silhouettes, never naturalistic green or brown. A third hue is never introduced for a new state, scenery element, or emphasis; alternate between the two instead. The single figure painted in neither accent is the trail walker, in Cream: it stands beside a lavender or pink marker, and either accent would sink into it. Cream is a palette neutral, so this is the rule holding, not an exception to it.
 
 ## Typography
 
@@ -137,7 +138,9 @@ Below the `lg` breakpoint (1024px): a single centered column, capped at a narrow
 Every dimension is fluid below `lg`: cards and buttons are full-width within their max-width container, and the layout compresses gracefully at narrow viewports without dedicated breakpoints in between, matching phone-first use.
 
 ### Named Rules
-**The Desktop Dashboard Grid.** At `lg` (1024px) and up, the home dashboard stops stacking as a single column and becomes a two-region CSS grid, capped at `max-w-6xl`: a fixed ~22rem sidebar (stats CozyPanel, primary action, last-studied line) alongside a wide main region (the Lessons CozyPanel). The Lessons panel's own lesson rows switch from a single-column stack to a `2`/`3`-column grid of the same pill rows, so a growing lesson list reads as a compact grid of tiles instead of a long scroll. This is a layout reflow, not a restyle: every component keeps its existing shape, color, and spacing rules — only how many sit side-by-side changes. Sub-`lg` surfaces (lesson, review) stay single-column; the grid is specific to the dashboard's growing list of lessons.
+**The Desktop Dashboard Grid.** At `lg` (1024px) and up, the home dashboard stops stacking as a single column and becomes a two-region CSS grid, capped at `max-w-6xl`: a fixed ~22rem sidebar (stats CozyPanel, primary action, last-studied line) alongside a wide main region holding the Lesson Trail board, which centres itself at a `32rem` cap rather than stretching to fill. Sub-`lg`, the same two regions stack, the trail keeping its full column width and a shorter `28rem` window. This is a layout reflow, not a restyle: every component keeps its existing shape, color, and spacing rules. Sub-`lg` surfaces (lesson, review) stay single-column; the grid is specific to the dashboard.
+
+**The Trail Is Not In A Card.** The Lesson Trail board is a panel in its own right — a `rounded-[32px]` window cut down to the darker Night ground, with its own `LESSONS` label and count sitting above it, outside the border. It is never wrapped in a CozyPanel: a rounded card inside a rounded card is the one nesting this system does not do, and it would turn a map into a widget.
 
 The navy ground is a flat solid fill (no gradient blooms) plus a fixed treeline silhouette tiling along the bottom edge and a faint grain texture — a system invariant, not a one-off decorative choice. The treeline uses `background-attachment: fixed`, so it stays anchored to the bottom of the viewport rather than scrolling away on tall pages (e.g. a long lesson word list).
 
@@ -181,6 +184,17 @@ A fixed background layer tiling along the bottom of the viewport, built as two i
 
 Every tree is still a single flat fill color — no gradient, no shadow, no naturalistic green/brown; distance is conveyed only by scale, vertical offset, and the existing Lavender Dimmed/Pink Dimmed tokens at reduced opacity, never a third hue or a blur. Sits behind all foreground content; opaque cards paint over it without legibility loss.
 
+### Lesson Trail (signature)
+The course, drawn as a path climbing through the wood rather than listed as rows. A `rounded-[32px]` board bordered in Night Edge and floored in Night — one step *darker* than the CozyPanel beside it, so it reads as ground rather than card — scrolling vertically over a trail that is taller than its window and opening centred on the clearing the learner is standing in.
+
+- **The path.** Lesson one sits at the bottom and the trail climbs: progress is ground covered, not a list scrolled. Ground already walked is a solid 7px Lavender ribbon with round caps; ground ahead is a line of 7px Night Edge stepping stones, evenly spaced along the same curve and cleared away from each marker. Both are one Catmull-Rom spline through the clearings *and* a wandering halfway point between each pair, so the trail winds instead of running as straight hops. When every lesson is finished the stones stop at the last clearing — a path running on would promise lessons that do not exist.
+- **The clearings.** Each lesson is a `rounded-full` disc on an oval patch of Night Soft forest floor: completed is 46px Lavender, current is 62px Pink with a slowly expanding Pink ring, locked is a 38px Night Edge outline at 75% opacity. The lesson number is always visible — a number is how you find your place. Locked clearings are plain `span`s, not links.
+- **The signpost.** Every lesson's topic sits *beside* its marker, on whichever side the trail is not, never underneath it — under it is exactly where the path leaves the clearing.
+- **The walker.** A Cream soweli silhouette stands in the clearing the learner has reached, turned towards its marker and shifting its weight on a slow idle. It is a place-marker, never a person, an avatar, or anyone else's.
+- **The wood.** The same four treeline silhouettes, scattered by seeded rejection sampling around the path, the clearings, and the signposts — grown, not planted in rows. Trees past the walker are dimmed to 70% and scaled down; the forest thickens where the trail leaves the top of the board. Three to seven Lavender/Pink fireflies drift slowly across it at 35% opacity.
+- **The edges.** The board's own ground is overlaid as a 40px gradient over the top and bottom, inside the border, so the trail dissolves into the wood in both directions instead of being cut off square.
+- **The entrance.** The walked stretch draws itself from lesson one along the path (an SVG mask of one long dash, 820ms), each clearing popping in as the drawing reaches it; the stones and the clearings ahead fade in quietly afterwards. Every entrance is `backwards`, never `forwards`, so hover and focus still win once it has finished. All of it stops under `prefers-reduced-motion`.
+
 ### Inputs
 - **Style:** Rounded-full, Night background, 2px Night Edge border, Cream text, Mist placeholder, no shadow.
 - **Focus:** Border shifts to Lavender.
@@ -200,3 +214,4 @@ Every tree is still a single flat fill color — no gradient, no shadow, no natu
 - **Don't** set a heading, button, or paragraph in Caveat — script is a rare accent, not a body or label face.
 - **Don't** introduce a third saturated color beyond Lavender and Pink — including in background scenery; a "forest" mood comes from the treeline's silhouette shapes, never from adding green.
 - **Don't** use a sharp or lightly-rounded (2px/6px) corner anywhere in the UI chrome — that belonged to the discarded Instrument Panel system.
+- **Don't** put a lesson's caption under its marker on the trail, or wrap the trail board in a CozyPanel — see the named rules above.

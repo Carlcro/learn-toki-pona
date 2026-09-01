@@ -239,15 +239,13 @@ function Home() {
 					</div>
 				</CozyPanel>
 
+				{/* The map board is its own panel — a window cut down to the darker
+				    forest floor. Wrapping it in a CozyPanel would nest one rounded
+				    card inside another and push the trail into a slot. */}
 				{lessonProgress.length > 0 && (
-					<CozyPanel className="lg:[grid-area:lessons]">
-						<div className="flex flex-col gap-3">
-							<span className="font-sans text-[0.65rem] font-bold tracking-[0.18em] text-mist uppercase">
-								Lessons
-							</span>
-							<LessonMap lessonProgress={lessonProgress} />
-						</div>
-					</CozyPanel>
+					<div className="w-full lg:[grid-area:lessons]">
+						<LessonMap lessonProgress={lessonProgress} />
+					</div>
 				)}
 
 				<div className="flex w-full flex-col items-center lg:[grid-area:cta]">
