@@ -23,6 +23,23 @@ export const Route = createRootRoute({
 				rel: "stylesheet",
 				href: appCss,
 			},
+			// The scalable mark is the real one; the .ico covers browsers that
+			// still probe /favicon.ico, and the touch icon is square-cornered
+			// because iOS applies its own mask.
+			{
+				rel: "icon",
+				type: "image/svg+xml",
+				href: "/favicon.svg",
+			},
+			{
+				rel: "icon",
+				sizes: "32x32",
+				href: "/favicon.ico",
+			},
+			{
+				rel: "apple-touch-icon",
+				href: "/apple-touch-icon.png",
+			},
 		],
 	}),
 	shellComponent: RootDocument,

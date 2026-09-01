@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64">
+  <defs>
+    <radialGradient id="glow" cx="50%" cy="78%" r="58%">
+      <stop offset="0" stop-color="#4a3f7a"/>
+      <stop offset="1" stop-color="#1e1836" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="64" height="64" rx="14" fill="#1e1836"/>
+  <rect width="64" height="64" rx="14" fill="url(#glow)"/>
+  <!-- The pine and shrub silhouettes the page's treeline is built from, at icon scale. -->
+  <g transform="translate(17 5.2) scale(0.6)" fill="#d7b0fe">
+    <rect x="26" y="74" width="8" height="14"/>
+    <polygon points="8,74 52,74 30,46"/>
+    <polygon points="14,52 46,52 30,24"/>
+    <polygon points="19,30 41,30 30,2"/>
+  </g>
+  <g transform="translate(3.1 43.6) scale(0.4)" fill="#febcd5">
+    <rect x="25" y="28" width="6" height="8"/>
+    <circle cx="28" cy="20" r="14"/>
+    <circle cx="14" cy="26" r="9"/>
+    <circle cx="42" cy="26" r="9"/>
+  </g>
+</svg>
