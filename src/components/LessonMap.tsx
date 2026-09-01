@@ -1,7 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { useEffect, useId, useMemo, useRef } from "react";
 import { TrailTree } from "#/components/TrailTree";
-import { TrailWalker } from "#/components/TrailWalker";
 import type { LessonProgress } from "#/lib/progress";
 import { buildTrail, type TrailStop } from "#/lib/trail";
 
@@ -50,15 +49,14 @@ function Stop({
 	entry: LessonProgress;
 	stop: TrailStop;
 	delay: number;
-	/** The clearing the learner is in — the last one they finished, once the
-	    course has no lesson left to be current. */
+	/** The far end of the walked trail. Once the course has no lesson left to
+	    be current this is the last one they finished, and it is only announced,
+	    not drawn — the pink current marker carries "you are here" on its own. */
 	standingHere: boolean;
 }) {
 	const { lesson, status } = entry;
 	const size = DISC_SIZE[status];
 	const isCurrent = status === "current";
-	// The walker stands on the side the signpost is not on, facing its marker.
-	const walkerSide = stop.labelSide === "right" ? "left" : "right";
 
 	const disc = [
 		"trail-disc relative z-10 flex h-full w-full items-center justify-center rounded-full font-display font-extrabold tabular-nums",
@@ -99,17 +97,6 @@ function Stop({
 				/>
 				{isCurrent && (
 					<span className="trail-ring absolute -inset-1.5 rounded-full border-2 border-pink" />
-				)}
-				{standingHere && (
-					<span
-						className={`absolute bottom-0.5 z-20 ${
-							walkerSide === "left"
-								? "right-[calc(100%-16px)]"
-								: "left-[calc(100%-16px)]"
-						}`}
-					>
-						<TrailWalker facing={walkerSide === "left" ? "right" : "left"} />
-					</span>
 				)}
 				<span className={disc} aria-hidden="true">
 					{lesson.id}

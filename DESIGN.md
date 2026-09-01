@@ -90,7 +90,7 @@ Two pastel accents, lavender and pink, carry the whole system against the navy g
 - Zero shadows anywhere in the system: cards, pods, gems, and buttons are all flat color fills bounded by a border, never lifted or glowing.
 - The treeline is monochrome-per-tree: each tree is either solid lavender or solid pink, trunk included — never a naturalistic green/brown palette.
 - Rounded-[32px] cards, rounded-[28px] pill rows, and rounded-full buttons/pods/gems — no sharp or lightly-rounded corners anywhere in the system.
-- Lessons are a trail through a wood, not a list: a scrolling map board where each lesson is a clearing on a winding path, walked ground is a solid lavender ribbon and ground ahead is stepping stones.
+- Lessons are a trail through a wood, not a list: a scrolling map board where each lesson is a clearing on a winding path, walked ground is a solid lavender ribbon, ground ahead is stepping stones, and the pink clearing you are standing in is the one thing that pulses.
 - Baloo 2 for numerals, headings, and buttons; Quicksand for body and tracked labels; Caveat script reserved for the wordmark and celebratory microcopy only.
 - Buttons give feedback on press with a flat brightness dip (`active:brightness-90`) — never a shadow collapse or a translate.
 
@@ -112,7 +112,7 @@ Full palette strategy: the navy ground and two pinned pastel accents (lavender, 
 - **Mist** (#b6acd6): Secondary text — labels, captions, supporting numerals, placeholder text. Tinted from the navy/lavender hue, never a flat gray.
 
 ### Named Rules
-**The Two-Accent Rule.** Only lavender and pink carry saturated color in this system — including the background treeline and the lesson map's forest, whose trees are flat lavender or pink silhouettes, never naturalistic green or brown. A third hue is never introduced for a new state, scenery element, or emphasis; alternate between the two instead. The single figure painted in neither accent is the trail walker, in Cream: it stands beside a lavender or pink marker, and either accent would sink into it. Cream is a palette neutral, so this is the rule holding, not an exception to it.
+**The Two-Accent Rule.** Only lavender and pink carry saturated color in this system — including the background treeline and the lesson map's forest, whose trees are flat lavender or pink silhouettes, never naturalistic green or brown. A third hue is never introduced for a new state, scenery element, or emphasis; alternate between the two instead.
 
 ## Typography
 
@@ -190,7 +190,6 @@ The course, drawn as a path climbing through the wood rather than listed as rows
 - **The path.** Lesson one sits at the bottom and the trail climbs: progress is ground covered, not a list scrolled. Ground already walked is a solid 7px Lavender ribbon with round caps; ground ahead is a line of 7px Night Edge stepping stones, evenly spaced along the same curve and cleared away from each marker. Both are one Catmull-Rom spline through the clearings *and* a wandering halfway point between each pair, so the trail winds instead of running as straight hops. When every lesson is finished the stones stop at the last clearing — a path running on would promise lessons that do not exist.
 - **The clearings.** Each lesson is a `rounded-full` disc on an oval patch of Night Soft forest floor: completed is 46px Lavender, current is 62px Pink with a slowly expanding Pink ring, locked is a 38px Night Edge outline at 75% opacity. The lesson number is always visible — a number is how you find your place. Locked clearings are plain `span`s, not links.
 - **The signpost.** Every lesson's topic sits *beside* its marker, on whichever side the trail is not, never underneath it — under it is exactly where the path leaves the clearing.
-- **The walker.** A Cream soweli silhouette stands in the clearing the learner has reached, turned towards its marker and shifting its weight on a slow idle. It is a place-marker, never a person, an avatar, or anyone else's.
 - **The wood.** The same four treeline silhouettes, scattered by seeded rejection sampling around the path, the clearings, and the signposts — grown, not planted in rows. Trees past the walker are dimmed to 70% and scaled down; the forest thickens where the trail leaves the top of the board. Three to seven Lavender/Pink fireflies drift slowly across it at 35% opacity.
 - **The edges.** The board's own ground is overlaid as a 40px gradient over the top and bottom, inside the border, so the trail dissolves into the wood in both directions instead of being cut off square.
 - **The entrance.** The walked stretch draws itself from lesson one along the path (an SVG mask of one long dash, 820ms), each clearing popping in as the drawing reaches it; the stones and the clearings ahead fade in quietly afterwards. Every entrance is `backwards`, never `forwards`, so hover and focus still win once it has finished. All of it stops under `prefers-reduced-motion`.

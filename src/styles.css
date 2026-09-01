@@ -154,18 +154,6 @@ body {
 	}
 }
 
-/* The walker shifts its weight rather than bouncing — a creature waiting, not
-   a bobbing sprite. */
-@keyframes trail-idle {
-	0%,
-	100% {
-		transform: translateY(0) rotate(0deg);
-	}
-	50% {
-		transform: translateY(-2px) rotate(-2.5deg);
-	}
-}
-
 @keyframes trail-drift {
 	from {
 		transform: translate(0, 0);
@@ -222,11 +210,6 @@ a.trail-stop:focus-visible .trail-disc {
 		infinite;
 }
 
-.trail-walker {
-	transform-origin: 50% 100%;
-	animation: trail-idle 3200ms ease-in-out infinite;
-}
-
 .trail-firefly {
 	opacity: 0.35;
 	animation: trail-drift var(--dur, 16s) ease-in-out var(--delay, 0s) infinite
@@ -239,7 +222,6 @@ a.trail-stop:focus-visible .trail-disc {
 	.trail-node,
 	.trail-pebble,
 	.trail-ring,
-	.trail-walker,
 	.trail-firefly {
 		animation: none;
 	}

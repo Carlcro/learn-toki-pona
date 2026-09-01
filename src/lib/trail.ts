@@ -61,7 +61,7 @@ export interface TrailTree extends TrailPoint {
 	kind: TreeKind;
 	/** Rendered height in pixels; the trunk sits on `y`. */
 	height: number;
-	/** Past the walker's current clearing, so it is drawn dim and distant. */
+	/** Past the learner's current clearing, so it is drawn dim and distant. */
 	far: boolean;
 }
 
@@ -193,7 +193,7 @@ const PEBBLE_SPACING = 17;
 const PEBBLE_CLEARANCE = 31;
 
 /**
- * Walks the unwalked stretch at a fixed arc length, so the stones stay evenly
+ * Steps along the unwalked stretch at a fixed arc length, so the stones stay evenly
  * spaced through a tight bend instead of bunching up the way a per-segment
  * split would.
  */
