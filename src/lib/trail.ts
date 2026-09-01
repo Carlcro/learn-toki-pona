@@ -13,8 +13,19 @@
 
 /** Vertical distance between two clearings. */
 const PITCH = 116;
-/** Room above the last clearing for the trail to wander off into the trees. */
-const PAD_TOP = 104;
+/**
+ * Room above the summit, for its nameplate and for the wood to close over the
+ * top of the map. Deeper than the pitch between clearings: the trail ends here,
+ * and an ending needs air above it.
+ */
+const PAD_TOP = 150;
+/**
+ * The last climb, from the final lesson up to the summit. Longer than a pitch
+ * so the end of the course reads as a stretch earned rather than one more hop.
+ */
+const SUMMIT_RISE = 134;
+/** Half the summit marker, which is bigger than any clearing on the trail. */
+const SUMMIT_RADIUS = 39;
 /** Room below the first clearing for its label. */
 const PAD_BOTTOM = 86;
 /**
@@ -80,6 +91,12 @@ export interface Firefly extends TrailPoint {
 export interface TrailLayout {
 	height: number;
 	stops: TrailStop[];
+	/**
+	 * Where the trail ends: a clearing above the last lesson, on the centre line
+	 * the path has been wandering either side of the whole way up. Arriving
+	 * straight is the point — twenty-four lessons of meander resolving.
+	 */
+	summit: TrailPoint;
 	/** The stretch already walked. Empty while the learner is still at stop one. */
 	troddenPath: string;
 	/**
@@ -281,7 +298,7 @@ function samplePolyline(points: TrailPoint[]): TrailPoint[] {
  * learner stands on carries a ring around its 62px disc — the trail should
  * arrive at the bare ground around each, not slide under it.
  */
-const RIBBON_GAP = { done: 26, here: 38 } as const;
+const RIBBON_GAP = { done: 26, here: 38, summit: SUMMIT_RADIUS + 13 } as const;
 
 /** Distance between stepping stones, measured at the reference width. */
 const PEBBLE_SPACING = 17;
@@ -296,10 +313,14 @@ const PEBBLE_CLEARANCE = 31;
 function layStones(
 	points: TrailPoint[],
 	stops: TrailStop[],
+	summit: TrailPoint,
 	from: number,
 ): TrailPoint[] {
 	const stones: TrailPoint[] = [];
-	const nearStops = stops.map(toPixels);
+	const clearances: { at: TrailPoint; radius: number }[] = [
+		...stops.map((stop) => ({ at: toPixels(stop), radius: PEBBLE_CLEARANCE })),
+		{ at: toPixels(summit), radius: SUMMIT_RADIUS + 8 },
+	];
 	let carried = PEBBLE_SPACING / 2;
 	let previous = toPixels(splineAt(points, from, 0));
 
@@ -311,8 +332,7 @@ function layStones(
 			previous = herePx;
 			if (carried < PEBBLE_SPACING) continue;
 			carried = 0;
-			if (nearStops.some((s) => distance(s, herePx) < PEBBLE_CLEARANCE))
-				continue;
+			if (clearances.some((c) => distance(c.at, herePx) < c.radius)) continue;
 			stones.push({ x: round(here.x), y: round(here.y) });
 		}
 	}
@@ -329,6 +349,7 @@ const TREE_KINDS: TreeKind[] = ["pine", "blossom", "sapling", "shrub", "pine"];
 function plantTrees(
 	points: TrailPoint[],
 	stops: TrailStop[],
+	summit: TrailPoint,
 	height: number,
 	currentY: number,
 ): TrailTree[] {
@@ -342,6 +363,11 @@ function plantTrees(
 			y: centre.y,
 		};
 	});
+	// The summit is a clearing, so the wood has to stand back from it — from the
+	// marker itself and from the nameplate above it. Everywhere else the forest
+	// thickens toward the top of the board; here it opens instead.
+	const summitPx = toPixels(summit);
+	const namePx = { x: summitPx.x, y: summitPx.y - SUMMIT_RADIUS - 34 };
 	const trees: TrailTree[] = [];
 	const target = stops.length * 5 + 18;
 
@@ -373,6 +399,8 @@ function plantTrees(
 		if (!clears(spine, 36, 30)) continue;
 		if (!clears(stopsInPixels, 62, 56)) continue;
 		if (!clears(labelsInPixels, 54, 48)) continue;
+		if (!clears([summitPx], 104, 96)) continue;
+		if (!clears([namePx], 76, 68)) continue;
 		if (trees.some((t) => distance(toPixels(t), inPixels) < 46)) continue;
 
 		trees.push({ ...candidate, kind, height: treeHeight, far });
@@ -404,16 +432,17 @@ function releaseFireflies(height: number): Firefly[] {
  * @param count how many lessons the course has.
  * @param currentIndex the clearing the learner stands on; everything before it
  *   is walked.
- * @param complete every lesson is finished, so the learner is standing at the
- *   last clearing rather than partway along. The trail stops there: stepping
- *   stones running on past the end would promise lessons that do not exist.
+ * @param complete every lesson is finished. The walked ribbon then runs the
+ *   whole way to the summit and the stepping stones go away entirely: there is
+ *   no ground left ahead to describe.
  */
 export function buildTrail(
 	count: number,
 	currentIndex: number,
 	complete = false,
 ): TrailLayout {
-	const height = PAD_TOP + PAD_BOTTOM + PITCH * Math.max(0, count - 1);
+	const height =
+		PAD_TOP + PAD_BOTTOM + SUMMIT_RISE + PITCH * Math.max(0, count - 1);
 
 	// Lesson one sits at the bottom and the trail climbs, so progress reads as
 	// ground covered rather than a list scrolled.
@@ -421,17 +450,23 @@ export function buildTrail(
 		const x = stopX(i);
 		return {
 			x,
+			// The summit's rise is already in `height`, so counting up from the
+			// bottom lands the last lesson exactly one climb below it.
 			y: height - PAD_BOTTOM - i * PITCH + 8 * Math.sin(i * 2.7 + 1.1),
 			// The signpost hangs on whichever side has the board's width to spare.
 			labelSide: x <= 50 ? "right" : "left",
 		};
 	});
 
-	// A wandering point halfway between each pair of clearings, plus one past the
-	// last one and off the top of the board. Without the halfway points a spline
-	// through near-vertical stops comes out as a polyline of straight runs; with
-	// them the trail actually winds, and it carries on into the trees instead of
-	// stopping dead at the final lesson.
+	// The trail ends on the centre line, above the last lesson. Everything below
+	// has been swinging either side of 50; arriving straight up the middle is
+	// what makes the last stretch read as an arrival rather than one more bend.
+	const summit: TrailPoint = { x: 50, y: PAD_TOP };
+
+	// A wandering point halfway between each pair of clearings, then the last
+	// climb up to the summit. Without the halfway points a spline through
+	// near-vertical stops comes out as a polyline of straight runs; with them the
+	// trail actually winds.
 	const points: TrailPoint[] = [];
 	for (let i = 0; i < count; i++) {
 		points.push(stops[i]);
@@ -444,28 +479,44 @@ export function buildTrail(
 						x: clamp((from.x + next.x) / 2 + swing, 18, 82),
 						y: (from.y + next.y) / 2,
 					}
-				: { x: clamp(from.x + swing, 18, 82), y: from.y - PITCH * 0.55 },
+				: {
+						// The final bend, leaning off-centre before the trail
+						// straightens onto the summit.
+						x: clamp((from.x + summit.x) / 2 + swing, 18, 82),
+						y: (from.y + summit.y) / 2,
+					},
 		);
 	}
-	points.push({ x: stopX(count), y: 6 });
+	points.push(summit);
 
-	// Each clearing is at twice its lesson index, with a halfway point between.
-	const walkedTo = clamp(currentIndex, 0, Math.max(0, count - 1)) * 2;
+	// Each clearing is at twice its lesson index, with a halfway point between —
+	// so the summit, one past the last halfway point, is the final index. With
+	// the course finished the learner has walked all of it, summit included.
+	const walkedTo = complete
+		? points.length - 1
+		: clamp(currentIndex, 0, Math.max(0, count - 1)) * 2;
 
 	return {
 		height,
 		stops,
+		summit,
 		troddenPath: toPath(
 			backOff(
 				curveThrough(points, 0, walkedTo),
 				RIBBON_GAP.done,
-				// With the course finished the far end is a completed clearing
-				// like any other; otherwise it is the ringed one.
-				complete ? RIBBON_GAP.done : RIBBON_GAP.here,
+				// Finished, the ribbon arrives at the summit and has to stand off
+				// its wider marker; otherwise it stops at the ringed clearing.
+				complete ? RIBBON_GAP.summit : RIBBON_GAP.here,
 			),
 		),
-		pebbles: complete ? [] : layStones(points, stops, walkedTo),
-		trees: plantTrees(points, stops, height, points[walkedTo]?.y ?? height),
+		pebbles: complete ? [] : layStones(points, stops, summit, walkedTo),
+		trees: plantTrees(
+			points,
+			stops,
+			summit,
+			height,
+			points[walkedTo]?.y ?? height,
+		),
 		fireflies: releaseFireflies(height),
 	};
 }

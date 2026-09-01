@@ -1,9 +1,11 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { useState } from "react";
 import { CozyPanel } from "#/components/CozyPanel";
 import { GemTrack } from "#/components/GemTrack";
 import { LessonMap } from "#/components/LessonMap";
 import { MasteryBar } from "#/components/MasteryBar";
 import { ReadingMeter } from "#/components/ReadingMeter";
+import { SummitCelebration } from "#/components/SummitCelebration";
 import { LESSONS, LESSONS_BY_ID } from "#/data/lessons";
 import { LIBRARY_ITEMS } from "#/data/library";
 import { COURSE_WORD_COUNT } from "#/data/words";
@@ -151,6 +153,10 @@ function Home() {
 
 	const isFirstRun = plan.kind === "first-lesson";
 
+	// Where the lantern was on screen when they lit it, so the celebration can
+	// open from it. Null means the lookout is dark or has been put away again.
+	const [litFrom, setLitFrom] = useState<{ x: number; y: number } | null>(null);
+
 	return (
 		<div
 			className="flex min-h-screen flex-col items-center justify-center gap-10 px-6 py-16 lg:mx-auto lg:grid lg:max-w-6xl lg:items-start lg:justify-normal lg:gap-x-12 lg:gap-y-6 lg:px-16 lg:py-20"
@@ -241,7 +247,10 @@ function Home() {
 				    card inside another and push the trail into a slot. */}
 				{lessonProgress.length > 0 && (
 					<div className="w-full lg:[grid-area:lessons]">
-						<LessonMap lessonProgress={lessonProgress} />
+						<LessonMap
+							lessonProgress={lessonProgress}
+							onLightTheLookout={setLitFrom}
+						/>
 					</div>
 				)}
 
@@ -255,6 +264,17 @@ function Home() {
 					</span>
 				)}
 			</main>
+
+			{litFrom && (
+				<SummitCelebration
+					origin={litFrom}
+					lessonsWalked={completedLessonIds.length}
+					wordsLearned={wordsLearned}
+					readable={libraryProgress.readable}
+					streak={currentStreak}
+					onClose={() => setLitFrom(null)}
+				/>
+			)}
 		</div>
 	);
 }

@@ -7,9 +7,10 @@ import {
 	useRef,
 	useState,
 } from "react";
+import { TrailLantern } from "#/components/TrailLantern";
 import { TrailTree } from "#/components/TrailTree";
 import type { LessonProgress } from "#/lib/progress";
-import { buildTrail, type TrailStop } from "#/lib/trail";
+import { buildTrail, type TrailPoint, type TrailStop } from "#/lib/trail";
 
 /**
  * The lessons, drawn as a trail climbing through the wood rather than listed as
@@ -23,6 +24,9 @@ import { buildTrail, type TrailStop } from "#/lib/trail";
  */
 
 const DISC_SIZE = { completed: 46, current: 62, locked: 38 } as const;
+
+/** The summit marker, wider than any clearing on the way up to it. */
+const SUMMIT_SIZE = 78;
 
 /** Widened so the router accepts an id only known at runtime. */
 function lessonHref(lessonId: string): string {
@@ -181,6 +185,162 @@ function Stop({
 }
 
 /**
+ * The end of the trail: a lantern in a clearing above the last lesson, on the
+ * centre line the path has been wandering either side of the whole way up.
+ *
+ * It is on the map from the first lesson, unlit — the point of an end is that
+ * you can see it from the bottom. Finishing the course lights it, and lighting
+ * it is a thing you do, not a thing that is done to you: the celebration is
+ * behind a click, so it is theirs to take when they want it and to take again.
+ */
+function Summit({
+	point,
+	lit,
+	remaining,
+	delay,
+	onLight,
+}: {
+	point: TrailPoint;
+	lit: boolean;
+	/** Lessons still between the learner and the top. */
+	remaining: number;
+	delay: number;
+	onLight: (origin: { x: number; y: number }) => void;
+}) {
+	const position = {
+		left: `${point.x}%`,
+		top: `${point.y}px`,
+		width: SUMMIT_SIZE,
+		height: SUMMIT_SIZE,
+		transform: "translate(-50%, -50%)",
+		"--d": `${delay}ms`,
+	} as React.CSSProperties;
+
+	const nameplate = (
+		<span
+			className={`absolute bottom-full left-1/2 mb-3 -translate-x-1/2 font-display text-sm leading-none font-bold whitespace-nowrap ${
+				lit ? "text-cream" : "text-mist"
+			}`}
+			aria-hidden="true"
+		>
+			the lookout
+		</span>
+	);
+
+	const marker = (
+		<span
+			className="trail-node relative flex items-center justify-center"
+			style={{ width: SUMMIT_SIZE, height: SUMMIT_SIZE }}
+		>
+			{lit && (
+				/* Two broken rings turning against each other. The single ring
+				   belongs to "you are here"; by the time this one is lit there is
+				   no current clearing left for it to be confused with. */
+				<>
+					{/* Pink outside, lavender in close: the near ring has to read
+					    against a pink disc, and pink on pink would not. */}
+					<svg
+						className="summit-ring summit-ring-out absolute -inset-4"
+						viewBox="0 0 100 100"
+						fill="none"
+						aria-hidden="true"
+					>
+						<circle
+							cx="50"
+							cy="50"
+							r="48"
+							stroke="var(--color-pink)"
+							strokeWidth="3"
+							strokeLinecap="round"
+							strokeDasharray="28 22"
+						/>
+					</svg>
+					<svg
+						className="summit-ring summit-ring-in absolute -inset-1"
+						viewBox="0 0 100 100"
+						fill="none"
+						aria-hidden="true"
+					>
+						<circle
+							cx="50"
+							cy="50"
+							r="48"
+							stroke="var(--color-lavender)"
+							strokeWidth="4"
+							strokeLinecap="round"
+							strokeDasharray="54 32"
+						/>
+					</svg>
+				</>
+			)}
+			<span
+				className={`summit-disc relative z-10 flex h-full w-full items-center justify-center rounded-full ${
+					lit ? "bg-pink" : "border-2 border-night-edge bg-night-soft"
+				}`}
+				aria-hidden="true"
+			>
+				<TrailLantern
+					height={52}
+					body={lit ? "var(--color-night)" : "var(--color-night-edge)"}
+					// Lit, the pane is the lightest colour in the system, on a dark
+					// casing, on the pink disc — a window with something burning
+					// behind it. Unlit, the pane is the darkest: the lantern is out,
+					// not merely tinted.
+					light={lit ? "var(--color-cream)" : "var(--color-night)"}
+					lit={lit}
+				/>
+			</span>
+		</span>
+	);
+
+	const shell = "trail-stop absolute flex items-center justify-center";
+
+	if (!lit) {
+		return (
+			<li>
+				<span className={`${shell} group opacity-75`} style={position}>
+					<span className="sr-only">
+						The lookout, the end of the trail — dark until every lesson is done.{" "}
+						{remaining} to go.
+					</span>
+					{nameplate}
+					{marker}
+					<span
+						className="pointer-events-none absolute top-full left-1/2 z-20 mt-2 -translate-x-1/2 rounded-full border-2 border-night-edge bg-night-soft px-3 py-1 font-sans text-[0.7rem] font-semibold whitespace-nowrap text-cream opacity-0 transition-opacity duration-150 group-hover:opacity-100"
+						aria-hidden="true"
+					>
+						{remaining} lesson{remaining === 1 ? "" : "s"} to the top
+					</span>
+				</span>
+			</li>
+		);
+	}
+
+	return (
+		<li>
+			<button
+				type="button"
+				className={`${shell} summit-lit cursor-pointer border-none bg-transparent p-0 outline-none`}
+				style={position}
+				onClick={(event) => {
+					const box = event.currentTarget.getBoundingClientRect();
+					onLight({
+						x: box.left + box.width / 2,
+						y: box.top + box.height / 2,
+					});
+				}}
+			>
+				<span className="sr-only">
+					Light the lantern at the end of the trail
+				</span>
+				{nameplate}
+				{marker}
+			</button>
+		</li>
+	);
+}
+
+/**
  * The way back to the learner's own clearing, shown only once they have
  * scrolled it out of the board. It points the way it would have them travel:
  * down the map when they have wandered up ahead, up when they have gone back
@@ -232,19 +392,21 @@ function BackToHere({
 
 export function LessonMap({
 	lessonProgress,
+	onLightTheLookout,
 }: {
 	lessonProgress: LessonProgress[];
+	/** Called with the lantern's on-screen position when a finisher lights it. */
+	onLightTheLookout: (origin: { x: number; y: number }) => void;
 }) {
 	const count = lessonProgress.length;
 	const currentIndex = lessonProgress.findIndex((e) => e.status === "current");
 	// With every lesson finished there is no "current" clearing, and the whole
 	// trail counts as walked.
 	const walkedTo = currentIndex === -1 ? count - 1 : currentIndex;
-	const completed = lessonProgress.filter(
-		(e) => e.status === "completed",
-	).length;
-
 	const complete = currentIndex === -1;
+	const remaining = lessonProgress.filter(
+		(e) => e.status !== "completed",
+	).length;
 	const trail = useMemo(
 		() => buildTrail(count, walkedTo, complete),
 		[count, walkedTo, complete],
@@ -252,9 +414,10 @@ export function LessonMap({
 	const boardRef = useRef<HTMLDivElement>(null);
 	const maskId = `trail-${useId().replace(/:/g, "")}`;
 
-	// Open on the learner, not on the top of the map. Set directly rather than
-	// via scrollIntoView, which would drag the whole page with it.
-	const focusY = trail.stops[walkedTo]?.y;
+	// Open on the learner, not on the top of the map — and once the course is
+	// finished, on the lookout, because that is now where they are standing. Set
+	// directly rather than via scrollIntoView, which would drag the page with it.
+	const focusY = complete ? trail.summit.y : trail.stops[walkedTo]?.y;
 	useEffect(() => {
 		const board = boardRef.current;
 		if (!board || focusY === undefined) return;
@@ -418,6 +581,20 @@ export function LessonMap({
 									opensAfter={lessonProgress[index - 1]?.lesson.id}
 								/>
 							))}
+							<Summit
+								point={trail.summit}
+								lit={complete}
+								remaining={remaining}
+								// Lit, it is where the drawing ribbon finally arrives, so it
+								// lands on the beat the trail reaches it. Dark, it comes in
+								// last and quietly, with the rest of the ground ahead.
+								delay={
+									complete
+										? DRAW_START + DRAW_MS
+										: DRAW_START + DRAW_MS + 260 + Math.min(count, 12) * 80
+								}
+								onLight={onLightTheLookout}
+							/>
 						</ol>
 					</div>
 				</div>

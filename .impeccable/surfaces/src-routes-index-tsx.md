@@ -2,7 +2,7 @@
 version: 1
 slug: "src-routes-index-tsx"
 primary_target: "src/routes/index.tsx"
-related_targets: ["src/components/LessonMap.tsx","src/lib/trail.ts"]
+related_targets: ["src/components/LessonMap.tsx","src/lib/trail.ts","src/components/SummitCelebration.tsx","src/components/TrailLantern.tsx"]
 ---
 
 # Surface: Home / Dashboard (`src/routes/index.tsx`)
@@ -17,10 +17,12 @@ related_targets: ["src/components/LessonMap.tsx","src/lib/trail.ts"]
 
 **Chosen direction:** "The Cozy Pouch of Trinkets" world (see DESIGN.md) — a rounded navy CozyPanel holding a bare lavender Baloo 2 count numeral ("10 / 137", no pill, no zero-padding — user-requested 2026-08-19, replacing the earlier odometer-style CountPod pill) and a GemTrack due-review row, with a single pink pill action button beneath. User- and brief-pinned world (reference screenshot + #d7b0fe/#febcd5), overriding the assigned concept roll (direction 5 of 7, seed bd58a4bd).
 
+Since 2026-09-01 the trail ends at **the Lookout** (DESIGN.md, signature component): a lantern in a clearing above the last lesson, visible and unlit from lesson one so the map has a destination you can see from the bottom, and lit once every lesson is done. Lighting it opens **the Celebration** — a full-screen canvas of sparks rising off the treeline and blossom petals falling through them, over a keepsake card that addresses the learner in Toki Pona for the first time. User-requested: before this the path ran off the top edge of the board and a finisher got nothing.
+
 Since 2026-09-01 the lesson list is the **Lesson Trail** (DESIGN.md, signature component): a scrolling forest map board beside the stats panel, where each lesson is a clearing on a winding path, walked ground is a solid lavender ribbon, ground ahead is stepping stones, and the clearing you are standing in is ringed by a slowly turning broken circle. Scroll your own clearing off the board and a bobbing chevron appears at that edge, pointing the way back and scrolling you there. User-requested — a game-like map "just like a video game", replacing the previous pill-row grid of lesson tiles.
 
-**Signature moments:** the on-mount count-up and staggered gem-pop in the stats panel; and, on the trail, the walked path drawing itself from lesson one with each clearing popping in as the drawing reaches it. All honor `prefers-reduced-motion`.
+**Signature moments:** the on-mount count-up and staggered gem-pop in the stats panel; on the trail, the walked path drawing itself from lesson one with each clearing popping in as the drawing reaches it; and, for a finisher, the Celebration opening as a circle of light out of the lantern they just clicked. All honor `prefers-reduced-motion`.
 
-**States:** Zeroed first-run (0 learned, 0 due, "Begin lesson 1", trail all stepping stones, clearing 1 pink and pulsing) · returning (partial progress, due count, ribbon up to the current clearing, stones beyond) · rest day (lesson done, review timing, library nudge) · course-complete (no current clearing — the trail stops at the last clearing, and the CTA points at the library). Same layout for all — no separate welcome screen.
+**States:** Zeroed first-run (0 learned, 0 due, "Begin lesson 1", trail all stepping stones, clearing 1 pink and pulsing) · returning (partial progress, due count, ribbon up to the current clearing, stones beyond) · rest day (lesson done, review timing, library nudge) · course-complete (no current clearing — the ribbon runs the whole way to the Lookout, which is lit and clickable, the stones are gone, and the CTA points at the library). Same layout for all — no separate welcome screen.
 
-**Unresolved decisions:** Persistence/backend for real progress data; gem-track sizing rule if due-review counts regularly exceed 8; no hover state on the primary button yet (only active/press and keyboard-focus states shipped). The trail's fixed 116px pitch means a course past ~30 lessons scrolls a long way inside the board — fine for now, worth revisiting if the curriculum grows.
+**Unresolved decisions:** Persistence/backend for real progress data; gem-track sizing rule if due-review counts regularly exceed 8; no hover state on the primary button yet (only active/press and keyboard-focus states shipped). The trail's fixed 116px pitch means a course past ~30 lessons scrolls a long way inside the board — fine for now, worth revisiting if the curriculum grows. The Celebration is click-only: it never fires by itself the first time a learner finishes the last lesson, which is a deliberate "theirs to take" call rather than an oversight, but worth revisiting if finishers miss it.
