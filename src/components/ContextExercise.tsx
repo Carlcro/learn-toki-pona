@@ -3,7 +3,7 @@ import type { Scene } from "#/data/types";
 import { WORDS_BY_ID } from "#/data/words";
 import { validateLiE } from "#/lib/grammar-validator";
 import { CozyPanel } from "./CozyPanel";
-import { SCENE_REGISTRY } from "./scenes/registry";
+import { SCENE_ART_READY, SCENE_REGISTRY } from "./scenes/registry";
 import { VALIDATION_MESSAGES } from "./validation-messages";
 
 export function ContextExercise({
@@ -21,7 +21,9 @@ export function ContextExercise({
 	const [valid, setValid] = useState(false);
 	const [message, setMessage] = useState("");
 
-	const SceneImage = SCENE_REGISTRY[scene.svgKey];
+	const SceneImage = SCENE_ART_READY.has(scene.svgKey)
+		? SCENE_REGISTRY[scene.svgKey]
+		: undefined;
 	const wordBank = scene.allowedWordIds.filter((wordId) =>
 		vocabulary.has(wordId),
 	);
@@ -48,9 +50,20 @@ export function ContextExercise({
 					Describe this scene
 				</span>
 
-				<div className="w-full max-w-[220px] rounded-2xl border-2 border-night-edge bg-night px-4 py-4 text-lavender">
-					{SceneImage && <SceneImage />}
-				</div>
+				{SceneImage ? (
+					<div className="w-full max-w-[220px] rounded-2xl border-2 border-night-edge bg-night px-4 py-4 text-lavender">
+						<SceneImage />
+					</div>
+				) : (
+					// Naming the scene is the honest stand-in for drawing it: the
+					// learner still has something definite to put into words, which a
+					// picture they cannot read would not have given them.
+					<div className="flex w-full max-w-[260px] items-center justify-center rounded-2xl border-2 border-night-edge bg-night px-5 py-7">
+						<span className="text-center font-script text-2xl text-lavender">
+							{scene.title}
+						</span>
+					</div>
+				)}
 
 				{/* The bank is a nudge, not a boundary: any taught word is accepted. */}
 				{!submitted && wordBank.length > 0 && (

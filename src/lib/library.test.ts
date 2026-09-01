@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+import { SCENE_ART_READY, SCENE_REGISTRY } from "#/components/scenes/registry";
 import { COMPOUNDS } from "#/data/compounds";
 import { GRAMMAR_CONCEPTS, GRAMMAR_CONCEPTS_BY_ID } from "#/data/grammar";
 import { LESSONS, selectVocabularyThroughLesson } from "#/data/lessons";
@@ -453,6 +454,30 @@ describe("curriculum", () => {
 					).toBe(true);
 				}
 			}
+		}
+	});
+
+	// ContextExercise renders nothing at all when a key misses, so a typo or an
+	// unregistered drawing costs the learner the picture they are describing
+	// without anything failing loudly.
+	it("gives every scene a drawing the registry can find", () => {
+		for (const scene of SCENES) {
+			expect(
+				SCENE_REGISTRY[scene.svgKey],
+				`scene "${scene.id}" points at unregistered svgKey "${scene.svgKey}"`,
+			).toBeDefined();
+		}
+	});
+
+	// A key that matches nothing fails silently — the scene just keeps showing
+	// its title — so a typo here would quietly withhold artwork that is done.
+	it("only marks art ready for keys a scene actually uses", () => {
+		const keys = new Set(SCENES.map((scene) => scene.svgKey));
+		for (const key of SCENE_ART_READY) {
+			expect(
+				keys.has(key) && SCENE_REGISTRY[key] !== undefined,
+				`"${key}" is marked ready but no registered scene uses it`,
+			).toBe(true);
 		}
 	});
 });

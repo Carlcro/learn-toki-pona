@@ -33,7 +33,7 @@ export const SCENES: Scene[] = [
 	{
 		id: "small-animal",
 		title: "A small animal beside a person",
-		svgKey: "person-and-animal",
+		svgKey: "small-animal",
 		allowedWordIds: ["soweli", "lili", "suli", "mute", "li", "pona", "moku"],
 		referenceSentences: ["soweli lili li pona.", "soweli mute li moku."],
 	},
@@ -110,7 +110,7 @@ export const SCENES: Scene[] = [
 	{
 		id: "strange-drink",
 		title: "A person drinking something strange",
-		svgKey: "drinking-water",
+		svgKey: "strange-drink",
 		allowedWordIds: ["jan", "moku", "telo", "nasa", "ike", "li", "e", "ilo"],
 		referenceSentences: ["jan li moku e telo nasa.", "telo nasa li ike."],
 	},
