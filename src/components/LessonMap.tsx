@@ -295,15 +295,7 @@ export function LessonMap({
 
 	return (
 		<section className="flex w-full flex-col gap-3 lg:mx-auto lg:max-w-[32rem]">
-			<div className="flex items-baseline justify-between px-1">
-				<h2 className="font-sans text-[0.65rem] font-bold tracking-[0.18em] text-mist uppercase">
-					Lessons
-				</h2>
-				<p className="font-display text-sm font-bold tabular-nums text-mist">
-					<span className="text-lavender">{completed}</span> / {count} walked
-				</p>
-			</div>
-
+		
 			<div className="relative w-full">
 				<div
 					ref={boardRef}
