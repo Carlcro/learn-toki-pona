@@ -343,9 +343,9 @@ function plantTrees(
 		};
 	});
 	const trees: TrailTree[] = [];
-	const target = stops.length * 3 + 10;
+	const target = stops.length * 5 + 18;
 
-	for (let attempt = 0; attempt < 700 && trees.length < target; attempt++) {
+	for (let attempt = 0; attempt < 2600 && trees.length < target; attempt++) {
 		// The last few go up near the vanishing point, thickening the forest the
 		// trail disappears into.
 		const crowdTop = trees.length >= target - 5;

@@ -100,7 +100,7 @@ export function MultipleChoice({
 						<button
 							type="button"
 							onClick={onNext}
-							className="w-full rounded-full bg-pink px-5 py-3 font-display text-sm font-bold text-night transition-all active:brightness-90"
+							className="w-full rounded-full border-2 border-night bg-pink px-5 py-3 font-display text-sm font-bold text-night transition-all active:brightness-90"
 						>
 							Continue
 						</button>

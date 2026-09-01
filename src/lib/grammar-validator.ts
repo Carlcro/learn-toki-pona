@@ -64,8 +64,24 @@ export function validateLiE(
 		}
 	}
 
-	const oIndex = tokens.indexOf("o");
-	const liIndex = tokens.indexOf("li");
+	// la splits a setup phrase (time, condition, topic) from the sentence it
+	// applies to. The setup's own internal grammar goes unchecked — only that
+	// it isn't empty — and everything after la is validated as an ordinary
+	// sentence, same as if la had never been there.
+	const laIndex = tokens.indexOf("la");
+	let mainTokens = tokens;
+	if (laIndex !== -1) {
+		if (laIndex === 0) {
+			return { valid: false, reason: "empty-subject" };
+		}
+		mainTokens = tokens.slice(laIndex + 1);
+		if (mainTokens.length === 0) {
+			return { valid: false, reason: "empty-predicate" };
+		}
+	}
+
+	const oIndex = mainTokens.indexOf("o");
+	const liIndex = mainTokens.indexOf("li");
 	let subjectTokens: string[];
 	let remainder: string[];
 
@@ -75,13 +91,13 @@ export function validateLiE(
 		if (liIndex !== -1) {
 			return { valid: false, reason: "trailing-tokens", tokenIndex: liIndex };
 		}
-		subjectTokens = tokens.slice(0, oIndex);
+		subjectTokens = mainTokens.slice(0, oIndex);
 		if (subjectTokens.includes("e")) {
 			return { valid: false, reason: "trailing-tokens", tokenIndex: oIndex };
 		}
-		remainder = tokens.slice(oIndex + 1);
+		remainder = mainTokens.slice(oIndex + 1);
 	} else if (liIndex !== -1) {
-		subjectTokens = tokens.slice(0, liIndex);
+		subjectTokens = mainTokens.slice(0, liIndex);
 		if (subjectTokens.length === 0) {
 			return { valid: false, reason: "empty-subject" };
 		}
@@ -91,11 +107,11 @@ export function validateLiE(
 		if (subjectTokens.includes("e")) {
 			return { valid: false, reason: "trailing-tokens", tokenIndex: liIndex };
 		}
-		remainder = tokens.slice(liIndex + 1);
+		remainder = mainTokens.slice(liIndex + 1);
 	} else {
-		if (BARE_PRONOUNS.has(tokens[0])) {
-			subjectTokens = [tokens[0]];
-			remainder = tokens.slice(1);
+		if (BARE_PRONOUNS.has(mainTokens[0])) {
+			subjectTokens = [mainTokens[0]];
+			remainder = mainTokens.slice(1);
 		} else {
 			return { valid: false, reason: "missing-li" };
 		}

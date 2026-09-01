@@ -295,7 +295,6 @@ export function LessonMap({
 
 	return (
 		<section className="flex w-full flex-col gap-3 lg:mx-auto lg:max-w-[32rem]">
-		
 			<div className="relative w-full">
 				<div
 					ref={boardRef}

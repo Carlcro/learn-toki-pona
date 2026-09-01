@@ -74,9 +74,9 @@ export const GRAMMAR_CONCEPTS: GrammarConcept[] = [
 			},
 		],
 		check: {
-			question: "Which one means “a big house”?",
-			options: ["suli tomo", "tomo suli", "tomo li suli"],
-			answer: "tomo suli",
+			question: "Which one means “a big animal”?",
+			options: ["suli soweli", "soweli suli", "soweli li suli"],
+			answer: "soweli suli",
 		},
 	},
 	{
@@ -304,6 +304,126 @@ export const GRAMMAR_CONCEPTS: GrammarConcept[] = [
 			question: "Which one would you use for “a phone”?",
 			options: ["toki ilo", "ilo toki", "ilo pi toki"],
 			answer: "ilo toki",
+		},
+	},
+	{
+		id: "numbers",
+		name: "wan / tu / ale / nanpa",
+		explanation:
+			"wan (one) and tu (two) are describing words like any other — they sit " +
+			"after the noun they count. Toki Pona has no words above two, so ale " +
+			"(all/everything) covers any bigger amount. To pick out a spot in a " +
+			"list instead of a quantity — first, second — put nanpa in front of the " +
+			"number: nanpa wan, nanpa tu.",
+		examples: [
+			{
+				chunks: [
+					{ text: "jan", label: "the thing" },
+					{ text: "tu", label: "how many: two" },
+					{ text: "li", particle: true },
+					{ text: "pona", label: "what's being said about them" },
+				],
+				en: "Two people are good.",
+			},
+			{
+				chunks: [
+					{ text: "jan", label: "the thing" },
+					{ text: "nanpa wan", label: "which one: the first" },
+					{ text: "li", particle: true },
+					{ text: "kama", label: "what they do" },
+				],
+				en: "The first person is coming.",
+			},
+		],
+		check: {
+			question: "Which one means “the first person”?",
+			options: ["jan wan", "jan nanpa wan", "nanpa jan wan"],
+			answer: "jan nanpa wan",
+		},
+	},
+	{
+		id: "la",
+		name: "la",
+		explanation:
+			"la splits a sentence into a setup and a main statement: setup, la, then " +
+			"the sentence it applies to. The setup can be a time, a condition, or a " +
+			"topic — “when/if/about X, then Y.” Nothing about the main sentence " +
+			"changes; la just tells you to read what came before it as the " +
+			"backdrop.",
+		examples: [
+			{
+				chunks: [
+					{ text: "tenpo suno", label: "the setup: “in daytime”" },
+					{ text: "la", particle: true },
+					{ text: "mi moku", label: "the main sentence" },
+				],
+				en: "In the daytime, I eat.",
+			},
+			{
+				chunks: [
+					{ text: "sina wile", label: "the setup: “if you want”" },
+					{ text: "la", particle: true },
+					{ text: "sina ken kama", label: "the main sentence" },
+				],
+				en: "If you want, you can come.",
+			},
+		],
+		check: {
+			question: "Which one means “If you want, you can come”?",
+			options: [
+				"sina wile la, sina ken kama.",
+				"sina la wile, sina ken kama.",
+				"la sina wile, sina ken kama.",
+			],
+			answer: "sina wile la, sina ken kama.",
+		},
+	},
+	{
+		id: "anu-taso-kin",
+		name: "anu / taso / kin",
+		explanation:
+			"Three small words that slot into a sentence without changing its shape. " +
+			"anu sits between two options and means “or” — the rest of the sentence " +
+			"carries on as if either one stood there alone. taso at the start of a " +
+			"sentence means “but”; tucked in after a word it shrinks to “only that " +
+			"one”. kin goes right after a word to add “too” or “even” about exactly " +
+			"that word.",
+		examples: [
+			{
+				chunks: [
+					{ text: "sina wile e", label: "the question" },
+					{ text: "kili", label: "option one" },
+					{ text: "anu", particle: true },
+					{ text: "telo", label: "option two" },
+				],
+				en: "Do you want fruit or water?",
+			},
+			{
+				chunks: [
+					{ text: "taso", particle: true, label: "turns the sentence: “but…”" },
+					{ text: "mi", label: "who it's about" },
+					{ text: "wile lape", label: "what they want" },
+				],
+				en: "But I want to sleep.",
+			},
+			{
+				chunks: [
+					{ text: "sina", label: "who it's about" },
+					{ text: "kin", particle: true, label: "“you too”" },
+					{ text: "li", particle: true },
+					{ text: "pona", label: "what's being said" },
+				],
+				en: "You too are good.",
+			},
+		],
+		check: {
+			question: "Which one asks “do you want water or fruit?”",
+			options: [
+				"sina wile e telo anu kili?",
+				"sina wile e telo en kili?",
+				"anu sina wile e telo kili?",
+			],
+			answer: "sina wile e telo anu kili?",
 		},
 	},
 ];

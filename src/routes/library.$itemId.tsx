@@ -29,9 +29,9 @@ export const Route = createFileRoute("/library/$itemId")({
 });
 
 const PRIMARY_BUTTON =
-	"w-full rounded-full bg-pink px-6 py-3.5 text-center font-display text-base font-bold text-night transition-all duration-100 outline-none active:brightness-90 focus-visible:ring-2 focus-visible:ring-lavender focus-visible:ring-offset-2 focus-visible:ring-offset-night";
+	"w-full rounded-full border-2 border-night bg-pink px-6 py-3.5 text-center font-display text-base font-bold text-night transition-all duration-100 outline-none active:brightness-90 focus-visible:ring-2 focus-visible:ring-lavender focus-visible:ring-offset-2 focus-visible:ring-offset-night";
 const SECONDARY_BUTTON =
-	"w-full rounded-full bg-lavender px-6 py-3 text-center font-display text-sm font-bold text-night transition-all duration-100 outline-none active:brightness-90 focus-visible:ring-2 focus-visible:ring-pink focus-visible:ring-offset-2 focus-visible:ring-offset-night";
+	"w-full rounded-full border-2 border-night bg-lavender px-6 py-3 text-center font-display text-sm font-bold text-night transition-all duration-100 outline-none active:brightness-90 focus-visible:ring-2 focus-visible:ring-pink focus-visible:ring-offset-2 focus-visible:ring-offset-night";
 // Opaque fill, not a transparent outline: these sit low on the page, where the
 // fixed treeline would otherwise read straight through the label.
 const OUTLINE_BUTTON =

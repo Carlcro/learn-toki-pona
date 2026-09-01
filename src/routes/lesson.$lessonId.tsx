@@ -114,7 +114,7 @@ function buildSteps(args: {
 }
 
 const PRIMARY_BUTTON =
-	"w-full rounded-full bg-pink px-6 py-3.5 text-center font-display text-base font-bold text-night transition-all outline-none active:brightness-90 focus-visible:ring-2 focus-visible:ring-lavender focus-visible:ring-offset-2 focus-visible:ring-offset-night";
+	"w-full rounded-full border-2 border-night bg-pink px-6 py-3.5 text-center font-display text-base font-bold text-night transition-all outline-none active:brightness-90 focus-visible:ring-2 focus-visible:ring-lavender focus-visible:ring-offset-2 focus-visible:ring-offset-night";
 const OUTLINE_BUTTON =
 	"w-full rounded-full border-2 border-night-edge bg-night-soft px-6 py-3 text-center font-sans text-sm font-semibold text-mist transition-colors hover:border-lavender hover:text-cream";
 

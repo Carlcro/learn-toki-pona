@@ -160,6 +160,7 @@ Corners are uniformly generous and huggable: 32px on cards, 28px on pill rows, a
 
 ### Buttons
 - **Shape:** Fully rounded (`9999px`), full-width within their container, flat fill, no shadow.
+- **Rim:** Every solid-fill pill carries a 2px Night border. On the page ground it is invisible; where the fixed treeline puts a same-hue tree behind the button — a pink blossom under a pink primary, a lavender pine under a lavender one — it is what keeps the button a readable shape instead of a blob merged into the scenery. A border, not a shadow: the flat rule holds.
 - **Primary:** Pink background, Night text, 14px/24-28px padding, Baloo 2 bold.
 - **Secondary (grade "Good"):** Lavender background, Night text.
 - **Outline (grade "Again", "Back home", "Show meaning"):** Transparent background, 2px Night Edge border, Mist text; hover shifts border and text to Lavender/Cream.

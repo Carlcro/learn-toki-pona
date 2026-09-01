@@ -6,7 +6,7 @@ import { MasteryBar } from "#/components/MasteryBar";
 import { ReadingMeter } from "#/components/ReadingMeter";
 import { LESSONS, LESSONS_BY_ID } from "#/data/lessons";
 import { LIBRARY_ITEMS } from "#/data/library";
-import { COURSE_WORD_COUNT, FULL_LANGUAGE_WORD_COUNT } from "#/data/words";
+import { COURSE_WORD_COUNT } from "#/data/words";
 import { useCountUp } from "#/hooks/useCountUp";
 import {
 	selectKnownConceptIds,
@@ -32,7 +32,7 @@ export const Route = createFileRoute("/")({ component: Home });
 const REVIEW_SLOTS = 8;
 
 const PRIMARY_BUTTON =
-	"w-full rounded-full bg-pink px-6 py-3.5 text-center font-display text-base font-bold text-night transition-all duration-100 outline-none active:brightness-90 focus-visible:ring-2 focus-visible:ring-lavender focus-visible:ring-offset-2 focus-visible:ring-offset-night";
+	"w-full rounded-full border-2 border-night bg-pink px-6 py-3.5 text-center font-display text-base font-bold text-night transition-all duration-100 outline-none active:brightness-90 focus-visible:ring-2 focus-visible:ring-lavender focus-visible:ring-offset-2 focus-visible:ring-offset-night";
 const OUTLINE_BUTTON =
 	"w-full rounded-full border-2 border-night-edge bg-night-soft px-6 py-2.5 text-center font-sans text-sm font-semibold text-mist transition-colors hover:border-lavender hover:text-cream";
 
@@ -186,9 +186,6 @@ function Home() {
 								{COURSE_WORD_COUNT}
 							</span>
 						</div>
-						<span className="font-sans text-xs text-mist">
-							in the course so far · {FULL_LANGUAGE_WORD_COUNT} in the language
-						</span>
 					</div>
 
 					<div className="my-6 h-px w-full bg-night-edge" />

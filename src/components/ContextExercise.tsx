@@ -109,7 +109,7 @@ export function ContextExercise({
 						type="button"
 						onClick={handleSubmit}
 						disabled={sentence.trim().length === 0}
-						className="w-full rounded-full bg-lavender px-5 py-3 font-display text-sm font-bold text-night transition-all active:brightness-90 disabled:opacity-40"
+						className="w-full rounded-full border-2 border-night bg-lavender px-5 py-3 font-display text-sm font-bold text-night transition-all active:brightness-90 disabled:opacity-40"
 					>
 						Submit
 					</button>
@@ -135,7 +135,7 @@ export function ContextExercise({
 						<button
 							type="button"
 							onClick={onNext}
-							className="w-full rounded-full bg-pink px-5 py-3 font-display text-sm font-bold text-night transition-all active:brightness-90"
+							className="w-full rounded-full border-2 border-night bg-pink px-5 py-3 font-display text-sm font-bold text-night transition-all active:brightness-90"
 						>
 							Continue
 						</button>

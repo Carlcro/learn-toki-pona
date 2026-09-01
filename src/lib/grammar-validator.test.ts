@@ -43,11 +43,11 @@ describe("validateLiE", () => {
 	});
 
 	it("rejects unknown words", () => {
-		expect(validateLiE("mi kili.", ALL_WORDS)).toEqual({
+		expect(validateLiE("mi kamalasi.", ALL_WORDS)).toEqual({
 			valid: false,
 			reason: "unknown-word",
 			tokenIndex: 1,
-			token: "kili",
+			token: "kamalasi",
 		});
 	});
 

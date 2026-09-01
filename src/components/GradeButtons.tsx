@@ -10,12 +10,12 @@ const GRADE_OPTIONS: { grade: Grade; label: string; style: string }[] = [
 	{
 		grade: "good",
 		label: "Good",
-		style: "bg-lavender text-night active:brightness-90",
+		style: "border-2 border-night bg-lavender text-night active:brightness-90",
 	},
 	{
 		grade: "easy",
 		label: "Easy",
-		style: "bg-pink text-night active:brightness-90",
+		style: "border-2 border-night bg-pink text-night active:brightness-90",
 	},
 ];
 

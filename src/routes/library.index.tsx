@@ -75,7 +75,7 @@ function LibraryPage() {
 						{nextLesson && unlockCount > 0 && (
 							<Link
 								to={nextLessonHref}
-								className="w-full rounded-full bg-pink px-6 py-3.5 text-center font-display text-base font-bold text-night transition-all duration-100 outline-none active:brightness-90 focus-visible:ring-2 focus-visible:ring-lavender focus-visible:ring-offset-2 focus-visible:ring-offset-night"
+								className="w-full rounded-full border-2 border-night bg-pink px-6 py-3.5 text-center font-display text-base font-bold text-night transition-all duration-100 outline-none active:brightness-90 focus-visible:ring-2 focus-visible:ring-lavender focus-visible:ring-offset-2 focus-visible:ring-offset-night"
 							>
 								Lesson {nextLesson.id} unlocks {unlockCount} more
 							</Link>
@@ -94,7 +94,7 @@ function LibraryPage() {
 
 				<Link
 					to="/"
-					className="w-full max-w-sm rounded-full bg-pink px-6 py-3.5 text-center font-display text-base font-bold text-night transition-all duration-100 outline-none active:brightness-90 focus-visible:ring-2 focus-visible:ring-lavender focus-visible:ring-offset-2 focus-visible:ring-offset-night"
+					className="w-full max-w-sm rounded-full border-2 border-night bg-pink px-6 py-3.5 text-center font-display text-base font-bold text-night transition-all duration-100 outline-none active:brightness-90 focus-visible:ring-2 focus-visible:ring-lavender focus-visible:ring-offset-2 focus-visible:ring-offset-night"
 				>
 					Back home
 				</Link>

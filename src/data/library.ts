@@ -344,6 +344,191 @@ export const LIBRARY_ITEMS: LibraryItem[] = [
 			{ toki: "jan nasa li mute.", en: "There are a lot of silly people." },
 		],
 	},
+	{
+		id: "my-family",
+		title: "My family",
+		grammarConceptIds: ["li-e", "modifiers"],
+		lines: [
+			{ toki: "mama mi li pona.", en: "My parent is good." },
+			{ toki: "mi olin e mama mi.", en: "I love my parent." },
+		],
+	},
+	{
+		id: "small-creatures",
+		title: "Small creatures",
+		grammarConceptIds: ["li-e", "prepositions"],
+		lines: [
+			{ toki: "akesi li lon ma.", en: "The reptile is on the ground." },
+			{ toki: "waso li lili.", en: "The bird is small." },
+			{
+				toki: "kijetesantakalu li moku e kala.",
+				en: "The raccoon eats the fish.",
+			},
+		],
+	},
+	{
+		id: "the-body",
+		title: "The body",
+		grammarConceptIds: ["li-e", "modifiers"],
+		lines: [
+			{ toki: "sijelo mi li pona.", en: "My body is good." },
+			{ toki: "lawa mi li suli.", en: "My head is big." },
+			{ toki: "oko mi li suli.", en: "My eyes are big." },
+		],
+	},
+	{
+		id: "colors",
+		title: "Colors",
+		grammarConceptIds: ["li-e", "modifiers"],
+		lines: [
+			{ toki: "oko mi li laso.", en: "My eyes are green." },
+			{ toki: "soweli walo li suli.", en: "The white animal is big." },
+			{ toki: "kule ni li pona.", en: "This color is nice." },
+		],
+	},
+	{
+		id: "counting",
+		title: "Counting",
+		grammarConceptIds: ["li-e", "numbers", "modifiers"],
+		lines: [
+			{ toki: "jan tu li pona.", en: "Two people are good." },
+			{ toki: "jan nanpa wan li kama.", en: "The first person is coming." },
+			{ toki: "ale li pona.", en: "Everything is good." },
+		],
+	},
+	{
+		id: "the-sky",
+		title: "The sky",
+		grammarConceptIds: ["li-e", "prepositions"],
+		lines: [
+			{ toki: "suno li suli.", en: "The sun is big." },
+			{ toki: "mun li lon sewi.", en: "The moon is in the sky." },
+			{ toki: "seli li pona tawa mi.", en: "I like warmth." },
+		],
+	},
+	{
+		id: "useful-things",
+		title: "Useful things",
+		grammarConceptIds: ["li-e", "prepositions"],
+		lines: [
+			{ toki: "kiwen li suli.", en: "The rock is big." },
+			{ toki: "poki li lon supa.", en: "The container is on the table." },
+			{ toki: "lupa tomo li suli.", en: "The house's door is big." },
+		],
+	},
+	{
+		id: "the-orchard",
+		title: "The orchard",
+		grammarConceptIds: ["li-e", "modifiers"],
+		lines: [
+			{ toki: "kasi li laso.", en: "The plant is green." },
+			{ toki: "kili li suwi.", en: "The fruit is sweet." },
+			{ toki: "pan li moku pona.", en: "Bread is good food." },
+			{ toki: "jaki li ike.", en: "Filth is bad." },
+		],
+	},
+	{
+		id: "the-daily-rhythm",
+		title: "The daily rhythm",
+		grammarConceptIds: ["li-e", "la", "pre-verbs", "modifiers"],
+		lines: [
+			{ toki: "tenpo suno la, mi moku.", en: "In the daytime, I eat." },
+			{ toki: "mi pini e moku.", en: "I finished the food." },
+			{ toki: "mi wile lape.", en: "I want to sleep." },
+		],
+	},
+	{
+		id: "work-and-trade",
+		title: "Work and trade",
+		grammarConceptIds: ["li-e"],
+		lines: [
+			{ toki: "mi pali.", en: "I work." },
+			{ toki: "mi alasa e kala.", en: "I hunt for fish." },
+			{ toki: "mi jo e mani.", en: "I have money." },
+		],
+	},
+	{
+		id: "sound-and-writing",
+		title: "Sound and writing",
+		grammarConceptIds: ["li-e", "modifiers"],
+		lines: [
+			{ toki: "kalama li suli.", en: "The sound is loud." },
+			{ toki: "mi kute e kalama.", en: "I hear the sound." },
+			{ toki: "nimi sina li seme?", en: "What's your name?" },
+			{ toki: "mi lukin e lipu.", en: "I'm looking at the document." },
+			{ toki: "sitelen li pona.", en: "The picture is nice." },
+		],
+	},
+	{
+		id: "where-things-are",
+		title: "Where things are",
+		grammarConceptIds: ["li-e", "prepositions"],
+		lines: [
+			{ toki: "jan li lon monsi tomo.", en: "The person is behind the house." },
+			{ toki: "jan li lon poka mi.", en: "The person is next to me." },
+			{
+				toki: "soweli li lon anpa supa.",
+				en: "The animal is under the table.",
+			},
+			{ toki: "jan li tawa weka.", en: "The person went away." },
+		],
+	},
+	{
+		id: "trouble",
+		title: "Trouble",
+		grammarConceptIds: ["li-e", "modifiers"],
+		lines: [
+			{ toki: "jan tu li utala.", en: "Two people are fighting." },
+			{ toki: "mi pakala e ilo.", en: "I broke the tool." },
+			{ toki: "mi kipisi e kili.", en: "I cut the fruit." },
+			{ toki: "monsuta li ike.", en: "The monster is scary." },
+		],
+	},
+	{
+		id: "connectors",
+		title: "Connectors",
+		grammarConceptIds: ["li-e", "pre-verbs", "modifiers"],
+		lines: [
+			{
+				toki: "sina wile moku anu wile lape?",
+				en: "Do you want to eat or want to sleep?",
+			},
+			{
+				toki: "mi wile moku, taso mi wile lape.",
+				en: "I want to eat, but I want to sleep.",
+			},
+			{ toki: "sina kin li pona.", en: "You too are good." },
+			{ toki: "a! ni li pona!", en: "Ah! This is good!" },
+			{ toki: "ni li ante.", en: "This is different." },
+		],
+	},
+	{
+		id: "loose-ends",
+		title: "Loose ends",
+		grammarConceptIds: ["li-e", "modifiers"],
+		lines: [
+			{ toki: "mi musi.", en: "I'm having fun." },
+			{ toki: "nasin ni li pona.", en: "This method is good." },
+			{ toki: "linja mi li suli.", en: "My hair is long." },
+			{ toki: "sike li suli.", en: "The circle is big." },
+			{ toki: "jan wawa li suli.", en: "The strong person is big." },
+		],
+	},
+	{
+		id: "the-newest-words",
+		title: "The newest words",
+		grammarConceptIds: ["li-e", "prepositions"],
+		lines: [
+			{ toki: "moku li jo e namako.", en: "The food has spice." },
+			{ toki: "ni li epiku!", en: "This is awesome!" },
+			{ toki: "ni li meso.", en: "This is average." },
+			{
+				toki: "misikeke li pona tawa sijelo.",
+				en: "Medicine is good for the body.",
+			},
+			{ toki: "mi ku.", en: "I'm using the dictionary." },
+		],
+	},
 ];
 
 export const LIBRARY_ITEMS_BY_ID: Record<string, LibraryItem> =
