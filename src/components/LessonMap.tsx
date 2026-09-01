@@ -1,5 +1,12 @@
 import { Link } from "@tanstack/react-router";
-import { useEffect, useId, useMemo, useRef } from "react";
+import {
+	useCallback,
+	useEffect,
+	useId,
+	useMemo,
+	useRef,
+	useState,
+} from "react";
 import { TrailTree } from "#/components/TrailTree";
 import type { LessonProgress } from "#/lib/progress";
 import { buildTrail, type TrailStop } from "#/lib/trail";
@@ -45,10 +52,14 @@ function Stop({
 	stop,
 	delay,
 	standingHere,
+	opensAfter,
 }: {
 	entry: LessonProgress;
 	stop: TrailStop;
 	delay: number;
+	/** The lesson that unlocks this one — the one right before it on the trail.
+	    Only ever missing for lesson one, which is never locked. */
+	opensAfter?: string;
 	/** The far end of the walked trail. Once the course has no lesson left to
 	    be current this is the last one they finished, and it is only announced,
 	    not drawn — the pink current marker carries "you are here" on its own. */
@@ -78,25 +89,34 @@ function Stop({
 						: "done"
 					: isCurrent
 						? "you are here, continue"
-						: "locked until you finish the lessons before it"}
+						: opensAfter
+							? `locked until you finish lesson ${opensAfter}`
+							: "locked until you finish the lessons before it"}
 			</span>
 			<span
 				className="trail-node relative flex items-center justify-center"
 				style={{ width: size, height: size }}
 			>
-				{/* The bare patch of forest floor the marker stands on. Trodden
-				    ground is visible; ground nobody has reached barely is. */}
-				<span
-					className={`absolute -bottom-1 left-1/2 -translate-x-1/2 rounded-full bg-night-soft ${
-						isCurrent
-							? "h-[24px] w-[104px]"
-							: status === "completed"
-								? "h-[20px] w-[82px]"
-								: "h-[16px] w-[64px] opacity-50"
-					}`}
-				/>
 				{isCurrent && (
-					<span className="trail-ring absolute -inset-1.5 rounded-full border-2 border-pink" />
+					/* "You are here": a broken ring that turns slowly around the
+					   clearing. It keeps its size and weight throughout, so the
+					   motion reads at a glance without tugging at the eye. */
+					<svg
+						className="trail-ring absolute -inset-1.5"
+						viewBox="0 0 100 100"
+						fill="none"
+						aria-hidden="true"
+					>
+						<circle
+							cx="50"
+							cy="50"
+							r="48"
+							stroke="var(--color-pink)"
+							strokeWidth="4"
+							strokeLinecap="round"
+							strokeDasharray="46 29"
+						/>
+					</svg>
 				)}
 				<span className={disc} aria-hidden="true">
 					{lesson.id}
@@ -128,8 +148,19 @@ function Stop({
 	if (status === "locked") {
 		return (
 			<li>
-				<span className={`${shell} opacity-75`} style={position}>
+				<span className={`${shell} group opacity-75`} style={position}>
 					{body}
+					{/* What it would take to get here, on hover. Ground the learner
+					    cannot walk yet should still say why, rather than only
+					    refusing the click. */}
+					<span
+						className="pointer-events-none absolute bottom-full left-1/2 z-20 mb-2 -translate-x-1/2 rounded-full border-2 border-night-edge bg-night-soft px-3 py-1 font-sans text-[0.7rem] font-semibold whitespace-nowrap text-cream opacity-0 transition-opacity duration-150 group-hover:opacity-100"
+						aria-hidden="true"
+					>
+						{opensAfter
+							? `Opens after lesson ${opensAfter}`
+							: "Opens further along the trail"}
+					</span>
 				</span>
 			</li>
 		);
@@ -146,6 +177,56 @@ function Stop({
 				{body}
 			</Link>
 		</li>
+	);
+}
+
+/**
+ * The way back to the learner's own clearing, shown only once they have
+ * scrolled it out of the board. It points the way it would have them travel:
+ * down the map when they have wandered up ahead, up when they have gone back
+ * over ground they already walked.
+ */
+function BackToHere({
+	direction,
+	onClick,
+}: {
+	direction: "up" | "down";
+	onClick: () => void;
+}) {
+	return (
+		<button
+			type="button"
+			onClick={onClick}
+			aria-label="Scroll back to where you are on the trail"
+			className={`trail-return absolute left-1/2 -translate-x-1/2 flex h-14 w-14 cursor-pointer items-center justify-center rounded-full text-pink outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lavender active:brightness-90 ${
+				direction === "down" ? "bottom-4" : "top-4"
+			}`}
+		>
+			{/* The chevron nods the way it would take you. The bob sits on this
+			    wrapper so the animation has a transform to itself and the arrow
+			    keeps whichever way it points. */}
+			<span
+				className="trail-beckon flex"
+				style={
+					{
+						"--bob": direction === "down" ? "4px" : "-4px",
+					} as React.CSSProperties
+				}
+			>
+				<svg
+					viewBox="0 0 24 24"
+					className={`h-12 w-12 ${direction === "up" ? "rotate-180" : ""}`}
+					fill="none"
+					stroke="currentColor"
+					strokeWidth="2.5"
+					strokeLinecap="round"
+					strokeLinejoin="round"
+					aria-hidden="true"
+				>
+					<path d="M6 9.5 12 15.5 18 9.5" />
+				</svg>
+			</span>
+		</button>
 	);
 }
 
@@ -178,6 +259,38 @@ export function LessonMap({
 		const board = boardRef.current;
 		if (!board || focusY === undefined) return;
 		board.scrollTop = focusY - board.clientHeight / 2;
+	}, [focusY]);
+
+	// Which way the learner's clearing lies once it is off the board, or null
+	// while it is still in view. The margin keeps a marker that is only half on
+	// screen counted as gone, since half a marker is not somewhere you can see
+	// you are standing.
+	const [wanderedOff, setWanderedOff] = useState<"up" | "down" | null>(null);
+	useEffect(() => {
+		const board = boardRef.current;
+		if (!board || focusY === undefined) return;
+		const MARGIN = 52;
+		const look = () => {
+			const top = board.scrollTop;
+			const bottom = top + board.clientHeight;
+			setWanderedOff(
+				focusY < top + MARGIN ? "up" : focusY > bottom - MARGIN ? "down" : null,
+			);
+		};
+		look();
+		board.addEventListener("scroll", look, { passive: true });
+		return () => board.removeEventListener("scroll", look);
+	}, [focusY]);
+
+	const walkBack = useCallback(() => {
+		const board = boardRef.current;
+		if (!board || focusY === undefined) return;
+		board.scrollTo({
+			top: focusY - board.clientHeight / 2,
+			behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches
+				? "auto"
+				: "smooth",
+		});
 	}, [focusY]);
 
 	return (
@@ -311,6 +424,7 @@ export function LessonMap({
 									stop={trail.stops[index]}
 									delay={stopDelay(index, walkedTo)}
 									standingHere={index === walkedTo}
+									opensAfter={lessonProgress[index - 1]?.lesson.id}
 								/>
 							))}
 						</ol>
@@ -323,6 +437,10 @@ export function LessonMap({
 				    itself stays crisp. */}
 				<div className="pointer-events-none absolute inset-x-0.5 top-0.5 h-10 rounded-t-[30px] bg-gradient-to-b from-night to-transparent" />
 				<div className="pointer-events-none absolute inset-x-0.5 bottom-0.5 h-10 rounded-b-[30px] bg-gradient-to-t from-night to-transparent" />
+
+				{wanderedOff && (
+					<BackToHere direction={wanderedOff} onClick={walkBack} />
+				)}
 			</div>
 		</section>
 	);

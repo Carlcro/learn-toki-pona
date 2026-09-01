@@ -113,26 +113,114 @@ function at(points: TrailPoint[], i: number): TrailPoint {
 	return points[clamp(i, 0, points.length - 1)];
 }
 
+/** One cubic of the trail, in board coordinates. */
+interface Cubic {
+	a: TrailPoint;
+	c1: TrailPoint;
+	c2: TrailPoint;
+	b: TrailPoint;
+}
+
 /**
- * A Catmull-Rom spline through the points, emitted as cubic Béziers. Splitting
- * the walked and unwalked stretches means drawing two ranges of the *same*
- * point list rather than two independent curves, so the join at the learner's
- * current clearing is continuous instead of kinked.
+ * A Catmull-Rom spline through the points, as cubic Béziers. Splitting the
+ * walked and unwalked stretches means drawing two ranges of the *same* point
+ * list rather than two independent curves, so the join at the learner's current
+ * clearing is continuous instead of kinked.
  */
-function curveThrough(points: TrailPoint[], from: number, to: number): string {
-	if (to <= from) return "";
-	const head = at(points, from);
-	let d = `M ${round(head.x)} ${round(head.y)}`;
+function curveThrough(points: TrailPoint[], from: number, to: number): Cubic[] {
+	const curve: Cubic[] = [];
 	for (let i = from; i < to; i++) {
 		const p0 = at(points, i - 1);
 		const p1 = at(points, i);
 		const p2 = at(points, i + 1);
 		const p3 = at(points, i + 2);
-		const c1x = p1.x + (p2.x - p0.x) / 6;
-		const c1y = p1.y + (p2.y - p0.y) / 6;
-		const c2x = p2.x - (p3.x - p1.x) / 6;
-		const c2y = p2.y - (p3.y - p1.y) / 6;
-		d += ` C ${round(c1x)} ${round(c1y)}, ${round(c2x)} ${round(c2y)}, ${round(p2.x)} ${round(p2.y)}`;
+		curve.push({
+			a: p1,
+			c1: { x: p1.x + (p2.x - p0.x) / 6, y: p1.y + (p2.y - p0.y) / 6 },
+			c2: { x: p2.x - (p3.x - p1.x) / 6, y: p2.y - (p3.y - p1.y) / 6 },
+			b: p2,
+		});
+	}
+	return curve;
+}
+
+function cubicAt(c: Cubic, t: number): TrailPoint {
+	const u = 1 - t;
+	const axis = (a: number, b: number, d: number, e: number) =>
+		u * u * u * a + 3 * u * u * t * b + 3 * u * t * t * d + t * t * t * e;
+	return {
+		x: axis(c.a.x, c.c1.x, c.c2.x, c.b.x),
+		y: axis(c.a.y, c.c1.y, c.c2.y, c.b.y),
+	};
+}
+
+/** The stretch of a cubic from `t` to its end, by de Casteljau. */
+function cubicFrom(c: Cubic, t: number): Cubic {
+	const mix = (p: TrailPoint, q: TrailPoint): TrailPoint => ({
+		x: p.x + (q.x - p.x) * t,
+		y: p.y + (q.y - p.y) * t,
+	});
+	const ab = mix(c.a, c.c1);
+	const bc = mix(c.c1, c.c2);
+	const cd = mix(c.c2, c.b);
+	const abc = mix(ab, bc);
+	const bcd = mix(bc, cd);
+	return { a: mix(abc, bcd), c1: bcd, c2: cd, b: c.b };
+}
+
+/** The stretch of a cubic up to `t`: the same split, kept the other way round. */
+function cubicUpTo(c: Cubic, t: number): Cubic {
+	const flipped = cubicFrom({ a: c.b, c1: c.c2, c2: c.c1, b: c.a }, 1 - t);
+	return { a: flipped.b, c1: flipped.c2, c2: flipped.c1, b: flipped.a };
+}
+
+/**
+ * Backs the curve away from the clearing at each end until it is `gap` pixels
+ * clear of it, so the ribbon stops on the bare ground around a marker instead
+ * of running under it. Measured in pixels at the reference width, like the
+ * stepping stones, so the gap holds its size as the board is resized.
+ */
+function backOff(curve: Cubic[], startGap: number, endGap: number): Cubic[] {
+	const STEPS = 24;
+	const clearOf = (anchor: TrailPoint, point: TrailPoint, gap: number) =>
+		distance(toPixels(anchor), toPixels(point)) >= gap;
+
+	// Walk in from the first clearing until the curve is clear of it, then keep
+	// everything from there on.
+	const head = curve[0]?.a;
+	let cut: { index: number; t: number } | undefined;
+	for (let i = 0; i < curve.length && head && !cut; i++) {
+		for (let step = 0; step <= STEPS; step++) {
+			if (!clearOf(head, cubicAt(curve[i], step / STEPS), startGap)) continue;
+			cut = { index: i, t: step / STEPS };
+			break;
+		}
+	}
+	const trail = cut
+		? [cubicFrom(curve[cut.index], cut.t), ...curve.slice(cut.index + 1)]
+		: [];
+
+	// And the same walking back from the clearing at the far end.
+	const tail = trail[trail.length - 1]?.b;
+	cut = undefined;
+	for (let i = trail.length - 1; i >= 0 && tail && !cut; i--) {
+		for (let step = STEPS; step >= 0; step--) {
+			if (!clearOf(tail, cubicAt(trail[i], step / STEPS), endGap)) continue;
+			cut = { index: i, t: step / STEPS };
+			break;
+		}
+	}
+	return cut
+		? [...trail.slice(0, cut.index), cubicUpTo(trail[cut.index], cut.t)]
+		: [];
+}
+
+function toPath(curve: Cubic[]): string {
+	const head = curve[0];
+	if (!head) return "";
+	let d = `M ${round(head.a.x)} ${round(head.a.y)}`;
+	for (const c of curve) {
+		d += ` C ${round(c.c1.x)} ${round(c.c1.y)}, ${round(c.c2.x)} ${round(c.c2.y)}, ${round(c.b.x)} ${round(c.b.y)}`;
 	}
 	return d;
 }
@@ -186,6 +274,14 @@ function samplePolyline(points: TrailPoint[]): TrailPoint[] {
 	}
 	return samples;
 }
+
+/**
+ * How far short of a clearing the walked ribbon stops. Kept in step with the
+ * markers in LessonMap: a finished clearing is a 46px disc, and the one the
+ * learner stands on carries a ring around its 62px disc — the trail should
+ * arrive at the bare ground around each, not slide under it.
+ */
+const RIBBON_GAP = { done: 26, here: 38 } as const;
 
 /** Distance between stepping stones, measured at the reference width. */
 const PEBBLE_SPACING = 17;
@@ -359,7 +455,15 @@ export function buildTrail(
 	return {
 		height,
 		stops,
-		troddenPath: curveThrough(points, 0, walkedTo),
+		troddenPath: toPath(
+			backOff(
+				curveThrough(points, 0, walkedTo),
+				RIBBON_GAP.done,
+				// With the course finished the far end is a completed clearing
+				// like any other; otherwise it is the ringed one.
+				complete ? RIBBON_GAP.done : RIBBON_GAP.here,
+			),
+		),
 		pebbles: complete ? [] : layStones(points, stops, walkedTo),
 		trees: plantTrees(points, stops, height, points[walkedTo]?.y ?? height),
 		fireflies: releaseFireflies(height),

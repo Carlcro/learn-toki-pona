@@ -90,7 +90,8 @@ Two pastel accents, lavender and pink, carry the whole system against the navy g
 - Zero shadows anywhere in the system: cards, pods, gems, and buttons are all flat color fills bounded by a border, never lifted or glowing.
 - The treeline is monochrome-per-tree: each tree is either solid lavender or solid pink, trunk included — never a naturalistic green/brown palette.
 - Rounded-[32px] cards, rounded-[28px] pill rows, and rounded-full buttons/pods/gems — no sharp or lightly-rounded corners anywhere in the system.
-- Lessons are a trail through a wood, not a list: a scrolling map board where each lesson is a clearing on a winding path, walked ground is a solid lavender ribbon, ground ahead is stepping stones, and the pink clearing you are standing in is the one thing that pulses.
+- Lessons are a trail through a wood, not a list: a scrolling map board where each lesson is a clearing on a winding path, walked ground is a solid lavender ribbon, ground ahead is stepping stones, and the pink clearing you are standing in wears a broken ring that turns
+  slowly around it. Both the ribbon and the stones stop short of a clearing rather than running under its marker: every clearing keeps a little bare ground around it.
 - Baloo 2 for numerals, headings, and buttons; Quicksand for body and tracked labels; Caveat script reserved for the wordmark and celebratory microcopy only.
 - Buttons give feedback on press with a flat brightness dip (`active:brightness-90`) — never a shadow collapse or a translate.
 

@@ -143,14 +143,11 @@ body {
 }
 
 @keyframes trail-here {
-	0% {
-		transform: scale(1);
-		opacity: 0.75;
+	from {
+		transform: rotate(0deg);
 	}
-	70%,
-	100% {
-		transform: scale(1.45);
-		opacity: 0;
+	to {
+		transform: rotate(360deg);
 	}
 }
 
@@ -206,8 +203,23 @@ a.trail-stop:focus-visible .trail-disc {
 
 .trail-ring {
 	opacity: 0.75;
-	animation: trail-here 2600ms cubic-bezier(0.16, 1, 0.3, 1) var(--d, 0ms)
-		infinite;
+	animation: trail-here 14s linear infinite;
+}
+
+@keyframes trail-beckon {
+	to {
+		transform: translateY(var(--bob, 3px));
+	}
+}
+
+/* The way back appears rather than pops: it arrives while the learner is
+   already moving, and should not compete with the scroll. */
+.trail-return {
+	animation: trail-appear 220ms ease-out both;
+}
+
+.trail-beckon {
+	animation: trail-beckon 1400ms ease-in-out infinite alternate;
 }
 
 .trail-firefly {
@@ -222,6 +234,8 @@ a.trail-stop:focus-visible .trail-disc {
 	.trail-node,
 	.trail-pebble,
 	.trail-ring,
+	.trail-return,
+	.trail-beckon,
 	.trail-firefly {
 		animation: none;
 	}
