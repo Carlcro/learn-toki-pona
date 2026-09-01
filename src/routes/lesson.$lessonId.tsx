@@ -2,6 +2,7 @@ import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
 import { CompoundBuilder } from "#/components/CompoundBuilder";
 import { ContextExercise } from "#/components/ContextExercise";
+import { DialogueExercise } from "#/components/DialogueExercise";
 import { Flashcard } from "#/components/Flashcard";
 import { GrammarCheckCard } from "#/components/GrammarCheckCard";
 import { MultipleChoice } from "#/components/MultipleChoice";
@@ -12,6 +13,7 @@ import { SentenceBuilder } from "#/components/SentenceBuilder";
 import { SpeakerButton } from "#/components/SpeakerButton";
 import { StepProgress } from "#/components/StepProgress";
 import { selectCompoundsForLesson } from "#/data/compounds";
+import { selectDialoguesForLesson } from "#/data/dialogues";
 import { GRAMMAR_CONCEPTS_BY_ID } from "#/data/grammar";
 import {
 	getLessonById,
@@ -26,6 +28,7 @@ import {
 } from "#/data/senses";
 import type {
 	Compound,
+	Dialogue,
 	GrammarConcept,
 	Scene,
 	SenseItem,
@@ -73,7 +76,8 @@ type Step =
 	| { kind: "sense"; item: SenseItem }
 	| { kind: "compound"; compound: Compound }
 	| { kind: "build"; scene: Scene }
-	| { kind: "context"; scene: Scene };
+	| { kind: "context"; scene: Scene }
+	| { kind: "dialogue"; dialogue: Dialogue };
 
 function chunk<T>(items: T[], size: number): T[][] {
 	const batches: T[][] = [];
@@ -89,6 +93,7 @@ function buildSteps(args: {
 	scenes: Scene[];
 	senseItems: SenseItem[];
 	compounds: Compound[];
+	dialogues: Dialogue[];
 }): Step[] {
 	const steps: Step[] = [];
 	chunk(args.words, BATCH_SIZE).forEach((batch, batchIndex) => {
@@ -109,6 +114,12 @@ function buildSteps(args: {
 	for (const scene of args.scenes) {
 		steps.push({ kind: "build", scene });
 		steps.push({ kind: "context", scene });
+	}
+	// Conversation closes the lesson: by here the words have been drilled and
+	// the sentences built, so a dialogue is the first place any of it has to
+	// come back under time pressure, from someone else's opening line.
+	for (const dialogue of args.dialogues) {
+		steps.push({ kind: "dialogue", dialogue });
 	}
 	return steps;
 }
@@ -137,6 +148,7 @@ function LessonPage() {
 				scenes: lesson.sceneIds.map((id) => SCENES_BY_ID[id]),
 				senseItems: selectSenseItemsForWords(lesson.wordIds),
 				compounds: selectCompoundsForLesson(lesson.id),
+				dialogues: selectDialoguesForLesson(lesson.id),
 			}),
 		[lesson],
 	);
@@ -349,6 +361,15 @@ function LessonPage() {
 									<ContextExercise
 										key={`context-${step.scene.id}`}
 										scene={step.scene}
+										vocabulary={vocabulary}
+										onNext={advance}
+									/>
+								)}
+
+								{step.kind === "dialogue" && (
+									<DialogueExercise
+										key={step.dialogue.id}
+										dialogue={step.dialogue}
 										vocabulary={vocabulary}
 										onNext={advance}
 									/>

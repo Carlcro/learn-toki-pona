@@ -261,3 +261,47 @@ export interface Compound {
 	literal: string;
 	answer: WordId[];
 }
+
+/** A line the app speaks. Shown with audio; `en` is the quiet translation. */
+export interface DialogueAppTurn {
+	speaker: "app";
+	toki: string;
+	en: string;
+}
+
+/**
+ * A turn the learner must answer. A reply is accepted when it matches one of
+ * `accepted` exactly (after tokenizing — punctuation and case are ignored), or
+ * when every sentence in it is well-formed AND it contains every word in
+ * `mustInclude`. `accepted` exists because the idiomatic answer to a yes/no
+ * question is the bare verb ("wile.") — a fragment the sentence validator
+ * would reject.
+ */
+export interface DialogueLearnerTurn {
+	speaker: "learner";
+	/** What the learner is being asked to do, in plain English. */
+	prompt: string;
+	/** Words the reply must contain for it to count as answering the question. */
+	mustInclude: WordId[];
+	/** Extra full replies accepted verbatim (normalized), e.g. bare-verb answers. */
+	accepted?: string[];
+	/** Idiomatic replies shown after answering — “you could also say”. */
+	references: string[];
+	/** Optional word-bank nudge, like a scene's allowedWordIds. */
+	hintWordIds?: WordId[];
+}
+
+export type DialogueTurn = DialogueAppTurn | DialogueLearnerTurn;
+
+/**
+ * A short scripted conversation. The app plays its side; the learner types
+ * theirs. Like compounds, a dialogue belongs to a lesson and may only lean on
+ * vocabulary taught at or before it.
+ */
+export interface Dialogue {
+	id: string;
+	lessonId: string;
+	/** Shown as the exercise heading, e.g. “Meeting a friend”. */
+	title: string;
+	turns: DialogueTurn[];
+}
