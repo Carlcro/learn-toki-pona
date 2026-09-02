@@ -99,7 +99,7 @@ function NextAction({ plan, now }: { plan: DailyPlan; now: Date }) {
 						You've finished every lesson the course has. Reviews keep it all
 						alive
 						{plan.nextDueAt
-							? ` — the next batch is due ${describeTimeUntil(plan.nextDueAt, now)}.`
+							? `. The next batch is due ${describeTimeUntil(plan.nextDueAt, now)}.`
 							: "."}
 					</p>
 					<Link to="/library" className={PRIMARY_BUTTON}>

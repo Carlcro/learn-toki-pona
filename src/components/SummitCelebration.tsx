@@ -473,7 +473,7 @@ export function SummitCelebration({
 
 				<div className="flex w-full flex-col items-center gap-2.5">
 					<p className="text-center font-sans text-sm text-mist">
-						The lessons are done. What keeps them is reading — and the reviews
+						The lessons are done. What keeps them is reading, and the reviews
 						that bring each word back just before you'd lose it.
 					</p>
 					<Link

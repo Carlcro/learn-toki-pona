@@ -70,7 +70,7 @@ export function ProductionCard({
 						<span
 							className={`font-script text-2xl ${isCorrect ? "text-pink" : "text-mist"}`}
 						>
-							{isCorrect ? "Nice — that's right!" : "Not this time."}
+							{isCorrect ? "Nice, that's right!" : "Not this time."}
 						</span>
 
 						<div className="flex items-center gap-3">

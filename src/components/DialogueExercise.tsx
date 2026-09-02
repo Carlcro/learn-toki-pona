@@ -226,7 +226,7 @@ function describeFailure(
 	token?: string,
 ): string {
 	if (reason === "missing-word" && token) {
-		return `Well formed — but it doesn't answer the question. Try using “${token}”.`;
+		return `Good sentence, but it doesn't answer the question. Try using “${token}”.`;
 	}
 	if (reason === "unknown-word" && token) {
 		return `The course hasn't taught “${token}” yet.`;

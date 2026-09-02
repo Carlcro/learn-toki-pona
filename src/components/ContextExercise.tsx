@@ -33,7 +33,7 @@ export function ContextExercise({
 		setSubmitted(true);
 		setValid(result.valid);
 		if (result.valid) {
-			setMessage("That's well formed — nice work!");
+			setMessage("That's a real toki pona sentence. Nice work!");
 			return;
 		}
 		setMessage(

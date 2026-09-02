@@ -86,7 +86,7 @@ function Stop({
 	const body = (
 		<>
 			<span className="sr-only">
-				Lesson {lesson.id}: {lesson.topic} —{" "}
+				Lesson {lesson.id}: {lesson.topic},{" "}
 				{status === "completed"
 					? standingHere
 						? "done, and the end of the trail so far"
@@ -300,7 +300,7 @@ function Summit({
 			<li>
 				<span className={`${shell} group opacity-75`} style={position}>
 					<span className="sr-only">
-						The lookout, the end of the trail — dark until every lesson is done.{" "}
+						The lookout, the end of the trail. Dark until every lesson is done.{" "}
 						{remaining} to go.
 					</span>
 					{nameplate}

@@ -38,7 +38,7 @@ export function GrammarCheckCard({
 		<CozyPanel>
 			<div className="flex flex-col items-center gap-5 py-2">
 				<span className="font-sans text-[0.65rem] font-bold tracking-[0.18em] text-mist uppercase">
-					Grammar — {concept.name}
+					Grammar: {concept.name}
 				</span>
 				<span className="text-center font-display text-lg font-bold text-cream">
 					{concept.check.question}

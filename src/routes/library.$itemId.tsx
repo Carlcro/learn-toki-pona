@@ -169,7 +169,7 @@ function LibraryItemPage() {
 										</div>
 										{scheduled ? (
 											<p className="font-sans text-sm text-mist">
-												Moved into today's review — no penalty to their
+												Moved into today's review. No penalty to their
 												scheduling, just an earlier look.
 											</p>
 										) : (

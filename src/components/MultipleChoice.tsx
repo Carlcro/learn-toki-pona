@@ -95,7 +95,7 @@ export function MultipleChoice({
 						<span
 							className={`font-script text-xl ${isCorrect ? "text-pink" : "text-mist"}`}
 						>
-							{isCorrect ? "Nice — that's right!" : `That's ${word.toki}.`}
+							{isCorrect ? "Nice, that's right!" : `That's ${word.toki}.`}
 						</span>
 						<button
 							type="button"

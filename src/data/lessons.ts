@@ -32,14 +32,14 @@ export const LESSONS: Lesson[] = [
 	},
 	{
 		id: "3",
-		topic: "ona, en, pre‑verbs",
+		topic: "ona, en, helper words",
 		wordIds: ["ona", "en", "wile", "ken", "sona", "toki"],
 		grammarConceptIds: ["en", "pre-verbs"],
 		sceneIds: ["wants-to-eat", "person-and-animal"],
 	},
 	{
 		id: "4",
-		topic: "ala — saying no",
+		topic: "ala: saying no",
 		wordIds: ["ala", "pilin", "ike", "seme"],
 		grammarConceptIds: ["ala"],
 		sceneIds: ["not-eating", "asking-good"],
@@ -60,7 +60,7 @@ export const LESSONS: Lesson[] = [
 	},
 	{
 		id: "7",
-		topic: "prepositions",
+		topic: "where, how, why",
 		wordIds: ["lon", "tawa", "kepeken", "tan", "sama"],
 		grammarConceptIds: ["prepositions"],
 		sceneIds: ["at-home", "going-to"],
@@ -130,7 +130,7 @@ export const LESSONS: Lesson[] = [
 	},
 	{
 		id: "17",
-		topic: "la — setting the scene",
+		topic: "la: setting the scene",
 		wordIds: ["tenpo", "sin", "pini", "open", "awen", "lape", "la"],
 		grammarConceptIds: ["la"],
 		sceneIds: [],

@@ -1,10 +1,15 @@
 import type { GrammarConcept } from "./types";
 
 // Explanations are written for someone who has never been taught grammar
-// terms. "Predicate", "direct object", "modifier", "clause" and the rest are
-// deliberately absent: a learner who has to look up the explanation has been
-// taught nothing. Where a term is genuinely useful shorthand later, it is
-// introduced once, in brackets, after the plain words for it.
+// terms. "Predicate", "direct object", "modifier", "clause", "verb" and the
+// rest are deliberately absent: a learner who has to look up the explanation
+// has been taught nothing. Where a plain phrase is needed instead, it is the
+// same phrase everywhere ("action word", "describing word", "who it's
+// about", "what they do") so the learner meets one name per idea.
+//
+// The voice is warm and a little playful, but every sentence is short and
+// says one thing. No dashes are used to join clauses: a new thought gets a
+// new sentence.
 //
 // Every concept carries at least one worked example cut into labelled pieces
 // (see SentenceAnatomy). For most of these points, showing where the sentence
@@ -14,12 +19,13 @@ export const GRAMMAR_CONCEPTS: GrammarConcept[] = [
 		id: "li-e",
 		name: "li / e",
 		explanation:
-			"A toki pona sentence comes in two halves: who or what it's about, then " +
-			"what they do or are. li is the little word that marks where the first " +
-			"half ends and the second begins — it isn't translated, it's a signpost. " +
-			"Leave li out when the first half is just mi or sina on its own; that one " +
-			"exception is the only time it disappears. e marks the thing the action " +
-			"is done to, when there is one.",
+			"Every toki pona sentence has two halves. First comes who or what it's " +
+			"about. Then comes what they do, or what they are. The tiny word li " +
+			"sits between the halves like a fence post. It has no meaning of its " +
+			"own and never gets translated. It just shows where the second half " +
+			"starts. One exception: if the first half is only mi (I) or sina (you), " +
+			"li stays home. And when the action is done to something, the little " +
+			"word e points at that something.",
 		examples: [
 			{
 				chunks: [
@@ -49,12 +55,13 @@ export const GRAMMAR_CONCEPTS: GrammarConcept[] = [
 		id: "modifiers",
 		name: "word order",
 		explanation:
-			"A describing word comes after the word it describes, never before — the " +
-			"opposite of English. Stack as many as you like, and each one applies to " +
-			"everything on its left. The same word can land in the other half of the " +
-			"sentence instead and become the thing being said: jan suli is a big " +
-			"person, but jan li suli says the person is big. Position decides, not " +
-			"the word.",
+			"In English you say big person. In toki pona you say person big: jan " +
+			"suli. A describing word always comes after the thing it describes. " +
+			"You can stack as many as you like, and each new one describes " +
+			"everything to its left. Now watch the same word move. jan suli means " +
+			"a big person. But jan li suli means the person is big. Once suli " +
+			"crosses the li fence, it stops describing and becomes the point of " +
+			"the sentence. Where a word sits decides what it does.",
 		examples: [
 			{
 				chunks: [
@@ -83,10 +90,11 @@ export const GRAMMAR_CONCEPTS: GrammarConcept[] = [
 		id: "en",
 		name: "en",
 		explanation:
-			"en glues two things into a single “who it's about”, so one li still " +
-			"covers them both. Watch the mi exception disappear here: mi on its own " +
-			"drops li, but the moment en joins mi to something else, the first half " +
-			"is no longer a bare mi and li comes back.",
+			"en means and, but it has one job only: joining the people or things a " +
+			"sentence is about. jan en soweli li pona means the person and the " +
+			"animal are good. One li still covers them both. Now watch the mi " +
+			"exception. mi on its own drops li. But mi en sina is no longer mi on " +
+			"its own, so li comes back: mi en sina li pona.",
 		examples: [
 			{
 				chunks: [
@@ -100,7 +108,7 @@ export const GRAMMAR_CONCEPTS: GrammarConcept[] = [
 			},
 			{
 				chunks: [
-					{ text: "mi en sina", label: "no longer a bare mi…" },
+					{ text: "mi en sina", label: "no longer mi alone…" },
 					{ text: "li", particle: true, label: "…so li is back" },
 					{ text: "pona", label: "said about both" },
 				],
@@ -117,10 +125,12 @@ export const GRAMMAR_CONCEPTS: GrammarConcept[] = [
 		id: "pre-verbs",
 		name: "wile / ken / sona",
 		explanation:
-			"wile (want/need/must), ken (can/may), and sona (know how to) go straight " +
-			"in front of an action word to bend its meaning. Nothing else changes: " +
-			"the pair still sits in the same half of the sentence as one action, and " +
-			"e still marks whatever it's done to.",
+			"Three helper words go right in front of an action word to change its " +
+			"flavour. wile means want, need, or must. ken means can or may. sona " +
+			"means know how to. So mi moku is I eat, and mi wile moku is I want " +
+			"to eat. Nothing else about the sentence changes. The helper and the " +
+			"action still sit together in the second half, and e still points at " +
+			"whatever the action is done to.",
 		examples: [
 			{
 				chunks: [
@@ -150,11 +160,13 @@ export const GRAMMAR_CONCEPTS: GrammarConcept[] = [
 		id: "ala",
 		name: "ala",
 		explanation:
-			"ala cancels the word directly in front of it — put it right after " +
-			"whatever you mean to undo. To ask a yes/no question, say the action, " +
-			"then ala, then the same action again: that sandwich is toki pona's " +
-			"question mark. Answer with the bare action for yes, or the action plus " +
-			"ala for no.",
+			"ala means not. Put it right after the word you want to cancel, and " +
+			"only that word gets cancelled: mi moku ala is I'm not eating. ala " +
+			"also makes questions. Toki pona has no word for a question mark, so " +
+			"to ask a yes or no question you say the action, then ala, then the " +
+			"same action again. sina moku ala moku? means are you eating? To " +
+			"answer, say the action alone for yes (moku) or the action plus ala " +
+			"for no (moku ala).",
 		examples: [
 			{
 				chunks: [
@@ -182,17 +194,19 @@ export const GRAMMAR_CONCEPTS: GrammarConcept[] = [
 		id: "pi",
 		name: "pi",
 		explanation:
-			"Describing words normally attach one at a time to whatever sits right " +
-			"before them, which goes wrong as soon as you want two of them to work as " +
-			"a pair. pi regroups: everything after pi becomes one bundle describing " +
-			"the word just before pi. Without it, jan pona lukin reads as “a good " +
-			"person, visibly” — pi is what makes the last two words stick together.",
+			"Describing words normally stick one at a time to whatever is right " +
+			"before them. That works fine until you want two of them to act as a " +
+			"team. Say you want to say good-looking person. jan pona lukin " +
+			"doesn't work, because it reads as a good person, seen. pi fixes it. " +
+			"Everything after pi bundles into one team, and the whole team " +
+			"describes the word just before pi. jan pi pona lukin: a person of " +
+			"good looks.",
 		examples: [
 			{
 				chunks: [
 					{ text: "jan", label: "the thing" },
 					{ text: "pi", particle: true },
-					{ text: "pona lukin", label: "one bundle: “good appearance”" },
+					{ text: "pona lukin", label: "one bundle: “good looks”" },
 				],
 				en: "A good-looking person.",
 			},
@@ -215,10 +229,11 @@ export const GRAMMAR_CONCEPTS: GrammarConcept[] = [
 		id: "o",
 		name: "o",
 		explanation:
-			"o stands where li would, and turns a statement into a command, request, " +
-			"or suggestion. Unlike li it is never dropped — mi and sina keep it too. " +
-			"Leave out the first half entirely and o opens a command aimed at " +
-			"everyone, including you.",
+			"o turns a sentence into a command, a request, or a suggestion. It " +
+			"takes the spot where li would go. Unlike li, o never gets dropped, " +
+			"not even after mi or sina: sina o kama means come here, you. Leave " +
+			"out the first half completely and the command is aimed at everyone, " +
+			"including yourself: o pona means let's be good.",
 		examples: [
 			{
 				chunks: [
@@ -246,16 +261,18 @@ export const GRAMMAR_CONCEPTS: GrammarConcept[] = [
 		id: "prepositions",
 		name: "lon / tawa / kepeken / tan / sama",
 		explanation:
-			"lon (at/in/on), tawa (to/toward/for), kepeken (using/with), tan " +
-			"(from/because), and sama (same/like) add where, how, why, or compared to " +
-			"what onto the second half of the sentence. They are ordinary words doing " +
-			"a joining job, so they need no e — the thing follows straight after.",
+			"These five little words add extra detail to the second half of a " +
+			"sentence: where, how, why, or compared to what. lon means at, in, or " +
+			"on. tawa means to, toward, or for. kepeken means using or with. tan " +
+			"means from or because of. sama means same as or like. They never " +
+			"need e. Just put the next word straight after them: mi tawa tomo " +
+			"means I'm going to the house.",
 		examples: [
 			{
 				chunks: [
 					{ text: "mi", label: "who it's about" },
 					{ text: "tawa", label: "going to…" },
-					{ text: "tomo", label: "…here — no e needed" },
+					{ text: "tomo", label: "…here, with no e needed" },
 				],
 				en: "I'm going to the house.",
 			},
@@ -279,11 +296,13 @@ export const GRAMMAR_CONCEPTS: GrammarConcept[] = [
 		id: "compounds",
 		name: "building words",
 		explanation:
-			"Toki Pona has no word for phone, friend, or bathroom. You build one from " +
-			"what you already have, using the same after-the-word order as any other " +
-			"description. Read a built word literally first, then ask what it would " +
-			"have to mean in this situation — the same pair can land somewhere else " +
-			"and mean something else entirely.",
+			"Toki pona has no word for phone, friend, or bathroom. Instead you " +
+			"build one out of words you already know, in the usual order: the " +
+			"main thing first, then what kind. ilo toki is a talking tool, which " +
+			"is a phone. tomo telo is a water room, which is a bathroom. Read a " +
+			"built word literally first, then ask what it would have to mean " +
+			"right here. The same pair can mean something quite different in " +
+			"another situation.",
 		examples: [
 			{
 				chunks: [
@@ -310,11 +329,12 @@ export const GRAMMAR_CONCEPTS: GrammarConcept[] = [
 		id: "numbers",
 		name: "wan / tu / ale / nanpa",
 		explanation:
-			"wan (one) and tu (two) are describing words like any other — they sit " +
-			"after the noun they count. Toki Pona has no words above two, so ale " +
-			"(all/everything) covers any bigger amount. To pick out a spot in a " +
-			"list instead of a quantity — first, second — put nanpa in front of the " +
-			"number: nanpa wan, nanpa tu.",
+			"wan (one) and tu (two) are describing words like any other, so they " +
+			"come after the thing they count: jan tu is two people. Toki pona " +
+			"has no word for three or anything higher. For a bigger amount, use " +
+			"mute (many) or ale (all). To say first or second instead of one or " +
+			"two, put nanpa in front of the number: jan nanpa wan is the first " +
+			"person.",
 		examples: [
 			{
 				chunks: [
@@ -345,15 +365,17 @@ export const GRAMMAR_CONCEPTS: GrammarConcept[] = [
 		id: "la",
 		name: "la",
 		explanation:
-			"la splits a sentence into a setup and a main statement: setup, la, then " +
-			"the sentence it applies to. The setup can be a time, a condition, or a " +
-			"topic — “when/if/about X, then Y.” Nothing about the main sentence " +
-			"changes; la just tells you to read what came before it as the " +
+			"la lets you set the scene before you say the main thing. Put the " +
+			"setting first, then la, then the sentence it belongs to. The setting " +
+			"can be a time, a condition, or a topic: when X, if X, or about X. " +
+			"tenpo suno la mi moku means in the daytime, I eat. sina wile la sina " +
+			"ken kama means if you want, you can come. The main sentence stays " +
+			"exactly as it was. la just says: everything before me is the " +
 			"backdrop.",
 		examples: [
 			{
 				chunks: [
-					{ text: "tenpo suno", label: "the setup: “in daytime”" },
+					{ text: "tenpo suno", label: "the setting: “in daytime”" },
 					{ text: "la", particle: true },
 					{ text: "mi moku", label: "the main sentence" },
 				],
@@ -361,7 +383,7 @@ export const GRAMMAR_CONCEPTS: GrammarConcept[] = [
 			},
 			{
 				chunks: [
-					{ text: "sina wile", label: "the setup: “if you want”" },
+					{ text: "sina wile", label: "the setting: “if you want”" },
 					{ text: "la", particle: true },
 					{ text: "sina ken kama", label: "the main sentence" },
 				],
@@ -382,19 +404,19 @@ export const GRAMMAR_CONCEPTS: GrammarConcept[] = [
 		id: "anu-taso-kin",
 		name: "anu / taso / kin",
 		explanation:
-			"Three small words that slot into a sentence without changing its shape. " +
-			"anu sits between two options and means “or” — the rest of the sentence " +
-			"carries on as if either one stood there alone. taso at the start of a " +
-			"sentence means “but”; tucked in after a word it shrinks to “only that " +
-			"one”. kin goes right after a word to add “too” or “even” about exactly " +
-			"that word.",
+			"Three small words that slot into a sentence without changing its " +
+			"shape. anu means or, and sits between two choices: kili anu telo, " +
+			"fruit or water. taso at the start of a sentence means but. Tucked in " +
+			"after a word instead, it means only that one: mi taso, only me. kin " +
+			"goes right after a word and adds too or even to exactly that word: " +
+			"sina kin, you too.",
 		examples: [
 			{
 				chunks: [
 					{ text: "sina wile e", label: "the question" },
-					{ text: "kili", label: "option one" },
+					{ text: "kili", label: "choice one" },
 					{ text: "anu", particle: true },
-					{ text: "telo", label: "option two" },
+					{ text: "telo", label: "choice two" },
 				],
 				en: "Do you want fruit or water?",
 			},

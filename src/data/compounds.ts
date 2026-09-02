@@ -155,7 +155,7 @@ export const COMPOUNDS: Compound[] = [
 		id: "year",
 		lessonId: "23",
 		en: "a year",
-		literal: "round time — time that loops",
+		literal: "round time, time that loops around",
 		answer: ["tenpo", "sike"],
 	},
 	{

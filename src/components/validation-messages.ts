@@ -8,12 +8,13 @@ import type { ValidationError } from "#/lib/grammar-validator";
 export const VALIDATION_MESSAGES: Record<ValidationError, string> = {
 	empty: "Write a sentence before submitting.",
 	"unknown-word": "The course hasn't taught that word yet.",
-	"missing-li": "This subject needs li before the predicate.",
-	"unexpected-li": "Drop li — it's left out after a bare mi or sina.",
-	"empty-subject": "The sentence needs a subject before li.",
-	"empty-predicate": "The sentence needs a predicate.",
-	"empty-object": "e needs an object after it.",
+	"missing-li": "Add li between who it's about and what they do.",
+	"unexpected-li": "Drop li. After mi or sina on their own, li stays home.",
+	"empty-subject": "Say who or what the sentence is about before li.",
+	"empty-predicate":
+		"The sentence needs a second half: what they do, or what they are.",
+	"empty-object": "e needs a word after it: the thing the action is done to.",
 	"dangling-ala": "ala goes after the word it cancels, not in front of it.",
 	"trailing-tokens":
-		"This sentence has more structure than the course covers so far.",
+		"This sentence uses a shape the course hasn't covered yet. Try something simpler.",
 };

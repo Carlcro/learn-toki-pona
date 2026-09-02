@@ -77,7 +77,7 @@ export function ReadingPassage({
 				{activeWord ? (
 					<div className="flex flex-col gap-0.5">
 						<span className="font-sans text-sm font-semibold text-cream">
-							{activeWord.toki} — {activeWord.gloss}
+							{activeWord.toki}: {activeWord.gloss}
 						</span>
 						<span className="font-sans text-xs text-mist">
 							{activeWord.definition}

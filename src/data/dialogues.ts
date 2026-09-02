@@ -36,7 +36,7 @@ export const DIALOGUES: Dialogue[] = [
 			{
 				speaker: "learner",
 				prompt:
-					"Answer yes or no — the toki pona way is to answer with the verb.",
+					"Answer yes or no. In toki pona you answer by repeating the action word: wile for yes, wile ala for no.",
 				mustInclude: ["wile"],
 				accepted: ["wile", "wile ala"],
 				references: ["wile.", "wile ala."],
@@ -108,7 +108,7 @@ export const DIALOGUES: Dialogue[] = [
 			},
 			{
 				speaker: "learner",
-				prompt: "Agree — say you're coming to their house.",
+				prompt: "Say yes: tell them you're coming to their house.",
 				mustInclude: ["kama"],
 				references: ["mi kama.", "mi kama tawa tomo sina."],
 				hintWordIds: ["mi", "kama", "tawa", "tomo", "sina"],
@@ -135,7 +135,8 @@ export const DIALOGUES: Dialogue[] = [
 			},
 			{
 				speaker: "learner",
-				prompt: "Answer with the verb — yes or no.",
+				prompt:
+					"Answer yes or no by repeating the action word: olin, or olin ala.",
 				mustInclude: ["olin"],
 				accepted: ["olin", "olin ala"],
 				references: ["olin.", "mi olin e ona."],

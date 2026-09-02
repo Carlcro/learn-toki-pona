@@ -22,7 +22,7 @@ export const SENSE_ITEMS: SenseItem[] = [
 		sentence: "moku li pona.",
 		options: ["eats", "the food", "eat!"],
 		answer: "the food",
-		note: "It sits before li, so it's what the sentence is about — the thing, not the action.",
+		note: "It sits before li, so it's what the sentence is about: the thing, not the action.",
 	},
 	{
 		id: "pona-predicate",
@@ -30,7 +30,7 @@ export const SENSE_ITEMS: SenseItem[] = [
 		sentence: "telo li pona.",
 		options: ["good water", "is good", "goodness"],
 		answer: "is good",
-		note: "After li it's what's being said about telo, not a word describing it.",
+		note: "After li it's what's being said about the water, not a word describing it.",
 	},
 	{
 		id: "suli-modifier",
@@ -38,7 +38,7 @@ export const SENSE_ITEMS: SenseItem[] = [
 		sentence: "jan suli li moku.",
 		options: ["is big", "big", "bigness"],
 		answer: "big",
-		note: "It sits right after jan and before li, so it describes jan rather than saying anything about it.",
+		note: "It sits right after jan and before li, so it describes the person rather than saying something about them.",
 	},
 	{
 		id: "suli-predicate",
@@ -46,7 +46,7 @@ export const SENSE_ITEMS: SenseItem[] = [
 		sentence: "jan li suli.",
 		options: ["big person", "is big", "very"],
 		answer: "is big",
-		note: "The same word one place later: after li it stops describing and becomes the point of the sentence.",
+		note: "The same word, one spot later. After li it stops describing and becomes the point of the sentence.",
 	},
 	{
 		id: "telo-verb",
@@ -54,7 +54,7 @@ export const SENSE_ITEMS: SenseItem[] = [
 		sentence: "mi telo e jan.",
 		options: ["water", "wash", "wet"],
 		answer: "wash",
-		note: "e points at something for it to act on, so telo is an action here — watering or washing.",
+		note: "e points at something for it to act on, so telo is an action here: watering or washing.",
 	},
 	{
 		id: "mute-quantity",
@@ -62,7 +62,7 @@ export const SENSE_ITEMS: SenseItem[] = [
 		sentence: "jan mute li pona.",
 		options: ["many", "very", "a crowd"],
 		answer: "many",
-		note: "Describing a thing, mute counts it. Describing a quality it strengthens instead: pona mute is 'very good'.",
+		note: "After a thing, mute counts it: many. After a quality, it turns the volume up instead: pona mute is 'very good'.",
 	},
 	{
 		id: "toki-noun",
@@ -70,7 +70,7 @@ export const SENSE_ITEMS: SenseItem[] = [
 		sentence: "toki mi li pona.",
 		options: ["I speak", "language", "talkative"],
 		answer: "language",
-		note: "It opens the first half with mi describing it, so it's a thing you can own.",
+		note: "It opens the first half, with mi describing it, so it's a thing you can own: my language.",
 	},
 	{
 		id: "toki-verb",
@@ -78,7 +78,7 @@ export const SENSE_ITEMS: SenseItem[] = [
 		sentence: "mi toki.",
 		options: ["language", "talk", "a greeting"],
 		answer: "talk",
-		note: "It's the whole second half after a bare mi, so it's what mi is doing.",
+		note: "It's the whole second half after mi on its own, so it's what I am doing.",
 	},
 	{
 		id: "sona-preverb",
@@ -86,7 +86,7 @@ export const SENSE_ITEMS: SenseItem[] = [
 		sentence: "jan li sona toki.",
 		options: ["knowledge", "knows how to", "is known"],
 		answer: "knows how to",
-		note: "Another action follows it directly, which is what makes sona 'knows how to' rather than 'knowledge'.",
+		note: "Another action word comes right after it. That's what makes sona 'knows how to' rather than 'knowledge'.",
 	},
 	{
 		id: "ala-negation",
@@ -102,7 +102,7 @@ export const SENSE_ITEMS: SenseItem[] = [
 		sentence: "sina pona ala pona?",
 		options: ["not", "or", "makes it a yes/no question"],
 		answer: "makes it a yes/no question",
-		note: "The same word repeats on both sides of ala — that sandwich is how Toki Pona asks yes or no.",
+		note: "The same word sits on both sides of ala. That sandwich is how toki pona asks a yes or no question.",
 	},
 	{
 		id: "pilin-verb",
@@ -110,7 +110,7 @@ export const SENSE_ITEMS: SenseItem[] = [
 		sentence: "mi pilin pona.",
 		options: ["a feeling", "feel", "am touched"],
 		answer: "feel",
-		note: "The second half after a bare mi, with pona saying how.",
+		note: "It's the second half after mi on its own, with pona saying how I feel.",
 	},
 	{
 		id: "lukin-verb",
@@ -126,7 +126,7 @@ export const SENSE_ITEMS: SenseItem[] = [
 		sentence: "jan pi pona lukin li toki.",
 		options: ["watches", "appearance", "sees"],
 		answer: "appearance",
-		note: "Inside the pi bundle it's a thing, not an action — literally 'of good appearance'.",
+		note: "Inside the pi bundle it's a thing, not an action: literally 'of good appearance'.",
 	},
 	{
 		id: "kama-preverb",
@@ -134,7 +134,7 @@ export const SENSE_ITEMS: SenseItem[] = [
 		sentence: "mi kama sona e toki pona.",
 		options: ["arrive", "come to (begin to)", "an event"],
 		answer: "come to (begin to)",
-		note: "In front of another action, kama means becoming or starting to — kama sona is how you say 'learn'.",
+		note: "In front of another action word, kama means becoming or starting to. kama sona, 'come to know', is how you say learn.",
 	},
 	{
 		id: "pana-verb",
@@ -150,7 +150,7 @@ export const SENSE_ITEMS: SenseItem[] = [
 		sentence: "ni li pona tawa mi.",
 		options: ["goes", "to / for", "moves"],
 		answer: "to / for",
-		note: "pona tawa mi is literally 'good to me' — the ordinary way to say you like something.",
+		note: "pona tawa mi is literally 'good to me'. It's the everyday way to say you like something.",
 	},
 	{
 		id: "lon-verb",
@@ -158,27 +158,27 @@ export const SENSE_ITEMS: SenseItem[] = [
 		sentence: "mi lon.",
 		options: ["at", "am here / am real", "a location"],
 		answer: "am here / am real",
-		note: "With nothing following it, lon can't be joining anything to the sentence — it's the action 'to be present'.",
+		note: "Nothing follows lon here, so it isn't linking anything to the sentence. It's the action itself: to be here, to exist.",
 	},
 	{
 		id: "nasa-compound",
 		wordId: "nasa",
 		sentence: "telo nasa li ike.",
 		options: [
-			"strange liquid, i.e. alcohol",
+			"strange liquid, meaning alcohol",
 			"bad water",
 			"the water is strange",
 		],
-		answer: "strange liquid, i.e. alcohol",
-		note: "telo nasa is the whole first half before li ike — one built thing, not a sentence about water being odd.",
+		answer: "strange liquid, meaning alcohol",
+		note: "telo nasa is the whole first half, before li ike. It's one built thing, not a sentence about water being odd.",
 	},
 	{
 		id: "ilo-compound",
 		wordId: "ilo",
 		sentence: "mi toki kepeken ilo toki.",
-		options: ["talking tool, i.e. a phone", "tool talk", "I use tools"],
-		answer: "talking tool, i.e. a phone",
-		note: "Read it literally first — 'tool of talking' — then let the situation pick which such tool is meant.",
+		options: ["talking tool, meaning a phone", "tool talk", "I use tools"],
+		answer: "talking tool, meaning a phone",
+		note: "Read it literally first: 'tool for talking'. Then let the situation pick which tool is meant.",
 	},
 	{
 		id: "lawa-modifier",
@@ -186,7 +186,7 @@ export const SENSE_ITEMS: SenseItem[] = [
 		sentence: "jan lawa li toki.",
 		options: ["the leader", "leads", "a head"],
 		answer: "the leader",
-		note: "Right after jan and before li, it describes jan — literally 'head person', i.e. whoever's in charge.",
+		note: "Right after jan and before li, it describes the person. Literally 'head person', in other words whoever is in charge.",
 	},
 	{
 		id: "lawa-verb",
@@ -194,7 +194,7 @@ export const SENSE_ITEMS: SenseItem[] = [
 		sentence: "jan li lawa e kulupu.",
 		options: ["a head", "leads/controls", "is smart"],
 		answer: "leads/controls",
-		note: "e points at something for it to act on, so lawa is the action here — being in charge of the group.",
+		note: "e points at something for it to act on, so lawa is the action here: being in charge of the group.",
 	},
 	{
 		id: "pali-noun",
@@ -202,7 +202,7 @@ export const SENSE_ITEMS: SenseItem[] = [
 		sentence: "pali mi li pona.",
 		options: ["I work", "my job", "working"],
 		answer: "my job",
-		note: "It sits before li with mi describing it, so it's a thing you can own — the work itself, not the act.",
+		note: "It sits before li with mi describing it, so it's a thing you can own: the work itself, not the act of working.",
 	},
 	{
 		id: "pali-verb",
@@ -210,7 +210,7 @@ export const SENSE_ITEMS: SenseItem[] = [
 		sentence: "mi pali.",
 		options: ["a job", "work", "worker"],
 		answer: "work",
-		note: "The whole second half after a bare mi, so it's what mi is doing.",
+		note: "It's the whole second half after mi on its own, so it's what I am doing.",
 	},
 	{
 		id: "weka-modifier",
@@ -218,7 +218,7 @@ export const SENSE_ITEMS: SenseItem[] = [
 		sentence: "jan weka li pona.",
 		options: ["the absent person", "leaves", "removes"],
 		answer: "the absent person",
-		note: "Describing jan, weka just means 'gone' or 'away' — not the act of leaving.",
+		note: "Describing jan, weka just means 'gone' or 'away', not the act of leaving.",
 	},
 	{
 		id: "weka-verb",
@@ -226,7 +226,7 @@ export const SENSE_ITEMS: SenseItem[] = [
 		sentence: "mi weka e ijo ni.",
 		options: ["is far", "remove", "an absence"],
 		answer: "remove",
-		note: "e points at something for it to act on, so weka is the action — getting rid of it.",
+		note: "e points at something for it to act on, so weka is the action: getting rid of it.",
 	},
 	{
 		id: "sike-modifier",
@@ -234,7 +234,7 @@ export const SENSE_ITEMS: SenseItem[] = [
 		sentence: "poki sike li suli.",
 		options: ["round", "a circle", "a year"],
 		answer: "round",
-		note: "Describing poki, it's the shape — round — rather than the noun 'circle' or 'year' it can also mean.",
+		note: "Describing poki, it means the shape: round. It can also be a thing, a circle or a year, but not in this spot.",
 	},
 	{
 		id: "sike-noun",
@@ -242,7 +242,7 @@ export const SENSE_ITEMS: SenseItem[] = [
 		sentence: "sike ni li pona.",
 		options: ["is round", "the year/circle", "spins"],
 		answer: "the year/circle",
-		note: "Sitting before li, it's the thing itself — could be a ball, a wheel, or a whole year, depending on context.",
+		note: "Sitting before li, it's the thing itself. That could be a ball, a wheel, or a whole year, depending on the situation.",
 	},
 	{
 		id: "tenpo-modifier",
@@ -250,7 +250,7 @@ export const SENSE_ITEMS: SenseItem[] = [
 		sentence: "tenpo suno li pona.",
 		options: ["daytime", "clock", "waits"],
 		answer: "daytime",
-		note: "tenpo suno bundles into one thing — 'sun-time' — before li says something about it.",
+		note: "tenpo suno bundles into one thing, 'sun time', before li says something about it.",
 	},
 	{
 		id: "poka-preposition",
@@ -258,7 +258,7 @@ export const SENSE_ITEMS: SenseItem[] = [
 		sentence: "mi lon poka sina.",
 		options: ["a hip", "beside", "is near"],
 		answer: "beside",
-		note: "Right after lon, poka is doing a joining job — 'at the side of you', i.e. next to you.",
+		note: "Right after lon, poka is doing a linking job: 'at the side of you', in other words next to you.",
 	},
 	{
 		id: "olin-verb",
@@ -266,7 +266,7 @@ export const SENSE_ITEMS: SenseItem[] = [
 		sentence: "mi olin e mama mi.",
 		options: ["a love", "love (the act)", "beloved"],
 		answer: "love (the act)",
-		note: "e points at who it's aimed at, so olin is what mi does — not a thing mi has.",
+		note: "e points at who it's aimed at, so olin is what I do, not a thing I have.",
 	},
 	{
 		id: "kule-modifier",
@@ -274,7 +274,7 @@ export const SENSE_ITEMS: SenseItem[] = [
 		sentence: "tomo kule li pona.",
 		options: ["colorful", "a color", "dyes"],
 		answer: "colorful",
-		note: "Right after tomo and before li, it describes the house — not a thing, not an action.",
+		note: "Right after tomo and before li, it describes the house. Not a thing, not an action.",
 	},
 	{
 		id: "wan-verb",
@@ -282,7 +282,7 @@ export const SENSE_ITEMS: SenseItem[] = [
 		sentence: "mi wan e kulupu tu.",
 		options: ["one", "unite", "a unit"],
 		answer: "unite",
-		note: "e points at the two groups for it to act on, so wan is the action — making them one.",
+		note: "e points at the two groups for it to act on, so wan is the action: making them one.",
 	},
 	{
 		id: "seli-verb",
@@ -298,7 +298,7 @@ export const SENSE_ITEMS: SenseItem[] = [
 		sentence: "waso li lon sewi.",
 		options: ["the sky / above", "sacred", "rises"],
 		answer: "the sky / above",
-		note: "After lon it names a place — where the bird is, not what it does or is like.",
+		note: "After lon it names a place: where the bird is, not what it does or what it's like.",
 	},
 	{
 		id: "len-verb",
@@ -306,7 +306,7 @@ export const SENSE_ITEMS: SenseItem[] = [
 		sentence: "mi len e sijelo mi.",
 		options: ["clothing", "cover / clothe", "fabric"],
 		answer: "cover / clothe",
-		note: "e points at the body for it to act on, so len is the action — covering it.",
+		note: "e points at the body for it to act on, so len is the action: covering it.",
 	},
 	{
 		id: "sitelen-verb",
@@ -330,7 +330,7 @@ export const SENSE_ITEMS: SenseItem[] = [
 		sentence: "utala li ike.",
 		options: ["fights", "the fight / conflict", "aggressive"],
 		answer: "the fight / conflict",
-		note: "Sitting before li, it's what the sentence is about — the thing, not the act of fighting.",
+		note: "Sitting before li, it's what the sentence is about: the thing, not the act of fighting.",
 	},
 	{
 		id: "pakala-verb",
@@ -346,7 +346,7 @@ export const SENSE_ITEMS: SenseItem[] = [
 		sentence: "mi ante e nimi mi.",
 		options: ["different", "change", "other"],
 		answer: "change",
-		note: "e points at the name for it to act on, so ante is the action — altering it.",
+		note: "e points at the name for it to act on, so ante is the action: altering it.",
 	},
 	{
 		id: "musi-modifier",
@@ -354,7 +354,7 @@ export const SENSE_ITEMS: SenseItem[] = [
 		sentence: "toki musi li pona.",
 		options: ["fun / amusing", "plays", "a game"],
 		answer: "fun / amusing",
-		note: "Right after toki, it describes the talk — a funny story, not the act of playing.",
+		note: "Right after toki, it describes the talk: a funny story, not the act of playing.",
 	},
 	{
 		id: "wawa-noun",
@@ -362,7 +362,7 @@ export const SENSE_ITEMS: SenseItem[] = [
 		sentence: "wawa mi li lili.",
 		options: ["strong", "my strength / energy", "empowers"],
 		answer: "my strength / energy",
-		note: "It opens the first half with mi describing it, so it's a thing you can have.",
+		note: "It opens the first half, with mi describing it, so it's a thing you can have: my strength.",
 	},
 	{
 		id: "moli-verb",

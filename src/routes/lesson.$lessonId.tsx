@@ -218,7 +218,7 @@ function LessonPage() {
 	// many words a lesson introduces.
 	return (
 		<ScreenShell
-			label={`Lesson ${lesson.id} — ${lesson.topic}`}
+			label={`Lesson ${lesson.id}: ${lesson.topic}`}
 			backTo="/"
 			backLabel="Back home"
 			// A batch of new words and the grammar arriving with them is the one
@@ -255,14 +255,14 @@ function LessonPage() {
 						{unlockedCount > 0
 							? `You can now read ${unlockedCount} more piece${
 									unlockedCount === 1 ? "" : "s"
-								} in the library — no translation needed.`
+								} in the library, no translation needed.`
 							: "These words are in your review queue now."}
 					</p>
 					{nextDueAt && (
 						<p className="text-center font-sans text-xs text-mist">
 							That's your new lesson for today. These words come back{" "}
-							{describeTimeUntil(nextDueAt, new Date())} — short gaps first,
-							then longer ones.
+							{describeTimeUntil(nextDueAt, new Date())}. Short gaps first, then
+							longer ones.
 						</p>
 					)}
 					{unlockedCount > 0 && (

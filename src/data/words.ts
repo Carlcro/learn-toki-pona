@@ -30,16 +30,16 @@ export const WORDS: Word[] = [
 	{
 		id: "li",
 		toki: "li",
-		gloss: "marks what they do",
+		gloss: "fence between the halves",
 		definition:
-			"Separates who the sentence is about from what they do or are. Left out only after a bare mi or sina.",
+			"Sits between who the sentence is about and what they do or are. Left out only after mi or sina on their own.",
 		role: "particle",
 		example: { toki: "jan li moku.", en: "The person eats." },
 	},
 	{
 		id: "e",
 		toki: "e",
-		gloss: "marks what it's done to",
+		gloss: "points at what it's done to",
 		definition: "Points at the thing the action is done to.",
 		role: "particle",
 		example: { toki: "sina moku e telo.", en: "You drink water." },
@@ -104,8 +104,7 @@ export const WORDS: Word[] = [
 		id: "ni",
 		toki: "ni",
 		gloss: "this, that",
-		definition:
-			"This, that (demonstrative) — points at something in or near the sentence.",
+		definition: "This, that; points at something nearby or just mentioned.",
 		role: "pronoun",
 		example: { toki: "ni li pona.", en: "This is good." },
 	},
@@ -122,16 +121,16 @@ export const WORDS: Word[] = [
 		toki: "ona",
 		gloss: "he / she / it / they",
 		definition:
-			"He, she, it, they (third person, any number); his, her, its, their (as a modifier).",
+			"He, she, it, they (one or many); his, her, its, their when describing another word.",
 		role: "pronoun",
 		example: { toki: "ona li pona.", en: "They are good." },
 	},
 	{
 		id: "en",
 		toki: "en",
-		gloss: "and (joining subjects)",
+		gloss: "and (joins who it's about)",
 		definition:
-			"Joins two or more subjects into a single group before li. Not used to join anything other than subjects.",
+			"And; joins two or more people or things a sentence is about, before li. Not used to join anything else.",
 		role: "particle",
 		example: {
 			toki: "jan en soweli li pona.",
@@ -143,7 +142,7 @@ export const WORDS: Word[] = [
 		toki: "wile",
 		gloss: "want, need, must",
 		definition:
-			"To want, need, wish, have to; placed before another verb to modify it.",
+			"To want, need, wish, have to; put in front of an action word to change its meaning.",
 		role: "content",
 		example: { toki: "mi wile moku.", en: "I want to eat." },
 	},
@@ -152,7 +151,7 @@ export const WORDS: Word[] = [
 		toki: "ken",
 		gloss: "can, may",
 		definition:
-			"To be able to, be allowed to, be possible; placed before another verb to modify it.",
+			"To be able to, be allowed to, be possible; put in front of an action word to change its meaning.",
 		role: "content",
 		example: { toki: "sina ken moku e telo.", en: "You can drink water." },
 	},
@@ -161,7 +160,7 @@ export const WORDS: Word[] = [
 		toki: "sona",
 		gloss: "know, know how to",
 		definition:
-			"Knowledge; to know, understand, know how to; placed before another verb to modify it.",
+			"Knowledge; to know, understand, know how to; put in front of an action word to change its meaning.",
 		role: "content",
 		example: {
 			toki: "jan li sona toki.",
@@ -182,7 +181,7 @@ export const WORDS: Word[] = [
 		toki: "ala",
 		gloss: "not, no, zero",
 		definition:
-			"Not, none, zero. Negates the word directly in front of it, and doubles a verb to ask a yes/no question.",
+			"Not, none, zero. Cancels the word directly in front of it. Between two copies of an action word, it asks a yes or no question.",
 		role: "content",
 		example: { toki: "mi moku ala.", en: "I'm not eating." },
 	},
@@ -207,16 +206,16 @@ export const WORDS: Word[] = [
 		toki: "seme",
 		gloss: "what, which, who",
 		definition:
-			"Question word — stands in for the unknown part of a sentence. sina wile e seme? (What do you want?)",
+			"Question word; stands in for the part you don't know yet. sina wile e seme? (What do you want?)",
 		role: "pronoun",
 		example: { toki: "sina wile e seme?", en: "What do you want?" },
 	},
 	{
 		id: "pi",
 		toki: "pi",
-		gloss: "of (groups a modifier phrase)",
+		gloss: "of (bundles describing words)",
 		definition:
-			"Groups the words that follow into a single modifier phrase for the noun before it, instead of each word modifying in a chain.",
+			"Bundles the words after it into one team that describes the word before it, instead of each word describing the one before.",
 		role: "particle",
 		example: {
 			toki: "jan pi pona lukin li pona.",
@@ -252,7 +251,7 @@ export const WORDS: Word[] = [
 		toki: "o",
 		gloss: "command marker",
 		definition:
-			"Marks a command, request, or suggestion in place of li. Works with any subject (or none) and, unlike li, is never dropped.",
+			"Marks a command, request, or suggestion, in the spot where li would go. Works with anyone in front of it, or no one, and unlike li it is never dropped.",
 		role: "particle",
 		example: { toki: "sina o pona.", en: "Be good!" },
 	},
@@ -401,7 +400,7 @@ export const WORDS: Word[] = [
 		toki: "akesi",
 		gloss: "reptile, amphibian",
 		definition:
-			"Reptile, amphibian; snake, lizard, frog — a creeping or crawling creature.",
+			"Reptile, amphibian; snake, lizard, frog; a creeping or crawling creature.",
 		role: "content",
 		example: { toki: "akesi li lon ma.", en: "The reptile is on the ground." },
 	},
@@ -442,7 +441,7 @@ export const WORDS: Word[] = [
 		toki: "kijetesantakalu",
 		gloss: "raccoon-like creature",
 		definition:
-			"A raccoon, coatimundi, or similar small omnivorous mammal — a Toki Pona community word for procyonids.",
+			"A raccoon, or a similar small masked mammal such as a coati. A playful community word that made it into the official dictionary.",
 		role: "content",
 		example: {
 			toki: "kijetesantakalu li moku e kala.",
@@ -509,7 +508,7 @@ export const WORDS: Word[] = [
 		toki: "oko",
 		gloss: "eye",
 		definition:
-			"Eye; the organ used for seeing — a more specific word than lukin, which covers sight and appearance generally.",
+			"Eye; the body part you see with. More specific than lukin, which covers seeing and looks in general.",
 		role: "content",
 		example: { toki: "oko jan li suli.", en: "The person's eyes are big." },
 	},
@@ -529,7 +528,7 @@ export const WORDS: Word[] = [
 		toki: "laso",
 		gloss: "blue, green",
 		definition:
-			"Blue, green, blue-green; the color of sky or plants — Toki Pona doesn't split blue from green.",
+			"Blue, green, blue-green; the color of sky or plants. Toki pona doesn't split blue from green.",
 		role: "content",
 		example: { toki: "telo li laso.", en: "The water is blue." },
 	},
@@ -593,9 +592,9 @@ export const WORDS: Word[] = [
 	{
 		id: "nanpa",
 		toki: "nanpa",
-		gloss: "number, ordinal marker",
+		gloss: "number; first, second…",
 		definition:
-			"Number; placed before a number to make it an ordinal (nanpa wan = first, nanpa tu = second).",
+			"Number; put before a number to say first, second, and so on (nanpa wan = first, nanpa tu = second).",
 		role: "content",
 		example: {
 			toki: "jan nanpa wan li kama.",
@@ -662,7 +661,7 @@ export const WORDS: Word[] = [
 		id: "ko",
 		toki: "ko",
 		gloss: "paste, powder",
-		definition: "Soft or squishy substance — clay, paste, powder, dough, glue.",
+		definition: "Soft or squishy substance: clay, paste, powder, dough, glue.",
 		role: "content",
 		example: { toki: "ko li lon luka mi.", en: "There's paste on my hand." },
 	},
@@ -678,7 +677,7 @@ export const WORDS: Word[] = [
 		id: "palisa",
 		toki: "palisa",
 		gloss: "stick, rod, pole",
-		definition: "Long hard thing — stick, rod, pole, branch.",
+		definition: "Long hard thing: stick, rod, pole, branch.",
 		role: "content",
 		example: { toki: "palisa li suli.", en: "The stick is long." },
 	},
@@ -703,7 +702,7 @@ export const WORDS: Word[] = [
 		id: "supa",
 		toki: "supa",
 		gloss: "surface, furniture",
-		definition: "Horizontal surface — table, bed, chair, floor, shelf.",
+		definition: "Flat surface: table, bed, chair, floor, shelf.",
 		role: "content",
 		example: { toki: "mi lon supa.", en: "I'm on the table/bed." },
 	},
@@ -816,7 +815,7 @@ export const WORDS: Word[] = [
 		toki: "la",
 		gloss: "sets up context (when/if…)",
 		definition:
-			"Marks the phrase before it as the setup — time, condition, or topic — for the sentence that follows.",
+			"Marks everything before it as the setup (a time, a condition, or a topic) for the sentence that follows.",
 		role: "particle",
 		example: { toki: "tenpo suno la, mi moku.", en: "In the daytime, I eat." },
 	},
@@ -886,7 +885,7 @@ export const WORDS: Word[] = [
 		toki: "mu",
 		gloss: "animal sound",
 		definition:
-			"An animal noise — moo, woof, meow; interjection imitating a creature's sound.",
+			"Any animal noise: moo, woof, meow; the sound a creature makes.",
 		role: "content",
 		example: { toki: "soweli li toki mu.", en: "The animal makes a noise." },
 	},
@@ -902,8 +901,7 @@ export const WORDS: Word[] = [
 		id: "lipu",
 		toki: "lipu",
 		gloss: "paper, document",
-		definition:
-			"Flat flexible thing — paper, page, card, document, book, website.",
+		definition: "Flat bendy thing: paper, page, card, document, book, website.",
 		role: "content",
 		example: { toki: "mi lukin e lipu.", en: "I'm looking at the document." },
 	},
@@ -928,7 +926,7 @@ export const WORDS: Word[] = [
 		toki: "pu",
 		gloss: "the official Toki Pona book",
 		definition:
-			"To interact with the book Toki Pona: The Language of Good — reading, studying, or following it; by extension, official, canonical.",
+			"To read, study, or follow the book Toki Pona: The Language of Good; by extension, official.",
 		role: "content",
 		example: { toki: "mi pu.", en: "I'm reading the Toki Pona book." },
 	},
@@ -1049,7 +1047,7 @@ export const WORDS: Word[] = [
 		id: "anu",
 		toki: "anu",
 		gloss: "or",
-		definition: "Or — offers an alternative between two or more options.",
+		definition: "Or; offers a choice between two or more options.",
 		role: "particle",
 		example: {
 			toki: "sina wile moku anu wile lape?",
@@ -1061,7 +1059,7 @@ export const WORDS: Word[] = [
 		toki: "taso",
 		gloss: "but, only",
 		definition:
-			"But, however; only, just — placed at the start of a sentence for 'but', or before a word for 'only'.",
+			"But, however; only, just. At the start of a sentence it means 'but'; right after a word it means 'only'.",
 		role: "particle",
 		example: {
 			toki: "mi wile moku, taso mi wile lape.",
@@ -1073,7 +1071,7 @@ export const WORDS: Word[] = [
 		toki: "kin",
 		gloss: "also, even, indeed",
 		definition:
-			"Also, too, even, indeed — adds emphasis or inclusion to the word after it.",
+			"Also, too, even, indeed; adds 'too' or 'even' to the word right before it.",
 		role: "particle",
 		example: { toki: "sina kin li pona.", en: "You too are good." },
 	},
@@ -1082,7 +1080,7 @@ export const WORDS: Word[] = [
 		toki: "a",
 		gloss: "ah, oh, wow",
 		definition:
-			"An interjection of emotion — surprise, joy, sadness, emphasis; stands alone or tacks onto a sentence.",
+			"A little burst of feeling: surprise, joy, sadness, emphasis. Stands alone or tags onto the end of a sentence.",
 		role: "particle",
 		example: { toki: "a! ni li pona!", en: "Ah! This is good!" },
 	},
@@ -1091,7 +1089,7 @@ export const WORDS: Word[] = [
 		toki: "n",
 		gloss: "hmm, uh",
 		definition:
-			"An interjection showing hesitation, thought, or a hum of acknowledgment — 'hmm', 'uh', 'mm'.",
+			"A thinking noise: 'hmm', 'uh', 'mm'. Shows hesitation, thought, or a small nod of acknowledgment.",
 		role: "particle",
 		example: { toki: "mi sona ala, n.", en: "I don't know... um." },
 	},
@@ -1123,7 +1121,7 @@ export const WORDS: Word[] = [
 		id: "linja",
 		toki: "linja",
 		gloss: "string, hair, line",
-		definition: "Long flexible thing — string, rope, hair, thread, line.",
+		definition: "Long bendy thing: string, rope, hair, thread, line.",
 		role: "content",
 		example: { toki: "linja mi li suli.", en: "My hair is long." },
 	},
@@ -1167,7 +1165,7 @@ export const WORDS: Word[] = [
 		toki: "epiku",
 		gloss: "epic, awesome",
 		definition:
-			"Epic, awesome, impressive, extreme — an informal emphasis word.",
+			"Epic, awesome, impressive; an informal word for something extreme.",
 		role: "content",
 		example: { toki: "ni li epiku!", en: "This is awesome!" },
 	},
@@ -1205,7 +1203,7 @@ export const WORDS: Word[] = [
 		toki: "ku",
 		gloss: "the Toki Pona Dictionary book",
 		definition:
-			"To interact with the book Toki Pona Dictionary — reading, using, or citing it as a reference.",
+			"To read, use, or quote the book Toki Pona Dictionary as a reference.",
 		role: "content",
 		example: { toki: "mi ku.", en: "I'm using the dictionary." },
 	},

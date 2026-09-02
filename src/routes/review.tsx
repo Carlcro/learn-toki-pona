@@ -191,7 +191,7 @@ function ReviewPage() {
 				<div className="flex w-full flex-col items-center gap-4 text-center">
 					<span className="font-script text-2xl text-pink">
 						{sessionSize > 0
-							? "That's the whole queue — done."
+							? "That's the whole queue. Done!"
 							: "Nothing is due for review right now."}
 					</span>
 					{nextDueAt && (

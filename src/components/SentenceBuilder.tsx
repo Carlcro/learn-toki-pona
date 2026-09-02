@@ -112,7 +112,7 @@ export function SentenceBuilder({
 						<span
 							className={`text-center font-script text-xl ${isCorrect ? "text-pink" : "text-mist"}`}
 						>
-							{isCorrect ? "Nice — that's right!" : `It's: ${sentence}`}
+							{isCorrect ? "Nice, that's right!" : `It's: ${sentence}`}
 						</span>
 						<button
 							type="button"
