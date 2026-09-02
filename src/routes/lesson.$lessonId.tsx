@@ -6,7 +6,7 @@ import { DialogueExercise } from "#/components/DialogueExercise";
 import { Flashcard } from "#/components/Flashcard";
 import { GrammarCheckCard } from "#/components/GrammarCheckCard";
 import { MultipleChoice } from "#/components/MultipleChoice";
-import { PageHeader } from "#/components/PageHeader";
+import { ScreenShell } from "#/components/ScreenShell";
 import { SenseCheck } from "#/components/SenseCheck";
 import { SentenceAnatomy } from "#/components/SentenceAnatomy";
 import { SentenceBuilder } from "#/components/SentenceBuilder";
@@ -214,81 +214,99 @@ function LessonPage() {
 	const nextDueAt = finished ? selectNextDueAt(progress, new Date()) : null;
 
 	// A fixed-height shell rather than a growing page: the step content scrolls
-	// inside `main` so the step's primary action stays pinned in view, however
+	// inside the body so the step's primary action stays pinned in view, however
 	// many words a lesson introduces.
 	return (
-		<div className="flex h-[100dvh] flex-col items-center gap-6 px-6 py-10 sm:gap-8 sm:py-14">
-			<PageHeader
-				label={`Lesson ${lesson.id} — ${lesson.topic}`}
-				backTo="/"
-				backLabel="Back home"
-			/>
-
-			{!finished && (
-				<div className="w-full max-w-sm shrink-0">
+		<ScreenShell
+			label={`Lesson ${lesson.id} — ${lesson.topic}`}
+			backTo="/"
+			backLabel="Back home"
+			// A batch of new words and the grammar arriving with them is the one
+			// step with more to show than a card's worth, so on desktop it takes
+			// the width to stand them side by side rather than scroll.
+			bodyWidth={
+				!finished && step?.kind === "intro" && step.concepts.length > 0
+					? "max-w-sm lg:max-w-3xl"
+					: "max-w-sm"
+			}
+			sub={
+				finished ? undefined : (
 					<StepProgress done={index} total={steps.length} label="This lesson" />
+				)
+			}
+			footer={
+				!finished && step?.kind === "intro" ? (
+					<button
+						type="button"
+						onClick={advance}
+						className={`${PRIMARY_BUTTON} cursor-pointer`}
+					>
+						{index === 0 ? "Start drilling" : "Keep going"}
+					</button>
+				) : undefined
+			}
+		>
+			{finished ? (
+				<div className="flex w-full flex-col items-center gap-6">
+					<span className="font-script text-3xl text-pink">
+						Lesson complete!
+					</span>
+					<p className="text-center font-sans text-sm text-mist">
+						{unlockedCount > 0
+							? `You can now read ${unlockedCount} more piece${
+									unlockedCount === 1 ? "" : "s"
+								} in the library — no translation needed.`
+							: "These words are in your review queue now."}
+					</p>
+					{nextDueAt && (
+						<p className="text-center font-sans text-xs text-mist">
+							That's your new lesson for today. These words come back{" "}
+							{describeTimeUntil(nextDueAt, new Date())} — short gaps first,
+							then longer ones.
+						</p>
+					)}
+					{unlockedCount > 0 && (
+						<Link to="/library" className={PRIMARY_BUTTON}>
+							Read what you unlocked
+						</Link>
+					)}
+					<Link
+						to="/"
+						className={unlockedCount > 0 ? OUTLINE_BUTTON : PRIMARY_BUTTON}
+					>
+						Back home
+					</Link>
 				</div>
-			)}
-
-			{/* The scroll container spans the full width so its scrollbar rides the
-			    window edge instead of the content column's rounded cards. */}
-			<main className="flex w-full min-h-0 flex-1 justify-center overflow-y-auto">
-				<div className="flex h-fit w-full max-w-sm flex-col items-center gap-6">
-					{finished ? (
-						<div className="flex w-full flex-col items-center gap-6">
-							<span className="font-script text-3xl text-pink">
-								Lesson complete!
-							</span>
-							<p className="text-center font-sans text-sm text-mist">
-								{unlockedCount > 0
-									? `You can now read ${unlockedCount} more piece${
-											unlockedCount === 1 ? "" : "s"
-										} in the library — no translation needed.`
-									: "These words are in your review queue now."}
-							</p>
-							{nextDueAt && (
-								<p className="text-center font-sans text-xs text-mist">
-									That's your new lesson for today. These words come back{" "}
-									{describeTimeUntil(nextDueAt, new Date())} — short gaps first,
-									then longer ones.
-								</p>
-							)}
-							{unlockedCount > 0 && (
-								<Link to="/library" className={PRIMARY_BUTTON}>
-									Read what you unlocked
-								</Link>
-							)}
-							<Link
-								to="/"
-								className={unlockedCount > 0 ? OUTLINE_BUTTON : PRIMARY_BUTTON}
+			) : (
+				step && (
+					<>
+						{step.kind === "intro" && (
+							<div
+								className={`grid w-full items-start gap-3 ${
+									step.concepts.length > 0 ? "lg:grid-cols-2 lg:gap-6" : ""
+								}`}
 							>
-								Back home
-							</Link>
-						</div>
-					) : (
-						step && (
-							<>
-								{step.kind === "intro" && (
-									<>
-										<div className="flex w-full flex-col gap-3">
-											{step.words.map((word) => (
-												<div
-													key={word.id}
-													className="flex items-center gap-3 rounded-[28px] border-2 border-night-edge bg-night-soft px-5 py-3.5"
-												>
-													<div className="flex flex-1 flex-col">
-														<span className="font-display text-base font-bold text-cream">
-															{word.toki}
-														</span>
-														<span className="font-sans text-xs text-mist">
-															{word.gloss}
-														</span>
-													</div>
-													<SpeakerButton text={word.toki} />
-												</div>
-											))}
+								<div className="flex w-full flex-col gap-3">
+									{step.words.map((word) => (
+										<div
+											key={word.id}
+											className="flex items-center gap-3 rounded-[28px] border-2 border-night-edge bg-night-soft px-5 py-3.5"
+										>
+											<div className="flex flex-1 flex-col">
+												<span className="font-display text-base font-bold text-cream">
+													{word.toki}
+												</span>
+												<span className="font-sans text-xs text-mist">
+													{word.gloss}
+												</span>
+											</div>
+											<SpeakerButton text={word.toki} />
 										</div>
+									))}
+								</div>
 
+								{step.concepts.length > 0 && (
+									<div className="flex w-full flex-col gap-3">
 										{step.concepts.map((concept) => (
 											<div
 												key={concept.id}
@@ -302,93 +320,81 @@ function LessonPage() {
 												))}
 											</div>
 										))}
-									</>
+									</div>
 								)}
+							</div>
+						)}
 
-								{step.kind === "recognize" && (
-									<MultipleChoice
-										key={step.word.id}
-										word={step.word}
-										pool={vocabularyWords}
-										onNext={advance}
-									/>
-								)}
+						{step.kind === "recognize" && (
+							<MultipleChoice
+								key={step.word.id}
+								word={step.word}
+								pool={vocabularyWords}
+								onNext={advance}
+							/>
+						)}
 
-								{step.kind === "drill" && (
-									<Flashcard
-										key={step.word.id}
-										word={step.word}
-										onGrade={(grade) => handleWordGrade(step.word.id, grade)}
-									/>
-								)}
+						{step.kind === "drill" && (
+							<Flashcard
+								key={step.word.id}
+								word={step.word}
+								onGrade={(grade) => handleWordGrade(step.word.id, grade)}
+							/>
+						)}
 
-								{step.kind === "grammar" && (
-									<GrammarCheckCard
-										key={step.concept.id}
-										concept={step.concept}
-										onGrade={(grade) =>
-											handleGrammarGrade(step.concept.id, grade)
-										}
-									/>
-								)}
+						{step.kind === "grammar" && (
+							<GrammarCheckCard
+								key={step.concept.id}
+								concept={step.concept}
+								onGrade={(grade) => handleGrammarGrade(step.concept.id, grade)}
+							/>
+						)}
 
-								{step.kind === "sense" && (
-									<SenseCheck
-										key={step.item.id}
-										item={step.item}
-										onGrade={(grade) => handleSenseGrade(step.item.id, grade)}
-									/>
-								)}
+						{step.kind === "sense" && (
+							<SenseCheck
+								key={step.item.id}
+								item={step.item}
+								onGrade={(grade) => handleSenseGrade(step.item.id, grade)}
+							/>
+						)}
 
-								{step.kind === "compound" && (
-									<CompoundBuilder
-										key={step.compound.id}
-										compound={step.compound}
-										vocabulary={vocabularyIds}
-										onNext={advance}
-									/>
-								)}
+						{step.kind === "compound" && (
+							<CompoundBuilder
+								key={step.compound.id}
+								compound={step.compound}
+								vocabulary={vocabularyIds}
+								onNext={advance}
+							/>
+						)}
 
-								{step.kind === "build" && (
-									<SentenceBuilder
-										key={`build-${step.scene.id}`}
-										sentence={step.scene.referenceSentences[0]}
-										onNext={advance}
-									/>
-								)}
+						{step.kind === "build" && (
+							<SentenceBuilder
+								key={`build-${step.scene.id}`}
+								sentence={step.scene.referenceSentences[0]}
+								onNext={advance}
+							/>
+						)}
 
-								{step.kind === "context" && (
-									<ContextExercise
-										key={`context-${step.scene.id}`}
-										scene={step.scene}
-										vocabulary={vocabulary}
-										onNext={advance}
-									/>
-								)}
+						{step.kind === "context" && (
+							<ContextExercise
+								key={`context-${step.scene.id}`}
+								scene={step.scene}
+								vocabulary={vocabulary}
+								onNext={advance}
+							/>
+						)}
 
-								{step.kind === "dialogue" && (
-									<DialogueExercise
-										key={step.dialogue.id}
-										dialogue={step.dialogue}
-										vocabulary={vocabulary}
-										onNext={advance}
-									/>
-								)}
-							</>
-						)
-					)}
-				</div>
-			</main>
-
-			{!finished && step?.kind === "intro" && (
-				<button
-					type="button"
-					onClick={advance}
-					className={`${PRIMARY_BUTTON} max-w-sm shrink-0 cursor-pointer`}
-				>
-					{index === 0 ? "Start drilling" : "Keep going"}
-				</button>
+						{step.kind === "dialogue" && (
+							<DialogueExercise
+								key={step.dialogue.id}
+								dialogue={step.dialogue}
+								vocabulary={vocabulary}
+								onNext={advance}
+							/>
+						)}
+					</>
+				)
 			)}
-		</div>
+		</ScreenShell>
 	);
 }

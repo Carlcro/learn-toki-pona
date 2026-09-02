@@ -158,11 +158,16 @@ function Home() {
 	const [litFrom, setLitFrom] = useState<{ x: number; y: number } | null>(null);
 
 	return (
+		// On desktop the dashboard is exactly the viewport tall and never scrolls:
+		// the stats column packs to the top, the trail takes whatever height is
+		// left, and the next action stays where the eye lands on it. Below `lg`
+		// the same regions stack and the page grows as it always did.
 		<div
-			className="flex min-h-screen flex-col items-center justify-center gap-10 px-6 py-16 lg:mx-auto lg:grid lg:max-w-6xl lg:items-start lg:justify-normal lg:gap-x-12 lg:gap-y-6 lg:px-16 lg:py-20"
+			className="flex min-h-screen flex-col items-center justify-center gap-10 px-6 py-16 lg:mx-auto lg:grid lg:h-[100dvh] lg:max-w-6xl lg:min-h-0 lg:items-start lg:justify-normal lg:gap-x-12 lg:gap-y-0 lg:overflow-hidden lg:px-16 lg:py-10"
 			style={{
 				gridTemplateColumns: "22rem 1fr",
-				gridTemplateAreas: `"header header" "stats lessons" "cta lessons" "meta lessons"`,
+				gridTemplateRows: "auto minmax(0, 1fr)",
+				gridTemplateAreas: `"header header" "aside lessons"`,
 			}}
 		>
 			<header className="flex items-baseline gap-1.5 lg:mb-4 lg:[grid-area:header]">
@@ -172,29 +177,53 @@ function Home() {
 				<span className="font-script text-3xl text-pink">lili</span>
 			</header>
 
-			<main className="flex w-full max-w-sm flex-col items-center gap-8 lg:contents">
-				<CozyPanel className="lg:[grid-area:stats]">
-					<div className="flex flex-col items-center gap-3">
-						<span className="font-sans text-[0.65rem] font-bold tracking-[0.18em] text-mist uppercase">
-							Words learned
-						</span>
-						{/* Measured against the words this course actually teaches, not
-						    the language's full 137 — a denominator you cannot reach is
-						    a progress bar that never fills. */}
-						<div className="flex items-baseline gap-1.5">
-							<span className="font-display text-5xl leading-none font-extrabold tabular-nums text-lavender">
-								{learned}
+			{/* Below `lg` this is `display: contents`, so the panel, the trail and
+			    the action are all items of the page's own column and `order` can
+			    slot the trail between them. At `lg` it becomes the left column of
+			    the dashboard, packed to the top, with the trail beside it. */}
+			<main className="contents lg:flex lg:h-full lg:min-h-0 lg:flex-col lg:items-center lg:gap-6 lg:[grid-area:aside]">
+				<CozyPanel className="soft-scroll max-w-sm lg:max-w-none lg:min-h-0 lg:overflow-y-auto lg:py-6 lg:[--scroll-rim:var(--color-night-soft)]">
+					{/* The two bare numerals share a row on desktop, split by the same
+					    hairline that separates the sections — two counts side by side
+					    read as one glance, and it buys the column the height the trail
+					    and the action need. */}
+					<div className="flex flex-col items-center gap-6 lg:flex-row lg:items-stretch lg:gap-0">
+						<div className="flex flex-1 flex-col items-center gap-3">
+							<span className="font-sans text-[0.65rem] font-bold tracking-[0.18em] text-mist uppercase">
+								Words learned
 							</span>
-							<span className="font-display text-xl font-bold text-mist">
-								/
-							</span>
-							<span className="font-display text-xl font-bold tabular-nums text-mist">
-								{COURSE_WORD_COUNT}
-							</span>
+							{/* Measured against the words this course actually teaches, not
+							    the language's full 137 — a denominator you cannot reach is
+							    a progress bar that never fills. */}
+							<div className="flex items-baseline gap-1.5">
+								<span className="font-display text-5xl leading-none font-extrabold tabular-nums text-lavender">
+									{learned}
+								</span>
+								<span className="font-display text-xl font-bold text-mist">
+									/
+								</span>
+								<span className="font-display text-xl font-bold tabular-nums text-mist">
+									{COURSE_WORD_COUNT}
+								</span>
+							</div>
 						</div>
+
+						{currentStreak > 0 && (
+							<>
+								<div className="h-px w-full bg-night-edge lg:h-auto lg:w-px" />
+								<div className="flex flex-1 flex-col items-center justify-center gap-3">
+									<span className="font-sans text-[0.65rem] font-bold tracking-[0.18em] text-mist uppercase">
+										Day streak
+									</span>
+									<span className="font-display text-3xl leading-none font-extrabold text-pink">
+										{currentStreak}
+									</span>
+								</div>
+							</>
+						)}
 					</div>
 
-					<div className="my-6 h-px w-full bg-night-edge" />
+					<div className="my-6 h-px w-full bg-night-edge lg:my-4" />
 
 					<div className="flex flex-col items-center gap-3">
 						<span className="font-sans text-[0.65rem] font-bold tracking-[0.18em] text-mist uppercase">
@@ -203,28 +232,14 @@ function Home() {
 						<GemTrack due={dueCount} slots={REVIEW_SLOTS} />
 					</div>
 
-					{currentStreak > 0 && (
-						<>
-							<div className="my-6 h-px w-full bg-night-edge" />
-							<div className="flex flex-col items-center gap-3">
-								<span className="font-sans text-[0.65rem] font-bold tracking-[0.18em] text-mist uppercase">
-									Day streak
-								</span>
-								<span className="font-display text-2xl font-extrabold text-pink">
-									{currentStreak}
-								</span>
-							</div>
-						</>
-					)}
-
 					{wordsLearned > 0 && (
 						<>
-							<div className="my-6 h-px w-full bg-night-edge" />
+							<div className="my-6 h-px w-full bg-night-edge lg:my-4" />
 							<MasteryBar breakdown={mastery} />
 						</>
 					)}
 
-					<div className="my-6 h-px w-full bg-night-edge" />
+					<div className="my-6 h-px w-full bg-night-edge lg:my-4" />
 
 					<div className="flex flex-col items-center gap-3">
 						<span className="font-sans text-[0.65rem] font-bold tracking-[0.18em] text-mist uppercase">
@@ -242,28 +257,28 @@ function Home() {
 					</div>
 				</CozyPanel>
 
-				{/* The map board is its own panel — a window cut down to the darker
-				    forest floor. Wrapping it in a CozyPanel would nest one rounded
-				    card inside another and push the trail into a slot. */}
-				{lessonProgress.length > 0 && (
-					<div className="w-full lg:[grid-area:lessons]">
-						<LessonMap
-							lessonProgress={lessonProgress}
-							onLightTheLookout={setLitFrom}
-						/>
-					</div>
-				)}
-
-				<div className="flex w-full flex-col items-center lg:[grid-area:cta]">
+				<div className="order-2 flex w-full max-w-sm shrink-0 flex-col items-center lg:order-none lg:max-w-none">
 					<NextAction plan={plan} now={now} />
 				</div>
 
 				{!isFirstRun && lastStudiedAt && (
-					<span className="font-sans text-xs text-mist lg:[grid-area:meta]">
+					<span className="order-3 shrink-0 font-sans text-xs text-mist lg:order-none">
 						Last studied {formatDate(lastStudiedAt)}
 					</span>
 				)}
 			</main>
+
+			{/* The map board is its own panel — a window cut down to the darker
+			    forest floor. Wrapping it in a CozyPanel would nest one rounded
+			    card inside another and push the trail into a slot. */}
+			{lessonProgress.length > 0 && (
+				<div className="order-1 w-full max-w-sm lg:h-full lg:min-h-0 lg:max-w-none lg:[grid-area:lessons]">
+					<LessonMap
+						lessonProgress={lessonProgress}
+						onLightTheLookout={setLitFrom}
+					/>
+				</div>
+			)}
 
 			{litFrom && (
 				<SummitCelebration

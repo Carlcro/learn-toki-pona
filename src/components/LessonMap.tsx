@@ -457,11 +457,14 @@ export function LessonMap({
 	}, [focusY]);
 
 	return (
-		<section className="flex w-full flex-col gap-3 lg:mx-auto lg:max-w-[32rem]">
-			<div className="relative w-full">
+		<section className="flex w-full flex-col gap-3 lg:mx-auto lg:h-full lg:max-w-[32rem]">
+			{/* On desktop the board takes whatever height the dashboard has left
+			    rather than a guessed cap, so the trail is as long as the screen is
+			    and the page never grows past it. */}
+			<div className="relative w-full lg:min-h-0 lg:flex-1">
 				<div
 					ref={boardRef}
-					className="trail-board relative max-h-[28rem] w-full overflow-x-hidden overflow-y-auto rounded-[32px] border-2 border-night-edge bg-night lg:max-h-[min(44rem,calc(100vh-9rem))]"
+					className="trail-board soft-scroll relative max-h-[28rem] w-full overflow-x-hidden overflow-y-auto rounded-[32px] border-2 border-night-edge bg-night lg:h-full lg:max-h-none"
 				>
 					<div className="relative w-full" style={{ height: trail.height }}>
 						{trail.troddenPath && (

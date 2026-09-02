@@ -3,8 +3,8 @@ import { useEffect, useState } from "react";
 import { Flashcard } from "#/components/Flashcard";
 import { GrammarCheckCard } from "#/components/GrammarCheckCard";
 import { ListeningFlashcard } from "#/components/ListeningFlashcard";
-import { PageHeader } from "#/components/PageHeader";
 import { ProductionCard } from "#/components/ProductionCard";
+import { ScreenShell } from "#/components/ScreenShell";
 import { SenseCheck } from "#/components/SenseCheck";
 import { StepProgress } from "#/components/StepProgress";
 import { GRAMMAR_CONCEPTS_BY_ID } from "#/data/grammar";
@@ -123,85 +123,87 @@ function ReviewPage() {
 	const nextDueAt = selectNextDueAt(progress, new Date());
 
 	return (
-		<div className="flex min-h-screen flex-col items-center gap-10 px-6 py-16">
-			<PageHeader label="Review" backTo="/" backLabel="Back home" />
-
-			<main className="flex w-full max-w-sm flex-col items-center gap-6">
-				{sessionSize > 0 && (
+		<ScreenShell
+			label="Review"
+			backTo="/"
+			backLabel="Back home"
+			sub={
+				sessionSize > 0 ? (
 					<StepProgress
 						done={answeredIds.size}
 						total={sessionSize}
 						label="This session"
 					/>
-				)}
-
-				{current ? (
-					current.kind === "grammar" ? (
-						<GrammarCheckCard
-							key={`grammar-${current.id}-${answerCount}`}
-							concept={GRAMMAR_CONCEPTS_BY_ID[current.id]}
-							onGrade={(grade) => handleGrade(current, grade)}
-						/>
-					) : current.kind === "sense" ? (
-						<SenseCheck
-							key={`sense-${current.id}-${answerCount}`}
-							item={SENSE_ITEMS_BY_ID[current.id]}
-							onGrade={(grade) => handleGrade(current, grade)}
-						/>
-					) : (
-						(() => {
-							const word = WORDS_BY_ID[current.id as WordId];
-							const mode = modeFor(cards[current.id as WordId]);
-							const key = `${mode}-${current.id}-${answerCount}`;
-							if (mode === "listen") {
-								return (
-									<ListeningFlashcard
-										key={key}
-										word={word}
-										onGrade={(grade) => handleGrade(current, grade)}
-									/>
-								);
-							}
-							if (mode === "produce") {
-								return (
-									<ProductionCard
-										key={key}
-										word={word}
-										onGrade={(grade) => handleGrade(current, grade)}
-									/>
-								);
-							}
+				) : undefined
+			}
+			footer={
+				<Link to="/" className={OUTLINE_BUTTON}>
+					Back home
+				</Link>
+			}
+		>
+			{current ? (
+				current.kind === "grammar" ? (
+					<GrammarCheckCard
+						key={`grammar-${current.id}-${answerCount}`}
+						concept={GRAMMAR_CONCEPTS_BY_ID[current.id]}
+						onGrade={(grade) => handleGrade(current, grade)}
+					/>
+				) : current.kind === "sense" ? (
+					<SenseCheck
+						key={`sense-${current.id}-${answerCount}`}
+						item={SENSE_ITEMS_BY_ID[current.id]}
+						onGrade={(grade) => handleGrade(current, grade)}
+					/>
+				) : (
+					(() => {
+						const word = WORDS_BY_ID[current.id as WordId];
+						const mode = modeFor(cards[current.id as WordId]);
+						const key = `${mode}-${current.id}-${answerCount}`;
+						if (mode === "listen") {
 							return (
-								<Flashcard
+								<ListeningFlashcard
 									key={key}
 									word={word}
 									onGrade={(grade) => handleGrade(current, grade)}
 								/>
 							);
-						})()
-					)
-				) : session === null ? null : (
-					<div className="flex w-full flex-col items-center gap-4 text-center">
-						<span className="font-script text-2xl text-pink">
-							{sessionSize > 0
-								? "That's the whole queue — done."
-								: "Nothing is due for review right now."}
-						</span>
-						{nextDueAt && (
-							<p className="font-sans text-sm text-mist">
-								{`Next batch comes back ${describeTimeUntil(nextDueAt, new Date())}.`}
-							</p>
-						)}
-						<Link to="/library" className={PRIMARY_BUTTON}>
-							Read something instead
-						</Link>
-					</div>
-				)}
-
-				<Link to="/" className={OUTLINE_BUTTON}>
-					Back home
-				</Link>
-			</main>
-		</div>
+						}
+						if (mode === "produce") {
+							return (
+								<ProductionCard
+									key={key}
+									word={word}
+									onGrade={(grade) => handleGrade(current, grade)}
+								/>
+							);
+						}
+						return (
+							<Flashcard
+								key={key}
+								word={word}
+								onGrade={(grade) => handleGrade(current, grade)}
+							/>
+						);
+					})()
+				)
+			) : session === null ? null : (
+				<div className="flex w-full flex-col items-center gap-4 text-center">
+					<span className="font-script text-2xl text-pink">
+						{sessionSize > 0
+							? "That's the whole queue — done."
+							: "Nothing is due for review right now."}
+					</span>
+					{nextDueAt && (
+						<p className="font-sans text-sm text-mist">
+							{`Next batch comes back ${describeTimeUntil(nextDueAt, new Date())}.`}
+						</p>
+					)}
+					<Link to="/library" className={PRIMARY_BUTTON}>
+						Read something instead
+					</Link>
+				</div>
+			)}
+		</ScreenShell>
 	);
 }
