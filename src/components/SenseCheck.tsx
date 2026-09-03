@@ -2,7 +2,11 @@ import { useMemo, useState } from "react";
 import type { SenseItem } from "#/data/types";
 import type { Grade } from "#/lib/srs";
 import { CozyPanel } from "./CozyPanel";
+import { RevealSlot } from "./RevealSlot";
 import { SpeakerButton } from "./SpeakerButton";
+
+const CONTINUE_BUTTON =
+	"w-full rounded-full border-2 border-night bg-pink px-5 py-3 text-center font-display text-sm font-bold text-night transition-all active:brightness-90";
 
 function shuffle<T>(items: T[]): T[] {
 	const copy = [...items];
@@ -90,25 +94,32 @@ export function SenseCheck({
 					})}
 				</div>
 
-				{answered && (
-					<>
-						<span
-							className={`text-center font-script text-xl ${isCorrect ? "text-pink" : "text-mist"}`}
-						>
-							{isCorrect ? "Exactly." : `It's “${item.answer}” here.`}
-						</span>
-						<p className="text-center font-sans text-xs text-mist">
-							{item.note}
-						</p>
-						<button
-							type="button"
-							onClick={() => onGrade(isCorrect ? "good" : "again")}
-							className="w-full rounded-full border-2 border-night bg-pink px-5 py-3 font-display text-sm font-bold text-night transition-all active:brightness-90"
-						>
-							Continue
-						</button>
-					</>
-				)}
+				<RevealSlot
+					show={answered}
+					placeholder={
+						<>
+							<span className="text-center font-script text-xl">
+								It's “{item.answer}” here.
+							</span>
+							<p className="text-center font-sans text-xs">{item.note}</p>
+							<span className={CONTINUE_BUTTON}>Continue</span>
+						</>
+					}
+				>
+					<span
+						className={`text-center font-script text-xl ${isCorrect ? "text-pink" : "text-mist"}`}
+					>
+						{isCorrect ? "Exactly." : `It's “${item.answer}” here.`}
+					</span>
+					<p className="text-center font-sans text-xs text-mist">{item.note}</p>
+					<button
+						type="button"
+						onClick={() => onGrade(isCorrect ? "good" : "again")}
+						className={CONTINUE_BUTTON}
+					>
+						Continue
+					</button>
+				</RevealSlot>
 			</div>
 		</CozyPanel>
 	);

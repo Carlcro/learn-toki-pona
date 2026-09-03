@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react";
 import { CozyPanel } from "./CozyPanel";
+import { RevealSlot } from "./RevealSlot";
 
 interface Chip {
 	id: number;
@@ -98,6 +99,21 @@ export function SentenceBuilder({
 					))}
 				</div>
 
+				<RevealSlot
+					show={checked}
+					placeholder={
+						<span className="text-center font-script text-xl">
+							It's: {sentence}
+						</span>
+					}
+				>
+					<span
+						className={`text-center font-script text-xl ${isCorrect ? "text-pink" : "text-mist"}`}
+					>
+						{isCorrect ? "Nice, that's right!" : `It's: ${sentence}`}
+					</span>
+				</RevealSlot>
+
 				{!checked ? (
 					<button
 						type="button"
@@ -108,20 +124,13 @@ export function SentenceBuilder({
 						Check
 					</button>
 				) : (
-					<>
-						<span
-							className={`text-center font-script text-xl ${isCorrect ? "text-pink" : "text-mist"}`}
-						>
-							{isCorrect ? "Nice, that's right!" : `It's: ${sentence}`}
-						</span>
-						<button
-							type="button"
-							onClick={onNext}
-							className="w-full rounded-full border-2 border-night bg-pink px-5 py-3 font-display text-sm font-bold text-night transition-all active:brightness-90"
-						>
-							Continue
-						</button>
-					</>
+					<button
+						type="button"
+						onClick={onNext}
+						className="w-full rounded-full border-2 border-night bg-pink px-5 py-3 font-display text-sm font-bold text-night transition-all active:brightness-90"
+					>
+						Continue
+					</button>
 				)}
 			</div>
 		</CozyPanel>

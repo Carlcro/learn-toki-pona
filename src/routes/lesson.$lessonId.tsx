@@ -241,7 +241,7 @@ function LessonPage() {
 						onClick={advance}
 						className={`${PRIMARY_BUTTON} cursor-pointer`}
 					>
-						{index === 0 ? "Start drilling" : "Keep going"}
+						{index === 0 ? "Start" : "Keep going"}
 					</button>
 				) : undefined
 			}

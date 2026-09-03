@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react";
 import type { Word } from "#/data/types";
 import { CozyPanel } from "./CozyPanel";
+import { RevealSlot } from "./RevealSlot";
 
 function shuffle<T>(items: T[]): T[] {
 	const copy = [...items];
@@ -12,6 +13,9 @@ function shuffle<T>(items: T[]): T[] {
 }
 
 const OPTION_COUNT = 4;
+
+const CONTINUE_BUTTON =
+	"w-full rounded-full border-2 border-night bg-pink px-5 py-3 text-center font-display text-sm font-bold text-night transition-all active:brightness-90";
 
 /**
  * Words of the same role first, so particles compete with particles and
@@ -90,22 +94,24 @@ export function MultipleChoice({
 					})}
 				</div>
 
-				{answered && (
-					<>
-						<span
-							className={`font-script text-xl ${isCorrect ? "text-pink" : "text-mist"}`}
-						>
-							{isCorrect ? "Nice, that's right!" : `That's ${word.toki}.`}
-						</span>
-						<button
-							type="button"
-							onClick={onNext}
-							className="w-full rounded-full border-2 border-night bg-pink px-5 py-3 font-display text-sm font-bold text-night transition-all active:brightness-90"
-						>
-							Continue
-						</button>
-					</>
-				)}
+				<RevealSlot
+					show={answered}
+					placeholder={
+						<>
+							<span className="font-script text-xl">That's {word.toki}.</span>
+							<span className={CONTINUE_BUTTON}>Continue</span>
+						</>
+					}
+				>
+					<span
+						className={`font-script text-xl ${isCorrect ? "text-pink" : "text-mist"}`}
+					>
+						{isCorrect ? "Nice, that's right!" : `That's ${word.toki}.`}
+					</span>
+					<button type="button" onClick={onNext} className={CONTINUE_BUTTON}>
+						Continue
+					</button>
+				</RevealSlot>
 			</div>
 		</CozyPanel>
 	);
