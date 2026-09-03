@@ -212,6 +212,17 @@ a.trail-stop:focus-visible .trail-disc {
 	outline-offset: 4px;
 }
 
+/* WebKit (every browser on iOS, Chrome included) turns an <svg> around its
+   top-left corner unless told where the middle is, so the rings drifted off
+   their discs on the phone while looking right on desktop. Pin the origin to
+   the centre of the box for every SVG we rotate. */
+.trail-ring,
+.summit-ring,
+.trail-beckon > svg {
+	transform-box: fill-box;
+	transform-origin: 50% 50%;
+}
+
 .trail-ring {
 	opacity: 0.75;
 	animation: trail-here 14s linear infinite;
