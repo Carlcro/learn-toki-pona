@@ -212,12 +212,13 @@ a.trail-stop:focus-visible .trail-disc {
 	outline-offset: 4px;
 }
 
-/* WebKit (every browser on iOS, Chrome included) turns an <svg> around its
-   top-left corner unless told where the middle is, so the rings drifted off
-   their discs on the phone while looking right on desktop. Pin the origin to
-   the centre of the box for every SVG we rotate. */
-.trail-ring,
-.summit-ring,
+/* The turning rings are plain spans stretched over the disc, with the SVG
+   filling them. WebKit (every browser on iOS, Chrome included) will not
+   stretch an absolutely positioned <svg> from its insets alone: it keeps the
+   default intrinsic size and drops the right and bottom edges, which put an
+   oversized ring in the corner of the disc on the phone while desktop Chrome
+   looked fine. The same goes for the chevron's flip, which turns around the
+   SVG's corner there unless the origin is pinned. */
 .trail-beckon > svg {
 	transform-box: fill-box;
 	transform-origin: 50% 50%;

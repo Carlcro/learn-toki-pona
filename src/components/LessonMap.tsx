@@ -105,22 +105,23 @@ function Stop({
 					/* "You are here": a broken ring that turns slowly around the
 					   clearing. It keeps its size and weight throughout, so the
 					   motion reads at a glance without tugging at the eye. */
-					<svg
-						className="trail-ring absolute -inset-1.5"
-						viewBox="0 0 100 100"
-						fill="none"
-						aria-hidden="true"
-					>
-						<circle
-							cx="50"
-							cy="50"
-							r="48"
-							stroke="var(--color-pink)"
-							strokeWidth="4"
-							strokeLinecap="round"
-							strokeDasharray="46 29"
-						/>
-					</svg>
+					<span className="trail-ring absolute -inset-1.5" aria-hidden="true">
+						<svg
+							className="block h-full w-full"
+							viewBox="0 0 100 100"
+							fill="none"
+						>
+							<circle
+								cx="50"
+								cy="50"
+								r="48"
+								stroke="var(--color-pink)"
+								strokeWidth="4"
+								strokeLinecap="round"
+								strokeDasharray="46 29"
+							/>
+						</svg>
+					</span>
 				)}
 				<span className={disc} aria-hidden="true">
 					{lesson.id}
@@ -239,38 +240,46 @@ function Summit({
 				<>
 					{/* Pink outside, lavender in close: the near ring has to read
 					    against a pink disc, and pink on pink would not. */}
-					<svg
+					<span
 						className="summit-ring summit-ring-out absolute -inset-4"
-						viewBox="0 0 100 100"
-						fill="none"
 						aria-hidden="true"
 					>
-						<circle
-							cx="50"
-							cy="50"
-							r="48"
-							stroke="var(--color-pink)"
-							strokeWidth="3"
-							strokeLinecap="round"
-							strokeDasharray="28 22"
-						/>
-					</svg>
-					<svg
+						<svg
+							className="block h-full w-full"
+							viewBox="0 0 100 100"
+							fill="none"
+						>
+							<circle
+								cx="50"
+								cy="50"
+								r="48"
+								stroke="var(--color-pink)"
+								strokeWidth="3"
+								strokeLinecap="round"
+								strokeDasharray="28 22"
+							/>
+						</svg>
+					</span>
+					<span
 						className="summit-ring summit-ring-in absolute -inset-1"
-						viewBox="0 0 100 100"
-						fill="none"
 						aria-hidden="true"
 					>
-						<circle
-							cx="50"
-							cy="50"
-							r="48"
-							stroke="var(--color-lavender)"
-							strokeWidth="4"
-							strokeLinecap="round"
-							strokeDasharray="54 32"
-						/>
-					</svg>
+						<svg
+							className="block h-full w-full"
+							viewBox="0 0 100 100"
+							fill="none"
+						>
+							<circle
+								cx="50"
+								cy="50"
+								r="48"
+								stroke="var(--color-lavender)"
+								strokeWidth="4"
+								strokeLinecap="round"
+								strokeDasharray="54 32"
+							/>
+						</svg>
+					</span>
 				</>
 			)}
 			<span
